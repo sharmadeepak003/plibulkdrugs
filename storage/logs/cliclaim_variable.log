@@ -1,0 +1,351 @@
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ClaimVariable.php:65
+    61| 
+    62|           
+    63|          //currentQuarter 
+    64|          $curMonth = date("m", time());
+  > 65|          $currentQuarter = getCurrentQuarterValue($curMonth);
+    66|         
+    67|         $getDataClaimVariable = DB::table('schedular_mail_claimvariable')->get();
+    68|         $checkEntryInTable = $getDataClaimVariable->where('financial_year',$currentFinancialYear)->where('month',$currentMonth)->first();
+    69|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  View [emails.pliclaimvariable] not found.
+
+  at vendor/laravel/framework/src/Illuminate/View/FileViewFinder.php:137
+    133|                 }
+    134|             }
+    135|         }
+    136| 
+  > 137|         throw new InvalidArgumentException("View [{$name}] not found.");
+    138|     }
+    139| 
+    140|     /**
+    141|      * Get an array of possible view files.
+
+  • emails.pliclaimvariable was not found: Are you sure the view exists and is a `.blade.php` file? 
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/ClaimVariable.php:86
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/ClaimVariable.php:86
+      Illuminate\Support\Facades\Facade::__callStatic()

@@ -1,0 +1,74 @@
+@media print {
+    .pagebreak {
+        clear: both;
+        page-break-before: always;
+    }
+}
+
+body {
+    font-size: 12px;
+}
+
+.card-header {
+    padding: 0px 0px 0px 5px;
+}
+
+.card-body {
+    padding: 5px 5px 5px 5px;
+}
+
+.bg-color-pink {
+    background-color: rgb(179, 131, 138);
+}
+
+.bg-color-warning {
+    background-color: rgb(249, 207, 207);
+}
+
+
+.help-text {
+    font-size: 12px;
+    color: rgb(252, 124, 124);
+}
+
+
+.brief_details {
+    overflow: scroll;
+    height: 80px;
+}
+
+.sub-table {
+    width: 100%;
+    border: 1px solid black;
+}
+
+
+
+.uploadTable th {
+    font-size: 12px;
+}
+
+.uploadTable tbody tr th {
+    padding: 0px 0px 0px 0px;
+}
+
+.uploadTable .uploadInstr {
+    font-size: 13px;
+    padding: 0px 0px 0px 2px;
+}
+
+.uploadTable .no-pad {
+    padding: 0px 0px 0px 5px;
+}
+
+
+.uploadTable .applicant-uploads td {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px 0px 0px 2px;
+}
+
+#pfd #domTable, #expTable, .financialTable td
+{
+    text-align: center;
+}

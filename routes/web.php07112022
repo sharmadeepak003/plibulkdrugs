@@ -1,0 +1,233 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () { return view('landing.home'); });
+Route::get('/application',function () { return view('landing.application'); });
+Route::get('/lop',function () { return view('landing.lop'); });
+Route::get('/guidelines',function () { return view('landing.guidelines'); });
+Route::get('/contact-us', function () { return view('landing.contact-us'); });
+Route::get('/copyright-policy', function () {return view('landing.copyright-policy');})->name('copyright-policy');
+Route::get('/privacy-policy', function () {return view('landing.privacy-policy');})->name('privacy-policy');
+Route::get('/hyperlink-policy', function () {return view('landing.hyperlink-policy');})->name('hyperlink-policy');
+
+Auth::routes(['verify' => true]);
+Auth::routes(['register' => false]);
+
+
+/*** Open AJAX Routes ***/
+Route::get('/segments/{data}', 'User\AjaxController@getSegments');
+
+Route::group(['middleware' => ['verified', 'IsApproved']], function () {
+    Route::get('/verifymobile', 'Auth\OtpController@verifyMobileForm')->name('verifyMobileForm');
+    Route::post('/verifymobile', 'Auth\OtpController@verifyMobile')->name('verifyMobile');
+    Route::get('/getotp', 'Auth\OtpController@getLoginOTP')->name('getLoginOTP');
+    Route::post('/verifyotp', 'Auth\OtpController@verifyLoginOTP')->name('verifyLoginOTP');
+});
+
+Route::group(['middleware' => ['verified', 'TwoFA', 'IsApproved']], function () {
+   Route::get('/verifyuser', 'HomeController@verifyUser')->name('verifyUser');
+});
+
+Route::group(['middleware' => ['role:ActiveUser','verified', 'TwoFA', 'IsApproved']], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+});
+
+Route::group(['middleware' => ['role:Approved-Applicants|Applicant|Admin', 'verified', 'TwoFA', 'IsApproved']], function () {
+    Route::get('/cities/{state}', 'User\AjaxController@getCity');
+    Route::get('/pincodes/{city}', 'User\AjaxController@getPincode');
+});
+
+Route::group(['middleware' => ['role:Applicant', 'verified', 'TwoFA', 'IsApproved']], function () {
+    Route::resource('applications', 'User\App\AppMastController', ['except' => 'create']);
+});
+
+Route::group(['middleware' => ['role:Applicant', 'verified', 'TwoFA', 'IsApproved' , 'BlockApplication']], function () {
+     /*** AJAX Routes ***/
+    Route::get('/subsegments/{id}', 'User\App\AjaxController@getSubSegment');
+
+    /*** Application Routes ***/
+
+    Route::get('applications/create/{id}', 'User\App\AppMastController@create')->name('applications.create');
+    Route::get('applications/preview/{id}', 'User\App\AppMastController@preview')->name('applications.preview');
+    Route::resource('companydetails', 'User\App\CompanyDetailsController', ['except' => 'create']);
+    Route::get('companydetails/create/{id}', 'User\App\CompanyDetailsController@create')->name('companydetails.create');
+    Route::resource('eligibility', 'User\App\EligibilityController', ['except' => 'create']);
+    Route::get('eligibility/create/{id}', 'User\App\EligibilityController@create')->name('eligibility.create');
+    Route::resource('financials', 'User\App\FinancialsController', ['except' => 'create']);
+    Route::get('financials/create/{id}', 'User\App\FinancialsController@create')->name('financials.create');
+    Route::resource('undertakings', 'User\App\UndertakingsController', ['except' => 'create']);
+    Route::get('undertakings/create/{id}', 'User\App\UndertakingsController@create')->name('undertakings.create');
+    Route::resource('proposal', 'User\App\ProposalController', ['except' => 'create']);
+    Route::get('proposal/create/{id}', 'User\App\ProposalController@create')->name('proposal.create');
+    Route::resource('evaluations', 'User\App\EvaluationsController', ['except' => 'create']);
+    Route::get('evaluations/create/{id}', 'User\App\EvaluationsController@create')->name('evaluations.create');
+    Route::resource('projections', 'User\App\ProjectionsController', ['except' => 'create']);
+    Route::get('projections/create/{id}', 'User\App\ProjectionsController@create')->name('projections.create');
+    Route::resource('dva', 'User\App\DvaController', ['except' => 'create']);
+    Route::get('dva/create/{id}', 'User\App\DvaController@create')->name('dva.create');
+    Route::get('/app/preview/{id}','User\App\AppMastController@preview')->name('app.preview');
+    Route::get('/app/submit/{id}','User\App\AppMastController@submit')->name('app.submit');
+
+    /*** Delete Add Row Routes***/
+    Route::get('/app/edit/promoter/{id}', 'User\App\CompanyDetailsController@deletePromoter')->name('promoter.delete');
+    Route::get('/app/edit/others/{id}', 'User\App\CompanyDetailsController@deleteOther')->name('other.delete');
+    Route::get('/app/edit/gstins/{id}', 'User\App\CompanyDetailsController@deleteGstin')->name('gstin.delete');
+    Route::get('/app/edit/auditors/{id}', 'User\App\CompanyDetailsController@deleteAuditor')->name('auditor.delete');
+    Route::get('/app/edit/ratings/{id}', 'User\App\CompanyDetailsController@deleteRating')->name('rating.delete');
+    Route::get('/app/edit/profiles/{id}', 'User\App\CompanyDetailsController@deleteProfile')->name('profile.delete');
+    Route::get('/app/edit/kmps/{id}', 'User\App\CompanyDetailsController@deleteKmp')->name('kmp.delete');
+    Route::get('/app/edit/group/{id}', 'User\App\EligibilityController@deleteGroup')->name('group.delete');
+});
+
+Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry', 'IsApproved','TwoFA])->group( function () {
+    
+   //for activate QRR [By Ajaharuddin Ansari]
+    Route::get('qrr/qrractivedash', 'Admin\QRRController@qrractivedash')->name('qrr.qrractivedash');
+    Route::post('qrr/qrractivation', 'Admin\QRRController@qrractivation')->name('qrr.qrractivation');
+   
+   Route::get('home', 'Admin\HomeController@index')->name('home');
+    Route::get('users/export', 'Admin\UsersController@usersExport')->name('users.export');
+	//change by aastha
+   Route::get('users/exportR1', 'Admin\UsersController@usersExportRound1')->name('users.exportR1');
+
+    Route::resource('users','Admin\UsersController');
+    Route::get('apps/export', 'Admin\AppsController@appsExport')->name('applications.export');
+    Route::resource('apps', 'Admin\AppsController');
+	Route::resource('report', 'Admin\ReportController');
+
+	Route::get('/apps/preview/{id}', 'Admin\AppsController@preview')->name('applications.preview');
+    	Route::get('/apps/print/{id}', 'Admin\AppsController@print')->name('applications.print');
+	
+	Route::get('acknowledgement', 'Admin\AcknowledgementController@index')->name('acknowledgement.index');
+    	Route::get('show/{id}', 'Admin\AcknowledgementController@show')->name('acknowledgement.show');
+    	Route::get('print/{id}', 'Admin\AcknowledgementController@print')->name('acknowledgement.print');
+
+	// Dashboard Apps Filter 
+
+    	Route::get('/targets/{name}','Admin\AppsController@getTp');
+	Route::get('/appproducts/products/{product_id}/{target}','Admin\AppsController@getProductApps');
+	
+	
+	//qrr routes changes by Aastha
+    Route::get('qrr/{qtr}', 'Admin\QRRController@qrrDash')->name('qrr.dash');
+    Route::get('qrr/view/{id}/{qtr}', 'Admin\QRRController@qrrView')->name('qrr.view');
+    Route::get('qrr/export/{id}/{qtr}', 'Admin\QRRController@qrrExport')->name('qrr.export');
+    Route::get('qrr/export/{qtr}', 'Admin\QRRController@qrrExportAll')->name('qrr.exportall');
+    Route::get('qrr/editmode/{id}/{qtr}', 'Admin\QRRController@qrrOpenEdit')->name('qrr.editmode');
+    Route::get('qrr/closeeditmode/{id}/{qtr}', 'Admin\QRRController@qrrCloseEdit')->name('qrr.closeeditmode');
+ Route::resource('qrr_location', 'Admin\QrrLocationController');
+ Route::get('qrr_location/{id}/{qtr_id}', 'Admin\QrrLocationController@edit')->name('qrr_location');
+	//for Non-submission mail for QRR[By Ajaharuddin Ansari]
+   Route::get('qrr/pendingQrrMail/{qtr}', 'Admin\QRRController@pendingQrrMail')->name('qrr.pendingQrrMail');
+	Route::get('qrr/QrrMailLog/{today}', 'Admin\QRRController@QrrMailLog')->name('qrr.QrrMailLog');
+
+   
+
+//change by Ajaharuddin
+    Route::get('bgtracker/bgExport', 'Admin\BgTrackerController@bgExport')->name('bgtracker.bgExport');
+    Route::resource('bgtracker', 'Admin\BgTrackerController', ['except' => 'create']);
+    Route::get('bgtracker/create/{id}', 'Admin\BgTrackerController@create')->name('bgtracker.create');
+    Route::get('bgtracker/show/{app_id}/{bg_id}', 'Admin\BgTrackerController@show')->name('bgtracker.show');
+    Route::get('bgtracker/edit/{bg_id}/{doc_id}', 'Admin\BgTrackerController@edit')->name('bgtracker.edit');
+
+// AppStatus Flag..... Ajaharuddin Ansari
+    Route::get('appstatus/appstatusExport', 'Admin\ApplicationStatusController@appstatusExport')->name('appstatus.appstatusExport');
+    Route::resource('appstatus', 'Admin\ApplicationStatusController', ['except' => 'create', 'show','edit']);
+//    Route::get('appstatus/create/{id}/{round}', 'Admin\ApplicationStatusController@create')->name('appstatus.create');
+//    Route::get('appstatus/show/{id}/{round}', 'Admin\ApplicationStatusController@show')->name('appstatus.show');
+//    Route::get('appstatus/edit/{id}/{round}', 'Admin\ApplicationStatusController@edit')->name('appstatus.edit');
+
+    Route::get('appstatus/create/{id}', 'Admin\ApplicationStatusController@create')->name('appstatus.create'); 
+    Route::get('appstatus/show/{id}', 'Admin\ApplicationStatusController@show')->name('appstatus.show');
+    Route::get('appstatus/edit/{id}', 'Admin\ApplicationStatusController@edit')->name('appstatus.edit');
+	
+	/******Application Edit Module********/
+	Route::get('additionaldetail/appdetailsedit/{id}/{taskid_id}', 'Admin\AdditionalsdetailController@appdetailsedit')->name('additionaldetail.appdetailsedit');
+    Route::get('additionaldetail/edit/{id}/{task_id}', 'Admin\AdditionalsdetailController@edit')->name('additionaldetail.edit');
+    Route::resource('additionaldetail', 'Admin\AdditionalsdetailController', ['except' => 'edit']);
+    Route::get('additionaldetail/create/{id}', 'Admin\AdditionalsdetailController@create')->name('additionaldetail.create');
+	// MIS
+	Route::get('main/{fy}', 'Admin\MISController@qrr');
+    	Route::get('MIS/{qtr}', 'Admin\MISController@index')->name('MIS.index');
+    	Route::get('MIS/{qtr}/{data}', 'Admin\MISController@MISExport')->name('MIS.MISExport');
+
+});
+
+
+Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
+    Route::resource('qpr', 'User\QRR\QRRController');
+    Route::get('qpr/create/{id}/{qrrName}','User\QRR\QRRController@create')->name('qpr.create');
+    Route::get('qpr/submit/{id}','User\QRR\QRRController@submit')->name('qpr.submit');
+    Route::resource('revenue', 'User\QRR\RevenueController');
+    Route::get('revenue/create/{id}/{qrr}','User\QRR\RevenueController@create')->name('revenue.create');
+    Route::get('revenue/delete/{id}','User\QRR\RevenueController@deleteMatPrev')->name('revenue.deleteMatPrev');
+    Route::get('revenue/deleteMat/{id}','User\QRR\RevenueController@deleteMat')->name('revenue.deleteMat');
+    Route::get('revenue/deleteSerPrev/{id}','User\QRR\RevenueController@deleteSerPrev')->name('revenue.deleteSerPrev');
+    Route::get('revenue/deleteSer/{id}','User\QRR\RevenueController@deleteSer')->name('revenue.deleteSer');
+    Route::resource('projectprogress', 'User\QRR\ProjectProgressController');
+    Route::get('projectprogress/create/{id}/{qrr}','User\QRR\ProjectProgressController@create')->name('projectprogress.create');
+    Route::resource('uploads', 'User\QRR\UploadsController');
+    Route::get('uploads/create/{id}/{qrr}','User\QRR\UploadsController@create')->name('uploads.create');
+    Route::resource('manuaddress', 'User\QRR\ManuFactAddressController');
+    Route::get('manuaddress/delete/{id}', 'User\QRR\ManuFactAddressController@delete')->name('manuaddress.delete');
+    Route::get('manuaddress/deleteProduct/{id}', 'User\QRR\ManuFactAddressController@deleteProduct')->name('manuaddress.deleteProduct');
+    Route::get('manuaddress/create/{id}/{qtr}/{type}','User\QRR\ManuFactAddressController@create')->name('manuaddress.create');
+    Route::get('manuaddress/edit/{id}/{qtr}/{type}','User\QRR\ManuFactAddressController@edit')->name('manuaddress.edit');
+    // Route::get('/qpr/revenue', 'User\QRR\QRRController@createRevenue')->name('qpr.createRevenue');
+	Route::get('qpr/getByName/{id}','User\QRR\QRRController@getQrrByName')->name('qpr.byname');
+Route::get('qrradditionalinfo/create/{id}/{qrrid}','User\QRR\QrrAdditionalInfoController@create')->name('qrradditionalinfo.create');
+    Route::resource('qrradditionalinfo', 'User\QRR\QrrAdditionalInfoController', ['except' => 'create']);
+    Route::get('qrradditionalinfo/deleteapproval/{id}','User\QRR\QrrAdditionalInfoController@deleteapproval')->name('qrradditionalinfo.deleteapproval');
+
+
+ });       
+
+Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
+    
+    Route::resource('claims', 'User\Claims\ClaimController');
+    Route::get('claims/index/{id}','User\Claims\ClaimController@index')->name('claims.index');
+    Route::get('claims/create/{id}','User\Claims\ClaimController@create')->name('claims.create');
+
+    Route::resource('claimsapplicantdetail', 'User\Claims\ClaimApplicantDetailController');
+    Route::get('claims/claimsapplicantdetail/{id}', 'User\Claims\ClaimApplicantDetailController@create')->name('claims.claimsapplicantdetail');
+	
+    Route::resource('claimsalesdetail', 'User\Claims\ClaimSalesDetailController');
+    Route::get('claimsalesdetail/create/{id}', 'User\Claims\ClaimSalesDetailController@create')->name('claimsalesdetail.create');
+    
+    Route::resource('claiminvestmentdetail', 'User\Claims\ClaimInvestmentDetailController');
+    Route::get('claiminvestmentdetail/create/{id}', 'User\Claims\ClaimInvestmentDetailController@create')->name('claiminvestmentdetail.create');
+    
+    Route::resource('claimprojectdetail', 'User\Claims\ClaimProjectDetailController');
+    Route::get('claimprojectdetail/create/{id}', 'User\Claims\ClaimProjectDetailController@create')->name('claimprojectdetail.create');
+
+    Route::resource('relatedpartytransaction', 'User\Claims\RelatedPartyController');
+    Route::get('relatedpartytransaction/create/{id}', 'User\Claims\RelatedPartyController@create')->name('relatedpartytransaction.create');
+
+    Route::resource('claimdocumentupload', 'User\Claims\ClaimDocumentUploadController');
+    Route::get('claimdocumentupload/create/{section}/{id}', 'User\Claims\ClaimDocumentUploadController@create')->name('claimdocumentupload.create');
+    Route::post('claimdocumentupload/store/{section}', 'User\Claims\ClaimDocumentUploadController@store')->name('claimdocumentupload.store');
+    Route::get('claimdocumentupload/edit/{id}/{section}', 'User\Claims\ClaimDocumentUploadController@edit')->name('claimdocumentupload.edit');
+    Route::post('claimdocumentupload/update/{section}', 'User\Claims\ClaimDocumentUploadController@update')->name('claimdocumentupload.update');
+
+    Route::get('claims/projectprogress', 'User\Claims\ProjectProgressController@create')->name('claims.projectprogress');
+    Route::get('claims/uploads', 'User\Claims\UploadsController@create')->name('claims.uploads');;
+
+    Route::get('doc/down/{docid}','User\Claims\ClaimController@downloadfile')->name('doc.down');
+    Route::get('claims/upload', 'User\Claims\ClaimController@upload')->name('claim.upload');
+
+	Route::resource('claims','User\Claims\ClaimController',['except' => 'index']);
+
+    Route::get('claims/getByName/{id}','User\Claims\ClaimController@getClaimsByName')->name('claims.byname');
+
+    
+    Route::get('claimsalesdetail/claimsalesdva/{id}','User\Claims\ClaimSalesDetailController@claimsalesdva')->name('claimsalesdetail.claimsalesdva');
+    Route::post('claimsalesdetail/dva_store','User\Claims\ClaimSalesDetailController@dvaStore')->name('claimsalesdetail.dva_store');
+    Route::get('claimsalesdetail/dvaedit/{claim_id}','User\Claims\ClaimSalesDetailController@dvaedit')->name('claimsalesdetail.dvaedit');
+    Route::PATCH('claimsalesdetail/dva_update/{id}','User\Claims\ClaimSalesDetailController@dva_update')->name('claimsalesdetail.dva_update');
+
+ });
+
+
+
+Route::get('/test', 'TestController@index')->name('test');

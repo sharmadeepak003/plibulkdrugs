@@ -1,0 +1,137 @@
+@extends('layouts.user.dashboard-master')
+
+@section('title')
+    Claim Dashboard
+@endsection
+
+@push('styles')
+    <link href="{{ asset('css/app/application.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app/progress.css') }}" rel="stylesheet">
+@endpush
+
+@section('content')
+    {{-- <div class="row">
+       
+    </div>
+    <br> --}}
+    <div class="col-md-12" style="padding: 5px">
+        <div class="row">
+            <div class="col-md-10">
+            </div> 
+            <div class="col-md-2">
+                {{-- <a href="#"
+                    class="btn btn-success btn-sm btn-block"></a> --}}
+                <button type="button" class="btn btn-success btn-sm btn-block"
+                    data-toggle="modal" data-target="#ClaimCreateModal">Fill Claim Form
+                </button>
+                @include(
+                    'user.claims.partials.model.claimCreateModal'
+                )
+            </div>         
+        </div>
+    </div>   
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="card border-primary">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2 offset-md-3">
+                            <label>Financial Year</label>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="fy_name" id="fy_name" class="form-control col-md-12" >
+               
+                                {{-- {{-- @foreach($fys as $fyname) --}}
+                                    <option  value="">2022-23</option>
+                                {{-- @endforeach --}} 
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <button id="filterData" class="btn btn-sm btn-block btn-primary text-white" style="pointer-events: none;">Filter</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 pt-2">
+                            <div class="table-responsive">
+                                <table id="example" class="table table-sm table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr class="table-primary">
+                                            <th class="text-center" >Sr No</th>
+                                            <th class="text-center" style="width: 30%">Target Segment</th>
+                                            <th class="text-center" >Claim Period</th>
+                                            <th class="text-center" >Quarter</th>
+                                            <th class="text-center" >Application No</th>
+                                            <th class="text-center" >Claim Status</th>
+                                            <th class="text-center" >Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(count($arr_claims)>0)
+                                            @foreach ($arr_claims as $key=>$cm_val)
+                                                <tr>
+                                                    <td class="text-center">{{ $key + 1 }}</td>
+                                                    <td>{{ $cm_val->target_segment_name }}</td>
+                                                    <td class="text-center">
+                                                        @if($cm_val->claim_fill_period==1) Quarterly @endif
+                                                        @if($cm_val->claim_fill_period==2) Half-Yearly @endif
+                                                        @if($cm_val->claim_fill_period==3) Nine Months @endif
+                                                        @if($cm_val->claim_fill_period==4) Annual @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                            {{ $cm_val->start_month.'-'.$cm_val->end_month }}
+                                                     </td>
+                                                    <td class="text-center">{{ $cm_val->app_no }}</td>   
+                                                    @if ($cm_val->status == 'D')
+                                                        <td class="text-center" style="background-color: #f3cccc;">Draft</td>
+                                                    @elseif($cm_val->status == 'S')
+                                                        <td class="text-center" style="background-color: #97f58a;">Submitted</td>
+                                                    @endif
+                                                    <td>
+                                                        
+                                                        @if ($cm_val->status == 'D')
+                                                            <button type="button"
+                                                                class="btn btn-warning btn-sm btn-block"
+                                                                data-toggle="modal"
+                                                                data-target="#editModal{{ $cm_val->app_id }}">
+                                                                Edit
+                                                            </button>
+                                                            @include(
+                                                                'user.claims.partials.model.claimEditModel'
+                                                            )
+                                                        @elseif($cm_val->status == 'S')
+                                                        
+                                                            <a href="{{ route('claims.show', $cm_val->claim_id) }}"
+                                                                class="btn btn-warning btn-sm btn-block">View</a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="8" style="color: red">No data found</td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@push('scripts')
+
+<script>
+
+    $(document).ready(function () {
+        $("#filterData").click(function (event) {
+            var fyId= $('#fy_name').val();
+            var link='/claim/index/'+fyId;
+            window.location.href = link;
+        });
+    });
+
+</script>
+@endpush

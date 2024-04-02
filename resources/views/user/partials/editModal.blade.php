@@ -1,0 +1,77 @@
+<div class="modal fade" id="editModal{{ $app->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <a data-dismiss="modal" class="float-right"><i class="fas fa-window-close"></i></a>
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title text-danger">Application Sections Overview</h5>
+            </div>
+            <div class="modal-body">
+                <div class="flex-parent">
+                    <div class="input-flex-container">
+                        <a class="input" href="{{ route('companydetails.edit',$app->id) }}">
+                            @if(in_array(1,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Company Details"></span>
+                            @else
+                            <span data-info="Company Details"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('eligibility.edit',$app->id) }}">
+                            @if(in_array(2,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Eligibility Criteria"></span>
+                            @else
+                            <span data-info="Eligibility Criteria"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('financials.edit',$app->id) }}">
+                            @if(in_array(3,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Financial Details"></span>
+                            @else
+                            <span data-info="Financial Details"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('undertakings.edit',$app->id) }}">
+                            @if(in_array(4,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Undertaking"></span>
+                            @else
+                            <span data-info="Undertaking"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('proposal.edit',$app->id) }}">
+                            @if(in_array(5,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Proposal Details"></span>
+                            @else
+                            <span data-info="Proposal Details"></span>
+                            @endif
+                        </a>
+                        
+                        <a class="input" href="{{ route('projections.edit',$app->id) }}">
+                            @if(in_array(6,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Projections"></span>
+                            @else
+                            <span data-info="Projections"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('dva.edit',$app->id) }}">
+                            @if(in_array(7,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="DVA"></span>
+                            @else
+                            <span data-info="DVA"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('evaluations.edit',$app->id) }}">
+                            @if(in_array(8,$app->stages->where('app_id',$app->id)->pluck('stage')->toArray()))
+                            <span data-year="Edit" data-info="Evaluation Criteria"></span>
+                            @else
+                            <span data-info="Evaluation Criteria"></span>
+                            @endif
+                        </a>
+                        <a class="input" href="{{ route('app.preview',$app->id) }}">
+                            <span data-info="Preview"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,484 @@
+<?php
+
+namespace App\Http\Controllers\User\Claims;
+use Carbon;
+use DB;
+use Auth;
+use Mail;
+
+use App\QRRMasters;
+use App\CompanyDetails;
+use App\EvaluationDetails;
+use App\ClaimInvPeriod;
+use App\ClaimInvCapacity;
+use App\ProposalDetails;
+use App\ClaimStage;
+use App\ClaimMaster;
+use App\ClaimBreakupInvBal;
+use App\ClaimBreakupTotAddition;
+use App\ClaimBreakupAssest;
+use App\ClaimInvestmentEmp;
+use App\ApprovalsRequired;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\ClaimProjectDetQues1;
+use App\ClaimProjectDetQues2;
+use App\ClaimProjectDetQues3;
+use App\ClaimProjectDetQues4;
+use App\ClaimProjectDetQues5;
+use App\ClaimProjectDetQues6;
+use App\ClaimProjectDetQues7;
+use App\ClaimProjectDetQues8;
+use App\ClaimDocProjectDet;
+use App\ClaimQuestionUserResponse;
+
+use App\RelatedParty;
+use App\ClaimRptCompanyAct;
+use App\ClaimRptPendingDispute;
+use App\ClaimRptConsideration;
+use App\ClaimRptPriceMechanism;
+
+
+
+class ClaimController extends Controller
+{
+    public $user;
+
+    public function __construct() {
+
+        $this->middleware(function ($request, $next) {
+
+            $this->user = Auth::user();
+            //dd($this->user);
+            $apps = DB::table('approved_apps')
+            ->where('created_by', $this->user->id)
+            ->whereNotNull('approval_dt')
+            ->where('approved_apps.status','S')->get()->toArray();
+
+            if(!$apps){
+                alert()->error('No Submitted or Approved Application!', 'Attention!')->persistent('Close');
+                return redirect()->route('home');
+            }
+            return $next($request);
+        });
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($id)
+    {
+
+
+        $apps = DB::table('approved_apps_details')
+        ->leftjoin('claims_masters','approved_apps_details.id','claims_masters.app_id')
+        ->where('user_id', Auth::user()->id)
+        ->select('approved_apps_details.id as application_id','approved_apps_details.*','claims_masters.*')->get();
+
+        $claimMaster=DB::table('claims_masters')
+        ->join('approved_apps_details','approved_apps_details.id','=','claims_masters.app_id')
+        ->where('fy', $id)->where('created_by', Auth::user()->id)->get();
+    //   dd($claimMaster);
+        $claimStage = DB::table('claim_stages')->where('created_by', Auth::user()->id)->get();
+
+        $fy = DB::table('fy_master')->where('status',1)->get();
+
+        $arr_claims=ClaimMaster::join('approved_apps_details','approved_apps_details.id','=','claims_masters.app_id')->join('claim_applicant_details','claim_applicant_details.app_id','=','approved_apps_details.id')
+        ->join('eligible_products','eligible_products.target_segment','=','approved_apps_details.target_segment')
+        ->join('qtr_master','qtr_master.qtr_id','=','claim_applicant_details.incentive_from_date')
+        ->join('qtr_master as qtr_master2','qtr_master2.qtr_id','=','claim_applicant_details.incentive_to_date')
+        ->where('claims_masters.created_by', Auth::user()->id)
+        ->where('claims_masters.fy',$id)->distinct('claims_masters.id')
+        ->select('claims_masters.*','claim_applicant_details.*','approved_apps_details.app_no','eligible_products.target_segment as target_segment_name',"qtr_master.start_month", "qtr_master2.month as end_month",)
+        ->get();
+    //   dd($arr_claims);
+        return view('user.claims.index',compact('apps','claimMaster','claimStage','fy','arr_claims'));
+
+        // return view('user.claims.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id)
+    {
+
+        $claimAppDetail= ClaimMaster::where('app_id', $id)->where('status','D')->get();
+        $fy=DB::table('fy_master')->where('status',1)->first();
+
+        if (count($claimAppDetail)>0) {
+            alert()->error('Please submit claim form for this Application', 'Attention!')->persistent('Close');
+            return redirect()->route('claims.index',$fy->status);
+        }
+
+        // $stage = ClaimStage::where('app_id', $id)->where('stages', 1)->first();
+        // if  ($stage) {
+        //     return redirect()->route('claimsapplicantdetail.edit',$stage->claim_id);
+        // }
+        // dd($id);
+        $shareholder=DB::table('promoter_details')->where('app_id',$id)->get();
+        $fy=DB::table('fy_master')->where('status',1)->first();
+        $appMast = DB::table('approved_apps_details')->where('id',$id)->first();
+
+        $arr_qtr_id=ClaimMaster::where('app_id', $id)->where('status','D')->get()->toArray();
+
+        if(count( $arr_qtr_id)>0){
+
+            $a=DB::select("select max(incentive_from_date) as incentive_from_date  from (select distinct (incentive_from_date) from claim_applicant_details cad  where app_id=$id
+            union
+            select distinct (incentive_to_date) from claim_applicant_details cad  where app_id=$id) a");
+
+            $arr_qtr=DB::table('qtr_master')->where('fy',$fy->fy_name)->where('qtr_id','>',$a[0]->incentive_from_date)->where('status','1')->orderby('qtr')->get();
+
+
+        }else{
+            $arr_qtr=DB::table('qtr_master')->where('fy',$fy->fy_name)->where('status','1')->orderby('qtr')->get();
+        }
+
+
+        $manufac = DB::table('manufacture_location')->where('app_id',$id)->where('type','green')->select('address')->first();
+
+
+        $users = DB::table('users as u')
+        ->join('approved_apps_details as aad','u.id','=','aad.user_id')
+        ->where('aad.id',$id)
+        ->select('u.*')->first();
+
+        $states = DB::table('pincodes')->whereNotNull('state')->orderBy('state')->get()->unique('state')->pluck('state', 'state');
+        return view('user.claims.applicant_detail', compact('appMast','fy','users','shareholder','states','id','manufac','arr_qtr'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // dd($request);
+        // dd("store");
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        $claimMast=DB::table('claims_masters as cm')
+        ->join('claim_applicant_details as cad','cad.claim_id','=','cm.id')
+        ->join('claim_statutory_auditors as csa','csa.claim_id','=','cm.id')
+        ->where('cm.id',$id)->first();
+        // dd($claimMast);
+
+        $shareholder=DB::table('claim_share_holding_patterns')->where('claim_id',$id)->get();
+        $old_shareholder=DB::table('promoter_details')->where('app_id',$claimMast->app_id)->get();
+        $appMast = DB::table('approved_apps_details')->where('id',$claimMast->app_id)->where('user_id',Auth::user()->id)->first();
+        $users = DB::table('users')->where('id',$appMast->user_id)->first();
+        $manuf_loc=DB::table('claim_manuf_locs')->where('claim_id',$id)->get();
+        $sh_patterns=DB::table('claim_share_holding_patterns')->where('claim_id',$id)->get();
+        $shareholding_change=DB::table('claim_share_holding_patterns')->where('claim_id',$id)->first();
+        // $statutory_auditor=DB::table('claim_statutory_auditors')->where('claim_id',$id)->first();
+        $sh_docs=DB::table('claim_share_holding_docs')->where('claim_id',$id)->get();
+        $fy=DB::table('fy_master')->where('status',1)->first();
+        $claimUserResponse = DB::table('claim_question_user_responses')->where('claim_id',$id)->get();
+        $arr_qtr=DB::table('qtr_master')->where('fy',$fy->fy_name)->where('status','1')->orderby('qtr')->get();
+        $states = DB::table('pincodes')->whereNotNull('state')->orderBy('state')->get()->unique('state')->pluck('state', 'state');
+
+        $city = DB::table('pincodes')->whereNotNull('city')->orderBy('city')->select('state','city')->get()->unique('city');
+
+
+        //sales_prev
+
+        $claimSalesParticular = DB::table('claim_sales_particulars')->get();
+
+        $claimApproval = DB::table('claim_sales_of_ep_approval')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->first();
+        // dd($claimMast);
+        // $hsn = DB::table('claim_applicant_details')->where('claim_id',$id)->pluck('hsn','hsn')->first();
+    //    dd($hsn);
+        $claimAsQrr = DB::table('claim_sales_ep_qrr')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->first();
+
+        $claimSalesManufTsGoods = DB::table('claim_sales_manuf_ts_goods')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->get();
+
+        $claimRecSales = DB::table('claim_sales_reconciliation')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->orderby('part_id','ASC')->get();
+
+        $claimBaselineSales = DB::table('claim_baseline_sales')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->first();
+        $claimSalesDoc = DB::table('claim_sales_doc')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->get();
+        $eligible_product=DB::table('approved_apps_details')->where('id',$claimMast->app_id)->get('product');
+        $claimSalesConsumption = DB::table('claim_sales_consumption')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->first();
+
+        $claimSalesContractAgreement = DB::table('claim_sales_contract_agreements')->where('claim_id',$id)->where('app_id',$claimMast->app_id)->get();
+        $claimUserResponse = DB::table('claim_question_user_responses')->where('claim_id',$id)->where('created_by',Auth::user()->id)->orderby('ques_id','ASC')->get();
+        $product=DB::table('approved_apps_details')->where('id',$claimMast->app_id)->first('product');
+        // dva_pre
+        $raw_material = DB::table('claim_dva_key_material')->where('claim_id',$id)->get();
+
+        $other_data = DB::table('claim_dva_other')->where('claim_id',$id)->orderby('prt_id','ASC')->get();
+
+        // investment_prev
+
+        // $apps = DB::table('approved_apps_details as a')
+        // ->join('claims_masters as cm','cm.app_id','=','a.id')
+        // ->where('cm.created_by', Auth::user()->id)
+        // ->whereNotNull('a.approval_dt')
+        // ->where('cm.id',$id)
+        // ->select('a.id as app_id','cm.id as claim_id')->first();
+        // $claim_id=$apps->claim_id;
+        $inv_part=DB::table('claim_investment_particular')->get();
+
+        $claim_period =ClaimInvPeriod::where('claim_id',$id)
+        ->where('created_by',Auth::user()->id)->get()->toArray();
+        $capacity =ClaimInvCapacity::where('claim_id',$id)->where('created_by',Auth::user()->id)->get()->toArray();
+        // $manu_loc =ClaimInvManuLoc::where('claim_id',$id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_inv =DB::table('claim_breakup_investment')->where('claim_id',$id)->where('created_by',Auth::user()->id)->get();
+        $claim_brkp_balsheet= ClaimBreakupInvBal::where('claim_id',$id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_totAdd=ClaimBreakupTotAddition::where('claim_id',$id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_assest=ClaimBreakupAssest::where('claim_id',$id)->where('created_by',Auth::user()->id)->get()->toArray();
+
+        $claim_emp =ClaimInvestmentEmp::where('claim_id',$id)->where('created_by',Auth::user()->id)->first();
+        // dd($claim_emp);
+        //project-details
+        $contents = ClaimDocProjectDet::where('claim_id', $id)->orderby('doc_id')->get();
+
+        $docs = [];
+        $docids = [];
+        foreach($contents as $content)
+        {
+            $docids[] = $content->doc_id;
+        }
+
+        $projectDetRes1=ClaimProjectDetQues1::where('claim_id',$id)->get();
+        $projectDetRes2=ClaimProjectDetQues2::where('claim_id',$id)->get()->toArray();
+
+        $projectDetRes4=ClaimProjectDetQues4::where('claim_id',$id)->get();
+        $projectDetRes5=ClaimProjectDetQues5::where('claim_id',$id)->get();
+        $projectDetRes6=ClaimProjectDetQues6::where('claim_id',$id)->get();
+        $projectDetRes7=ClaimProjectDetQues7::where('claim_id',$id)->get();
+        $projectDetRes8=ClaimProjectDetQues8::where('claim_id',$id)->get();
+
+        // $claimMast=ClaimMaster::where('id',$id)->first();
+        $response_question=ClaimQuestionUserResponse::where('claim_id',$id)->orderBy('ques_id','asc')->get();
+
+        //rpt
+        $related_party=RelatedParty::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->OrderBy('related_prt_id','ASC')->get()->toArray();
+       $pending=ClaimRptPendingDispute::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->get();
+       $consi=ClaimRptConsideration::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->first();
+    //    dd($consi);
+       $price=ClaimRptPriceMechanism::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->first();
+       $com_act=ClaimRptCompanyAct::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->get();
+       $user_response=ClaimQuestionUserResponse::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->select('ques_id','response')->get()->toArray();
+    //    dd($user_response);
+       $pending_res=ClaimRptPendingDispute::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->first();
+       $com_act_res=ClaimRptCompanyAct::where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->first();
+
+       //project detail
+       $doc_data=DB::table('claim_doc_info_map')->where('claim_id',$id)->where('created_by',Auth::user()->id)->where('app_id',$claimMast->app_id)->get();
+        $genral_doc=DB::table('claim_gerneral_doc_detail')->where('created_by',Auth::user()->id)->where('claim_id',$id)->where('app_id',$claimMast->app_id)->get();
+        $response=DB::table('claim_gerneral_doc_detail')->where('created_by',Auth::user()->id)->where('claim_id',$id)->where('app_id',$claimMast->app_id)->pluck('response')->first();
+        $bank_info=DB::table('claim_doc_remmittance_incentive')->where('created_by',Auth::user()->id)->where('claim_id',$id)->where('app_id',$claimMast->app_id)->first();
+
+        return view('user.claims.preview',compact('claimMast','shareholder','old_shareholder','appMast','users','manuf_loc','sh_patterns','shareholding_change','sh_docs','fy','arr_qtr','states','city','claimSalesParticular','claimApproval','claimAsQrr','claimSalesManufTsGoods','claimRecSales','claimBaselineSales','claimSalesDoc','eligible_product','claimSalesConsumption','claimSalesContractAgreement','claimUserResponse','product','raw_material','other_data','inv_part','claim_period','capacity','claim_brkp_inv','claim_brkp_balsheet','claim_brkp_totAdd','claim_brkp_assest','claim_emp','response_question','docids','contents'
+        ,'projectDetRes1','projectDetRes2','projectDetRes4','projectDetRes5','projectDetRes6'
+        ,'projectDetRes7','projectDetRes8','related_party','pending','consi','price','com_act','pending_res','com_act_res','user_response','doc_data','genral_doc','bank_info','response'));
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        dd('inside claim update controller');
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    public function getClaimsByName($id)
+    {
+
+        $apps = DB::table('approved_apps')
+        ->join('eligible_products','eligible_products.id','=','approved_apps.eligible_product')
+        ->where('created_by', $this->user->id)
+        ->whereNotNull('approved_apps.approval_dt')
+        ->where('approved_apps.status','S')
+        ->select('approved_apps.*','eligible_products.id as ep_id',
+        'eligible_products.code','eligible_products.target_segment','eligible_products.product'
+        ,'eligible_products.min_cap','eligible_products.short_name',
+        DB::raw('row_number() OVER () rownum'))->get();
+
+        $appsIds = DB::table('approved_apps')
+        ->join('eligible_products','eligible_products.id','=','approved_apps.eligible_product')
+        ->where('created_by', $this->user->id)
+        ->whereNotNull('approved_apps.approval_dt')
+        ->where('approved_apps.status','S')
+        ->pluck('approved_apps.id');
+
+        $qrrMast=DB::table('qrr_master')->where('qtr_id',$id)->whereIn('app_id',$appsIds)->get();
+        $qrrName=$id;
+        $qrrAppIds=$qrrMast->pluck('app_id')->toArray();
+        $qrrMaster=null;
+        foreach($qrrMast as $a){
+            $qrrMaster[$a->id]=QRRMasters::where('id', $a->id)->get();
+        }
+
+        $currQrr=$qrrName;
+        $currcolumnName=DB::table('qtr_master')->whereIn('qtr_id',array($currQrr))->first();
+
+
+        $qtrMast=DB::table('qtr_master')->get();
+        // dd($qtrMast,$qrrMast,$qrrName,$qrrMaster,$qrrAppIds);
+        return view('user.claims.index', compact( 'apps','qrrMast','qrrName','qrrMaster','qrrAppIds','currcolumnName','qtrMast'));
+    }
+
+
+    public function upload()
+    {
+
+        $doc_part=DB::table('claim_doc_particular')->get();
+        return view('user.claim.upload',compact('doc_part'));
+
+    }
+
+    public function finalSubmit($claim_id)
+    {
+        $claimMast = ClaimMaster::where('id', $claim_id)->where('status', 'D')->first();
+
+        $stage = ClaimStage::where('claim_id', $claim_id)->pluck('stages')->toArray();
+
+        // dd($stage);
+        $allStages = ['1', '2', '3','4','5','6','7','8'];
+
+        $arrDiff1 = array_diff($stage, $allStages);
+        $arrDiff2 = array_diff($allStages, $stage);
+        $diff = array_merge($arrDiff1, $arrDiff2);
+
+
+        if ($diff) {
+            alert()->error('Please complete previous sections first!', 'Attention!')->persistent('Close');
+            return redirect()->back();
+        }
+
+        $userdetail=DB::select("select * from users
+        join claims_masters cm on cm.created_by=users.id
+        join fy_master fy on fy.id=cm.fy::integer where users.id=$claimMast->created_by
+       ;");
+
+
+        DB::transaction(function () use ($claimMast,$claim_id,$userdetail) {
+
+            if($claimMast){
+                $claimMaster = ClaimMaster::find($claim_id);
+                $claimMaster->status = 'S';
+                $claimMaster->submitted_at = Carbon\Carbon::now();
+            $claimMaster->save();
+
+            $d_data = DB::table('claim_applicant_details')->where('claim_id',$claim_id)->select('incentive_from_date','incentive_to_date')->first();
+
+            $from_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_from_date)->select('start_month','year')->first();
+            $to_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_to_date)->select('month','year')->first();
+
+            $user = array('name' => $userdetail[0]->name, 'email' => $userdetail[0]->email,
+            'from_dt' => $from_dt->start_month, 'to_dt' =>$to_dt->month, 'status' => 'Incentive Claim Form Submitted Successfully',
+            'fr_year'=>$from_dt->year,'to_year'=>$to_dt->year);
+
+            Mail::send('emails.claimFinalSubmit', $user, function ($message) use ($user) {
+                $message->to($user['email'])->subject($user['status']);
+                $message->cc('bdpli@ifciltd.com');
+            });
+
+            }
+            alert()->success('Claim has been Submitted', 'Success')->persistent('Close');
+        });
+        return redirect()->route('claims.index',1);
+    }
+
+
+    public function downloadfile($id)
+    {
+        $maxId =  DB::table('document_uploads as a')->max('id');
+
+        if((strlen($id)) > strlen($maxId)){
+            $ids = decrypt($id);
+        }else{
+            $ids = $id;
+        }
+
+        $doc =  DB::table('document_uploads as a')->where('a.id',$ids)->first();
+
+        ob_start();
+        fpassthru($doc->uploaded_file);
+        $docc= ob_get_contents();
+        ob_end_clean();
+        $ext = '';
+        if($doc->mime == "application/pdf") {
+
+            $ext = 'pdf';
+
+        }elseif ($doc->mime == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+
+            $ext = 'docx';
+
+        }elseif ($doc->mime == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+
+            $ext = 'xlsx';
+
+        }
+        elseif($doc->mime == "image/png")
+        {
+            $ext = 'png';
+        }
+
+        $doc_name = $doc->file_name;
+
+
+        return response($docc)
+
+        ->header('Cache-Control', 'no-cache private')
+
+        ->header('Content-Description', 'File Transfer')
+
+        ->header('Content-Type', $doc->mime)
+
+        ->header('Content-length', strlen($docc))
+
+        ->header('Content-Disposition', 'attachment; filename='.$doc_name.'.'.$ext)
+
+        ->header('Content-Transfer-Encoding', 'binary');
+
+    }
+
+}
+

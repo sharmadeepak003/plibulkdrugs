@@ -1,0 +1,75 @@
+
+   InvalidArgumentException 
+
+  View [emails.fixedmail] not found.
+
+  at vendor/laravel/framework/src/Illuminate/View/FileViewFinder.php:137
+    133|                 }
+    134|             }
+    135|         }
+    136| 
+  > 137|         throw new InvalidArgumentException("View [{$name}] not found.");
+    138|     }
+    139| 
+    140|     /**
+    141|      * Get an array of possible view files.
+
+  • emails.fixedmail was not found: Are you sure the view exists and is a `.blade.php` file? 
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InvoiceMail.php:111
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  View [emails.fixedmail] not found.
+
+  at vendor/laravel/framework/src/Illuminate/View/FileViewFinder.php:137
+    133|                 }
+    134|             }
+    135|         }
+    136| 
+  > 137|         throw new InvalidArgumentException("View [{$name}] not found.");
+    138|     }
+    139| 
+    140|     /**
+    141|      * Get an array of possible view files.
+
+  • emails.fixedmail was not found: Are you sure the view exists and is a `.blade.php` file? 
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InvoiceMail.php:128
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   InvalidArgumentException 
+
+  View [emails.fixedmail] not found.
+
+  at vendor/laravel/framework/src/Illuminate/View/FileViewFinder.php:137
+    133|                 }
+    134|             }
+    135|         }
+    136| 
+  > 137|         throw new InvalidArgumentException("View [{$name}] not found.");
+    138|     }
+    139| 
+    140|     /**
+    141|      * Get an array of possible view files.
+
+  • emails.fixedmail was not found: Are you sure the view exists and is a `.blade.php` file? 
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/InvoiceMail.php:128
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()

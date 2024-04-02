@@ -1,0 +1,78 @@
+.content-wrapper {
+    background-image: url("/images/dashboard/logo-bg.png");
+}
+
+.brand-link .brand-image {
+    margin-left: 0px;
+}
+
+.brand-link {
+    padding: 5px 0px 5px 0px;
+}
+
+.brand-text {
+    font-size: 17px;
+}
+
+.user-panel {
+    padding: 5px 0px 5px 0px;
+    border-bottom: 1px solid #acb3b9;
+}
+
+.user-panel .info {
+    padding: 0px;
+    font-size: 18px;
+}
+
+.main-sidebar .nav-link {
+    padding: 5px 0px 5px 0px;
+}
+
+.main-sidebar {
+    width: 210px;
+}
+
+@media (min-width: 768px) {
+    body:not(.sidebar-mini-md) .content-wrapper,
+    body:not(.sidebar-mini-md) .main-footer,
+    body:not(.sidebar-mini-md) .main-header {
+        transition: margin-left 0.3s ease-in-out;
+        margin-left: 210px;
+    }
+}
+
+.sidebar-mini.sidebar-collapse .main-sidebar,
+.sidebar-mini.sidebar-collapse .main-sidebar::before {
+    width: 2.6rem;
+}
+
+.sidebar-mini.sidebar-collapse .content-wrapper,
+.sidebar-mini.sidebar-collapse .main-footer,
+.sidebar-mini.sidebar-collapse .main-header {
+    margin-left: 2.6rem !important;
+}
+
+.sidebar-mini.sidebar-collapse .main-sidebar:hover {
+    width: 210px;
+}
+
+.layout-fixed .brand-link {
+    width: 210px;
+}
+
+.slow-spin {
+    -webkit-animation: fa-spin 6s infinite linear;
+    animation: fa-spin 6s infinite linear;
+}
+
+.slow-spin i {
+    color: rgb(194, 52, 52);
+}
+
+.card-header {
+    padding: 10px 5px 0px 10px;
+}
+
+.card-body {
+    padding: 10px;
+}

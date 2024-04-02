@@ -1,0 +1,68 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class QrrRevenue extends Model
+{
+    protected $table = 'qrr_revenue';
+    protected $fillable = [
+        'id',
+        'qrr_id',        'gcDomPrevQuantity',
+        'gcDomPrevSales'   ,
+        'gcDomCurrQuantity',
+        'gcDomCurrSales'   ,
+        'gcExpPrevQuantity',
+        'gcExpPrevSales'   ,
+        'gcExpCurrQuantity',
+        'gcExpCurrSales'   ,
+        'gcCapPrevQuantity',
+        'gcCapPrevSales'   ,
+        'gcCapCurrQuantity',
+        'gcCapCurrSales'   ,
+        'gcTotPrevQuantity',
+        'gcTotPrevSales'   ,
+        'gcTotCurrQuantity',
+        'gcTotCurrSales'   ,
+        'ecDomPrevQuantity',
+        'ecDomPrevSales'   ,
+        'ecDomCurrQuantity',
+        'ecDomCurrSales'   ,
+        'ecExpPrevQuantity',
+        'ecExpPrevSales'   ,
+        'ecExpCurrQuantity',
+        'ecExpCurrSales'   ,
+        'ecCapPrevQuantity',
+        'ecCapPrevSales'   ,
+        'ecCapCurrQuantity',
+        'ecCapCurrSales'   ,
+        'ecTotPrevQuantity',
+        'ecTotPrevSales'   ,
+        'ecTotCurrQuantity',
+        'ecTotCurrSales'   ,
+        'otDomPrevQuantity',
+        'otDomPrevSales'   ,
+        'otDomCurrQuantity',
+        'otDomCurrSales'   ,
+        'otExpPrevQuantity',
+        'otExpPrevSales'   ,
+        'otExpCurrQuantity',
+        'otExpCurrSales'   ,
+        'otCapPrevQuantity',
+        'otCapPrevSales'   ,
+        'otCapCurrQuantity',
+        'otCapCurrSales'   ,
+        'otTotPrevQuantity',
+        'otTotPrevSales'   ,
+        'otTotCurrQuantity',
+        'otTotCurrSales'   ,
+        'otherPrevQuantity',
+        'otherPrevSales'   ,
+        'otherCurrQuantity',
+        'otherCurrSales'   ,
+        'totPrevQuantity'  ,
+        'totPrevSales'     ,
+        'totCurrQuantity'  ,
+        'totCurrSales' ,'created_by'    ];
+}

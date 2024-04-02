@@ -1,0 +1,16 @@
+.main-body
+{
+    padding-top: 30px;
+    padding-bottom: 100px;
+    background-image: url("/images/slider/bg3.jpg");
+    background-size: cover;
+}
+
+.instr
+{
+    font-size: 12px;
+    margin: 0px;
+    padding:    0px;
+    color: rgb(139, 6, 6);
+    float: right;
+}

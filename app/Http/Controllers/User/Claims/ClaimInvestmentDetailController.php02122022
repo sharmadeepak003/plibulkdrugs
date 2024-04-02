@@ -1,0 +1,502 @@
+<?php
+
+namespace App\Http\Controllers\User\Claims;
+
+use App\ClaimInvestmentDetail;
+use App\ClaimStage;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use DB;
+use Auth;
+use Carbon\Carbon;
+use App\DocumentUploads;
+use App\ClaimDocMap;
+use App\ClaimMaster;
+use App\ClaimInvestmentEmp;
+use App\ClaimInvManuLoc;
+use App\ClaimInvPeriod;
+use App\ClaimBreakupInv;
+use App\ClaimBreakupInvBal;
+use App\ClaimBreakupTotAddition;
+use App\ClaimBreakupAssest;
+use App\ClaimInvCapacity;
+
+
+class ClaimInvestmentDetailController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+        // return view('user.claims.investment_detail');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id)
+    {
+
+        $stage = ClaimStage::where('claim_id', $id)->where('stages', 4)->first();
+
+        if ($stage) {
+            return redirect()->route('claiminvestmentdetail.edit',$id);
+        }
+
+        $apps = DB::table('approved_apps_details as a')
+        ->join('claims_masters as cm','cm.app_id','=','a.id')
+        ->where('cm.created_by', Auth::user()->id)
+        ->where('cm.id','=',$id)
+        ->whereNotNull('a.approval_dt')
+        ->select('a.id as app_id','cm.id as claim_id')->first();
+
+        $fy_year=DB::table('claim_applicant_details')->where('claim_id',$apps->claim_id)->where('app_id',$apps->app_id)->select('incentive_from_date','incentive_to_date')->first();
+
+        $qrr_investment = DB::table('qrr_master as qm')
+        ->join('financial_progress as fp', 'qm.id','=','fp.qrr_id')
+        ->join('qtr_master as qm2', 'qm2.qtr_id','=','qm.qtr_id')
+        ->whereBetween('qm.qtr_id',[$fy_year->incentive_from_date,$fy_year->incentive_to_date])
+        ->where('qm.app_id','=',$apps->app_id)
+        ->select( 'fp.totcurrExpense as tot_investment')
+        ->orderby('fp.id','desc')
+        ->first();
+
+
+        $capacity=DB::table('evaluation_details as ed')
+        ->where('ed.app_id','=',$apps->app_id)
+        ->select('ed.capacity as capacity')
+        ->first();
+
+        $inv_part=DB::table('claim_investment_particular')->orderBy('id','asc')->get();
+        $eligible_product=DB::table('approved_apps_details')->where('id',$apps->app_id)->get();
+        $manu_loc=DB::table('claim_manuf_locs')->where('claim_id', $id)->get();
+
+        $employment_qrr=DB::table('qrr_master as qm')
+        ->join('greenfield_emp as ge','ge.qrr_id','=','qm.id')
+        ->whereBetween('qm.qtr_id',[$fy_year->incentive_from_date,$fy_year->incentive_to_date])
+        ->where('qm.app_id',$apps->app_id)
+        ->select('qm.app_id', DB::raw('sum(ge."laborCurrNo") as QrrLabourNo'), DB::raw('sum(ge."empCurrNo") as QrrEmpNo'),DB::raw('sum(ge."conCurrNo") as QrrConNo'),DB::raw('sum(ge."appCurrNo") as QrrApprNo'),DB::raw('sum(ge."totCurrNo") as QrrTot'))
+        ->groupBy('qm.app_id')
+        ->get();
+
+        return view('user.claims.investment_detail',compact('apps','inv_part', 'manu_loc','eligible_product','qrr_investment','capacity','employment_qrr'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+
+        $investment_blnc = $request->inv;
+        $investment_add = $request->inva;
+        $investment_asset = $request->invaa;
+
+        DB::transaction(function () use ($request,$investment_blnc,$investment_add,$investment_asset) {
+
+            foreach($request->claim_period as $key=>$period_data){
+                $fy_data = new ClaimInvPeriod;
+                    $fy_data->app_id=$request->app_id;
+                    $fy_data->created_by =Auth::user()->id;
+                    $fy_data->claim_id =$request->claim_id;
+                    $fy_data->claim_period=$period_data['period_fy'];
+                    $fy_data->inv_as_qrr=$period_data['investment_per_qrr'];
+                    $fy_data->actual_inv=$period_data['actual_invest'];
+                    $fy_data->diff=$period_data['diff'];
+                    $fy_data->reason_change=$period_data['reason_any_change'];
+                $fy_data->save();
+            }
+
+
+            foreach($request->capacity_data as $key=>$capacity){
+                $fy_data = new ClaimInvCapacity;
+                    $fy_data->app_id=$request->app_id;
+                    $fy_data->created_by =Auth::user()->id;
+                    $fy_data->claim_id =$request->claim_id;
+                    $fy_data->product=$capacity['product_name'];
+                    $fy_data->capacity_proposed=$capacity['capacity_proposed'];
+                    $fy_data->capacity_achieved=$capacity['capacity_achieved'];
+                    $fy_data->date_of_commission=$capacity['date_of_commission'];
+                $fy_data->save();
+            }
+
+
+            // foreach($request->manufact_loc as $key=>$loc){
+
+            //     $manu_loc = new ClaimInvManuLoc;
+            //         $manu_loc->app_id=$request->app_id;
+            //         $manu_loc->created_by =Auth::user()->id;
+            //         $manu_loc->claim_id =$request->claim_id;
+            //         $manu_loc->address=$loc['address'];
+            //         $manu_loc->tot_investment_claim=$loc['tot_inv'];
+            //         $manu_loc->eligible_inv_pli=$loc['eligible_inv'];
+            //     $manu_loc->save();
+            // }
+
+            foreach($request->investment_data as $key=>$inv_data){
+                $invest_data = new ClaimBreakupInv;
+                    $invest_data->app_id=$request->app_id;
+                    $invest_data->created_by =Auth::user()->id;
+                    $invest_data->claim_id =$request->claim_id;
+                    $invest_data->asset_type=$inv_data['asset_type'];
+                    $invest_data->imp_party=$inv_data['imp_party'];
+                    $invest_data->imp_not_party=$inv_data['imp_not_party'];
+                    $invest_data->ind_party=$inv_data['ind_party'];
+                    $invest_data->ind_not_party=$inv_data['ind_not_party'];
+                    $invest_data->tot_party=$inv_data['tot_party'];
+                    $invest_data->tot_not_party=$inv_data['tot_not_party'];
+                    $invest_data->gt_imp_party=$request->gt_imp_party;
+                    $invest_data->gt_imp_not_party=$request->gt_imp_not_party;
+                    $invest_data->gt_ind_party=$request->gt_ind_party;
+                    $invest_data->gt_ind_not_party=$request->gt_ind_not_party;
+                    $invest_data->gt_tot_party=$request->gt_tot_party;
+                    $invest_data->gt_tot_not_party=$request->gt_tot_not_party;
+                $invest_data->save();
+
+            }
+            foreach($investment_blnc as $key=> $value)
+            {
+
+                $claim_brkp_balsheet[]=[
+                    'app_id' => $request->app_id,
+                    'created_by' => Auth::user()->id,
+                    'claim_id' => $request->claim_id,
+                    'inv_prt_id' => $value['inv_prt_id'],
+                    'other_part' => $value['other'],
+                    'opening_bal' => $value['open_bal'],
+                    'additions' => $value['addition'],
+                    'deletions' => $value['deletion'],
+                    'closing_bal' => $value['close_bal'],
+                    'tot_opn_blnc' => $request->tot_opn_blnc,
+                    'tot_add_blnc' => $request->tot_add_blnc,
+                    'tot_dlt_blnc' => $request->tot_dlt_blnc,
+                    'tot_close_blnc' => $request->tot_close_blnc,
+                    'created_at'=>Carbon::now(),
+                    'updated_at'=>Carbon::now()
+                ];
+            }
+
+            foreach($investment_add as $key=> $value)
+            {
+
+                $claim_brkp_totAdd[]=[
+                    'app_id' => $request->app_id,
+                    'created_by' => Auth::user()->id,
+                    'claim_id' => $request->claim_id,
+                    'inv_prt_id' => $value['inv_prt_id'],
+                    'other_part' => $value['other'],
+                    'total_add_bal' => $value['Balance_Sheet'],
+                    'consi_for_pli' => $value['PLI_Scheme'],
+                    'not_consi_for_pli' =>$value['Not_PLI_scheme'],
+                    'tot_blc_sheet' => $request->tot_blc_sheet,
+                    'pli_scheme_total' =>$request->pli_scheme_total,
+                    'not_pli_scheme_total' => $request->not_pli_scheme_total,
+                    'reason' => $value['reason_for_not_cons'],
+                    'created_at'=>Carbon::now(),
+                    'updated_at'=>Carbon::now()
+                ];
+            }
+            foreach($investment_asset as $key=> $value)
+            {
+
+                $claim_brkp_assest[]=[
+                    'app_id' => $request->app_id,
+                    'created_by' => Auth::user()->id,
+                    'claim_id' => $request->claim_id,
+                    'inv_prt_id' => $value['inv_prt_id'],
+                    'other_part' => $value['other'],
+                    'total_del_dis_sol' => $value['tot_del_dis_sold'],
+                    'consi_for_pli' =>$value['PLI_Scheme_curr'],
+                    'not_consi_for_pli' => $value['Not_PLI_Scheme_curr'],
+                    'dd_sold_total' => $request->dd_sold_total,
+                    'pli_curr_tot' => $request->pli_curr_tot,
+                    'pli_not_curr_tot' =>$request->pli_not_curr_tot,
+                    'created_at'=>Carbon::now(),
+                    'updated_at'=>Carbon::now()
+                ];
+            }
+
+            ClaimBreakupInvBal::insert($claim_brkp_balsheet);
+            ClaimBreakupTotAddition::insert($claim_brkp_totAdd);
+            ClaimBreakupAssest::insert($claim_brkp_assest);
+
+        //    dd($request);
+            $emp_invest = new ClaimInvestmentEmp;
+                $emp_invest->app_id=$request->app_id;
+                $emp_invest->created_by =Auth::user()->id;
+                $emp_invest->claim_id =$request->claim_id;
+                $emp_invest->on_roll_labor=$request->on_roll_labor;
+                $emp_invest->no_of_emp=$request->on_roll_emp;
+                $emp_invest->on_roll_contr=$request->on_roll_cont;
+                $emp_invest->apprentice=$request->on_roll_app;
+                $emp_invest->total_emp=$request->total_emp;
+
+                $emp_invest->qrr_labor=$request->qrr_on_roll_labor;
+                $emp_invest->qrr_emp=$request->qrr_on_roll_emp;
+                $emp_invest->qrr_contr=$request->qrr_on_roll_cont;
+                $emp_invest->qrr_apprentice=$request->qrr_on_roll_app;
+                $emp_invest->qrr_total_emp=$request->qrr_total_emp;
+
+                $emp_invest->diff_labor=$request->diff_labor;
+                $emp_invest->diff_emp=$request->diff_emp;
+                $emp_invest->diff_cont=$request->diff_con;
+                $emp_invest->diff_app=$request->diff_app;
+                $emp_invest->diff_total_emp=$request->diff_total_emp;
+
+                $emp_invest->difference_labor=$request->difference_labor;
+                $emp_invest->difference_emp=$request->difference_emp;
+                $emp_invest->difference_con=$request->difference_con;
+                $emp_invest->difference_app=$request->difference_app;
+
+            $emp_invest->save();
+
+            ClaimStage::create([
+            'app_id'=>$request->app_id,
+            'created_by' =>Auth::user()->id,
+            'claim_id' =>$request->claim_id,
+            'stages' =>4,
+            'status'=>'D',
+            ]);
+
+            alert()->success('Claim Investment Details Saved', 'Success!')->persistent('Close');
+        });
+
+        return redirect()->route('claiminvestmentdetail.edit',$request->claim_id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\ClaimInvestmentDetail  $claimInvestmentDetail
+     * @return \Illuminate\Http\Response
+     */
+    public function show(ClaimInvestmentDetail $claimInvestmentDetail)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\ClaimInvestmentDetail  $claimInvestmentDetail
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+        $apps = DB::table('approved_apps_details as a')
+        ->join('claims_masters as cm','cm.app_id','=','a.id')
+        ->where('cm.created_by', Auth::user()->id)
+        ->whereNotNull('a.approval_dt')
+        ->where('cm.id',$id)
+        ->select('a.id as app_id','cm.id as claim_id')->first();
+        $claim_id=$apps->claim_id;
+        $inv_part=DB::table('claim_investment_particular')->orderBy('id','asc')->get();
+
+        $claim_period =ClaimInvPeriod::where('claim_id',$claim_id)
+        ->where('created_by',Auth::user()->id)->get()->toArray();
+        $capacity =ClaimInvCapacity::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+        // $manu_loc =ClaimInvManuLoc::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_inv =ClaimBreakupInv::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_balsheet= ClaimBreakupInvBal::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_totAdd=ClaimBreakupTotAddition::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+        $claim_brkp_assest=ClaimBreakupAssest::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->get()->toArray();
+
+        $claim_emp =ClaimInvestmentEmp::where('claim_id',$claim_id)->where('created_by',Auth::user()->id)->first()->toArray();
+
+        return view('user.claims.investmentdetail_edit',compact('apps','inv_part','capacity','claim_period','claim_brkp_inv','claim_brkp_balsheet', 'claim_brkp_totAdd', 'claim_brkp_assest','claim_emp'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\ClaimInvestmentDetail  $claimInvestmentDetail
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request,$id)
+    {
+
+        $invc = $request->inv;
+        $invca = $request->inva;
+        $invcaa = $request->invaa;
+
+        DB::transaction(function () use ($invc,$invca,$invcaa,$request) {
+            foreach($request->claim_period as $key=>$period_data){
+
+                $fy_data =ClaimInvPeriod::find($period_data['id']);
+                    $fy_data->claim_period=$period_data['period_fy'];
+                    $fy_data->inv_as_qrr=$period_data['investment_per_qrr'];
+                    $fy_data->actual_inv=$period_data['actual_invest'];
+                    $fy_data->diff=$period_data['diff'];
+                    $fy_data->reason_change=$period_data['reason_any_change'];
+                $fy_data->save();
+            }
+
+            foreach($request->capacity_data as $key=>$capacity){
+                $fy_data =ClaimInvCapacity::where('id',$capacity['id'])->where('created_by',Auth::user()->id)->first();
+                    $fy_data->product=$capacity['product_name'];
+                    $fy_data->capacity_proposed=$capacity['capacity_proposed'];
+                    $fy_data->capacity_achieved=$capacity['capacity_achieved'];
+                    $fy_data->date_of_commission=$capacity['date_of_commission'];
+                $fy_data->save();
+            }
+
+            // foreach($request->manufact_loc as $key=>$loc){
+            //     $manu_loc =ClaimInvManuLoc::where('id',$loc['id'])->where('created_by',Auth::user()->id)->first();
+            //         $manu_loc->address=$loc['address'];
+            //         $manu_loc->tot_investment_claim=$loc['tot_inv'];
+            //         $manu_loc->eligible_inv_pli=$loc['eligible_inv'];
+            //     $manu_loc->save();
+            // }
+
+            foreach($request->investment_data as $key=>$invest){
+
+                if(array_key_exists('id',$invest)){
+                    $claim_invest =ClaimBreakupInv::where('id',$invest['id'])->where('created_by',Auth::user()->id)->first();
+                    $claim_invest->fill([
+                        'asset_type'=>$invest['asset_type'],
+                        'imp_party'=>$invest['imp_party'],
+                        'imp_not_party'=>$invest['imp_not_party'],
+                        'ind_party'=>$invest['ind_party'],
+                        'ind_not_party'=>$invest['ind_not_party'],
+                        'tot_party'=>$invest['tot_party'],
+                        'tot_not_party'=>$invest['tot_not_party'],
+                        'gt_imp_party'=>$request->gt_imp_party,
+                        'gt_imp_not_party'=>$request->gt_imp_not_party,
+                        'gt_ind_party'=>$request->gt_ind_party,
+                        'gt_ind_not_party'=>$request->gt_ind_not_party,
+                        'gt_tot_party'=>$request->gt_tot_party,
+                        'gt_tot_not_party'=>$request->gt_tot_not_party,
+                        'updated_at'=>Carbon::now()
+                    ]);
+                    $claim_invest->save();
+                }else{
+                    $invest_data = new ClaimBreakupInv;
+                    $invest_data->app_id=$request->app_id;
+                    $invest_data->created_by =Auth::user()->id;
+                    $invest_data->claim_id =$request->claim_id;
+                    $invest_data->asset_type=$invest['asset_type'];
+                    $invest_data->imp_party=$invest['imp_party'];
+                    $invest_data->imp_not_party=$invest['imp_not_party'];
+                    $invest_data->ind_party=$invest['ind_party'];
+                    $invest_data->ind_not_party=$invest['ind_not_party'];
+                    $invest_data->tot_party=$invest['tot_party'];
+                    $invest_data->tot_not_party=$invest['tot_not_party'];
+                    $invest_data->gt_imp_party=$request->gt_imp_party;
+                    $invest_data->gt_imp_not_party=$request->gt_imp_not_party;
+                    $invest_data->gt_ind_party=$request->gt_ind_party;
+                    $invest_data->gt_ind_not_party=$request->gt_ind_not_party;
+                    $invest_data->gt_tot_party=$request->gt_tot_party;
+                    $invest_data->gt_tot_not_party=$request->gt_tot_not_party;
+                    $invest_data->save();
+                }
+
+            }
+
+            foreach($invc as $key=> $value)
+            {
+
+                $claim_brkp_balsheet= ClaimBreakupInvBal::where('id',$value['id'])->where('created_by',Auth::user()->id)->first();
+                $claim_brkp_balsheet->fill([
+                    'other_part' => $value['other'],
+                    'opening_bal' => $value['open_bal'],
+                    'additions' => $value['addition'],
+                    'deletions' => $value['deletion'],
+                    'closing_bal' => $value['close_bal'],
+                    'tot_opn_blnc' => $request->tot_opn_blnc,
+                    'tot_add_blnc' => $request->tot_add_blnc,
+                    'tot_dlt_blnc' => $request->tot_dlt_blnc,
+                    'tot_close_blnc' => $request->tot_close_blnc,
+                    'updated_at'=>Carbon::now()
+                ]);
+                $claim_brkp_balsheet->save();
+
+            }
+
+            foreach($invca as $key=> $value)
+            {
+                $claim_brkp_totAdd=ClaimBreakupTotAddition::where('id',$value['id'])->where('created_by',Auth::user()->id)->first();
+                $claim_brkp_totAdd->fill([
+                    'other_part' => $value['other'],
+                    'total_add_bal' => $value['Balance_Sheet'],
+                    'consi_for_pli' => $value['PLI_Scheme'],
+                    'not_consi_for_pli' =>$value['Not_PLI_scheme'],
+                    'tot_blc_sheet' => $request->tot_blc_sheet,
+                    'pli_scheme_total' => $request->pli_scheme_total,
+                    'not_pli_scheme_total' =>$request->not_pli_scheme_total,
+                    'reason' => $value['reason_for_not_cons'],
+                    'updated_at'=>Carbon::now()
+                ]);
+                $claim_brkp_totAdd->save();
+
+            }
+
+            foreach($invcaa as $key=> $value)
+            {
+                $claim_brkp_assest=ClaimBreakupAssest::where('id',$value['id'])->where('created_by',Auth::user()->id)->first();
+
+                $claim_brkp_assest->fill([
+                    'other_part' => $value['other'],
+                    'total_del_dis_sol' => $value['tot_del_dis_sold'],
+                    'consi_for_pli' =>$value['PLI_Scheme_curr'],
+                    'not_consi_for_pli' => $value['Not_PLI_Scheme_curr'],
+                    'dd_sold_total' => $request->tot_del_dis_sold,
+                    'pli_curr_tot' =>$request->PLI_Scheme_curr,
+                    'pli_not_curr_tot' => $request->Not_PLI_Scheme_curr,
+                    'updated_at'=>Carbon::now()
+                ]);
+                $claim_brkp_assest->save();
+            }
+
+            $emp_invest =ClaimInvestmentEmp::where('id',$request->emp_id)->where('created_by',Auth::user()->id)->first();
+                $emp_invest->on_roll_labor=$request->on_roll_labor;
+                $emp_invest->no_of_emp=$request->on_roll_emp;
+                $emp_invest->on_roll_contr=$request->on_roll_cont;
+                $emp_invest->apprentice=$request->on_roll_app;
+                $emp_invest->total_emp=$request->total_emp;
+                $emp_invest->qrr_labor=$request->qrr_on_roll_labor;
+                $emp_invest->qrr_emp=$request->qrr_on_roll_emp;
+                $emp_invest->qrr_contr=$request->qrr_on_roll_cont;
+                $emp_invest->qrr_apprentice=$request->qrr_on_roll_app;
+                $emp_invest->qrr_total_emp=$request->qrr_total_emp;
+
+                $emp_invest->diff_labor=$request->diff_labor;
+                $emp_invest->diff_emp=$request->diff_emp;
+                $emp_invest->diff_cont=$request->diff_con;
+                $emp_invest->diff_app=$request->diff_app;
+                $emp_invest->diff_total_emp=$request->diff_total_emp;
+
+                $emp_invest->difference_labor=$request->difference_labor;
+                $emp_invest->difference_emp=$request->difference_emp;
+                $emp_invest->difference_con=$request->difference_con;
+                $emp_invest->difference_app=$request->difference_app;
+            $emp_invest->save();
+
+            alert()->success('Claim Investment Details Update', 'Success!')->persistent('Close');
+        });
+
+        return redirect()->route('claiminvestmentdetail.edit',$request->claim_id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\ClaimInvestmentDetail  $claimInvestmentDetail
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(ClaimInvestmentDetail $claimInvestmentDetail)
+    {
+        //
+    }
+}

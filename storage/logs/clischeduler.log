@@ -1,0 +1,2337 @@
+
+   Swift_TransportException 
+
+  Expected response code 250 but got code "554", with message "554 5.2.252 SendAsDenied; ifci-portals@ifciltd.com not allowed to send as bdpli@ifciltd.com; STOREDRV.Submission.Exception:SendAsDeniedException.MapiExceptionSendAsDenied; Failed to process message due to a permanent exception with message [BeginDiagnosticData]Cannot submit message. 0.35250:E2320000, 1.36674:01000000, 1.61250:00000000, 1.45378:02000000, 1.44866:00000000, 1.36674:7A000000, 1.61250:00000000, 1.45378:05000000, 1.44866:00140000, 1.36674:0A000000, 1.61250:00000000, 1.45378:16000000, 1.44866:022D0000, 1.36674:0E000000, 1.61250:00000000, 1.45378:1B2D0000, 1.44866:2A030000, 16.55847:6C160000, 17.43559:0000000030020000000000000000000000000000, 20.52176:140FAD94130070201F001336, 20.50032:140FAD948317101032000000, 0.35180:03000136, 255.23226:0A000000, 255.27962:7A000000, 255.27962:0A000000, 255.27962:0E000000, 255.31418:4A000000, 0.35250:4800D13D, 1.36674:0A000000, 1.61250:00000000, 1.45378:02000000, 1.44866:48000000, 1.36674:32000000, 1.61250:00000000, 1.45378:4D000000, 1.44866:01000000, 16.55847:B4000000, 17.43559:00000000C0030000000000002E00000000000000, 20.52176:140FAD94130010106F000000, 20.50032:140FAD94831700002D000000, 0.35180:74000000, 255.23226:0A004366, 255.27962:0A000000, 255.27962:32000000, 255.17082:DC040000, 0.27745:37000000, 4.21921:DC040000, 255.27962:FA000000, 255.1494:3C000000, 0.38698:05000780, 1.41134:46000000, 7.36354:010000000000010B46000000, 0.37692:86000000, 0.44092:01000000, 0.40348:47000100, 0.34608:86000000, 0.55056:01000000, 0.42768:01000000, 0.56112:86000000, 0.52807:A87161B2, 1.41134:46000000, 7.36354:010000000000010932000000, 4.33016:DC040000, 7.40748:010000000000010B31393A42, 7.57132:00000000000000003A396236, 4.39640:DC040000, 1.63016:32000000, 8.45434:D2E98842395506409B8619DBC995C21934353136, 1.46798:04000000, 5.10786:0000000031352E32302E353239332E3031393A424D58505230314D42323332383A39623633333932372D306432612D346335642D393765322D6236376634343166356137313A31383435313600FA10104F000000, 7.51330:9D3279FC5844DA080F010480, 0.39570:B5000000, 1.55954:0A000000, 0.49266:00000000, 1.33010:0A000000, 2.54258:00000000, 0.40002:12000000, 1.56562:00000000, 1.64146:32000000, 1.33010:32000000, 2.54258:DC040000, 255.1750:40000A67, 255.31418:91000000, 0.22753:D3000000, 255.21817:DC040000, 0.64418:96000000, 4.39842:DC040000, 0.41586:0A001580, 4.60547:DC040000, 0.21966:DE000000, 4.30158:DC040000[EndDiagnosticData] [Hostname=BMXPR01MB2328.INDPRD01.PROD.OUTLOOK.COM]
+"
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/AbstractSmtpTransport.php:457
+    453|             $this->eventDispatcher->dispatchEvent($evt, 'responseReceived');
+    454|         }
+    455| 
+    456|         if (!$valid) {
+  > 457|             $this->throwException(new Swift_TransportException('Expected response code '.implode('/', $wanted).' but got code "'.$code.'", with message "'.$response.'"', $code));
+    458|         }
+    459|     }
+    460| 
+    461|     /** Get an entire multi-line response using its sequence number */
+
+      [2m+11 vendor frames [22m
+  12  app/Console/Commands/Bgreminder.php:67
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  27  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Facade\Ignition\Exceptions\ViewException 
+
+  Undefined variable: product (View: /apps/htdocs/plibulkdrugs/resources/views/emails/bg_reminder.blade.php)
+
+  at resources/views/emails/bg_reminder.blade.php:46
+    42|                                 </tr>
+    43|                                 <tr>
+    44|                                     <td
+    45|                                         style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; text-align: justify;">
+  > 46|                                          <p>In reference to your approval under PLI Scheme for Bulk Drugs for eligible product {{$product}}, we are in receipt of Bank Guarantee with following particulars.
+    47|                                         </p>
+    48|                                         <p>
+    49|                                         <table id="t01" style="width: 100%">
+    50|                                             <tr>
+
+  • Possible typo $product: Did you mean `$expiry_dt`? 
+
+  • $product is undefined:  
+
+  1   resources/views/emails/bg_reminder.blade.php:46
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+  2   storage/framework/views/8afcbd97e2a5a77568d194384e97b27d5c5b6c60.php:46
+      ErrorException::("Undefined variable: product")
+
+   Facade\Ignition\Exceptions\ViewException 
+
+  Undefined variable: product (View: /apps/htdocs/plibulkdrugs/resources/views/emails/bg_reminder.blade.php)
+
+  at resources/views/emails/bg_reminder.blade.php:46
+    42|                                 </tr>
+    43|                                 <tr>
+    44|                                     <td
+    45|                                         style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; text-align: justify;">
+  > 46|                                          <p>In reference to your approval under PLI Scheme for Bulk Drugs for eligible product {{$product}}, we are in receipt of Bank Guarantee with following particulars.
+    47|                                         </p>
+    48|                                         <p>
+    49|                                         <table id="t01" style="width: 100%">
+    50|                                             <tr>
+
+  • Possible typo $product: Did you mean `$expiry_dt`? 
+
+  • $product is undefined:  
+
+  1   resources/views/emails/bg_reminder.blade.php:46
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+  2   storage/framework/views/8afcbd97e2a5a77568d194384e97b27d5c5b6c60.php:46
+      ErrorException::("Undefined variable: product")
+
+   Facade\Ignition\Exceptions\ViewException 
+
+  Undefined variable: product (View: /apps/htdocs/plibulkdrugs/resources/views/emails/bg_reminder.blade.php)
+
+  at resources/views/emails/bg_reminder.blade.php:46
+    42|                                 </tr>
+    43|                                 <tr>
+    44|                                     <td
+    45|                                         style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; text-align: justify;">
+  > 46|                                          <p>In reference to your approval under PLI Scheme for Bulk Drugs for eligible product {{$product}}, we are in receipt of Bank Guarantee with following particulars.
+    47|                                         </p>
+    48|                                         <p>
+    49|                                         <table id="t01" style="width: 100%">
+    50|                                             <tr>
+
+  • Possible typo $product: Did you mean `$expiry_dt`? 
+
+  • $product is undefined:  
+
+  1   resources/views/emails/bg_reminder.blade.php:46
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+  2   storage/framework/views/8afcbd97e2a5a77568d194384e97b27d5c5b6c60.php:46
+      ErrorException::("Undefined variable: product")
+
+   Facade\Ignition\Exceptions\ViewException 
+
+  Undefined variable: product (View: /apps/htdocs/plibulkdrugs/resources/views/emails/bg_reminder.blade.php)
+
+  at resources/views/emails/bg_reminder.blade.php:46
+    42|                                 </tr>
+    43|                                 <tr>
+    44|                                     <td
+    45|                                         style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; text-align: justify;">
+  > 46|                                          <p>In reference to your approval under PLI Scheme for Bulk Drugs for eligible product {{$product}}, we are in receipt of Bank Guarantee with following particulars.
+    47|                                         </p>
+    48|                                         <p>
+    49|                                         <table id="t01" style="width: 100%">
+    50|                                             <tr>
+
+  • Possible typo $product: Did you mean `$expiry_dt`? 
+
+  • $product is undefined:  
+
+  1   resources/views/emails/bg_reminder.blade.php:46
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+  2   storage/framework/views/8afcbd97e2a5a77568d194384e97b27d5c5b6c60.php:46
+      ErrorException::("Undefined variable: product")
+
+   Facade\Ignition\Exceptions\ViewException 
+
+  Undefined variable: product (View: /apps/htdocs/plibulkdrugs/resources/views/emails/bg_reminder.blade.php)
+
+  at resources/views/emails/bg_reminder.blade.php:46
+    42|                                 </tr>
+    43|                                 <tr>
+    44|                                     <td
+    45|                                         style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px; text-align: justify;">
+  > 46|                                          <p>In reference to your approval under PLI Scheme for Bulk Drugs for eligible product {{$product}}, we are in receipt of Bank Guarantee with following particulars.
+    47|                                         </p>
+    48|                                         <p>
+    49|                                         <table id="t01" style="width: 100%">
+    50|                                             <tr>
+
+  • Possible typo $product: Did you mean `$expiry_dt`? 
+
+  • $product is undefined:  
+
+  1   resources/views/emails/bg_reminder.blade.php:46
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+  2   storage/framework/views/8afcbd97e2a5a77568d194384e97b27d5c5b6c60.php:46
+      ErrorException::("Undefined variable: product")
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[08006] [7] could not connect to server: No route to host
+	Is the server running on host "10.194.72.178" and accepting
+	TCP/IP connections on port 1494? (SQL: select "bg".* from "bg_trackers" as "bg" where "expiry_dt" between 2022-06-10 11:00:01 and 2022-07-10 11:00:01 and "bg"."submit" = Y and "bg"."bg_status" not in (IN))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:671
+    667|         // If an exception occurs when attempting to run a query, we'll format the error
+    668|         // message to include the bindings with SQL, which will make this exception a
+    669|         // lot more helpful to the developer instead of just the database's errors.
+    670|         catch (Exception $e) {
+  > 671|             throw new QueryException(
+    672|                 $query, $this->prepareBindings($bindings), $e
+    673|             );
+    674|         }
+    675|
+
+      [2m+19 vendor frames [22m
+  20  app/Console/Commands/Bgreminder.php:46
+      Illuminate\Database\Query\Builder::get()
+
+      [2m+14 vendor frames [22m
+  35  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Failed to authenticate on SMTP server with username "ifci-portals@ifciltd.com" using 2 possible authenticators. Authenticator LOGIN returned Expected response code 250 but got code "235", with message "235 2.7.0 Authentication successful
+". Authenticator XOAUTH2 returned Expected response code 250 but got code "503", with message "503 5.5.2 Auth command already specified
+".
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/Esmtp/AuthHandler.php:191
+    187|             $message = 'Failed to authenticate on SMTP server with username "'.$this->username.'" using '.$count.' possible authenticators.';
+    188|             foreach ($errors as $error) {
+    189|                 $message .= ' Authenticator '.$error[0].' returned '.$error[1].'.';
+    190|             }
+  > 191|             throw new Swift_TransportException($message);
+    192|         }
+    193|     }
+    194| 
+    195|     /**
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Failed to authenticate on SMTP server with username "ifci-portals@ifciltd.com" using 2 possible authenticators. Authenticator LOGIN returned Expected response code 235 but got code "535", with message "535 5.7.139 Authentication unsuccessful, the request did not meet the criteria to be authenticated successfully. Contact your administrator. [PN3PR01CA0037.INDPRD01.PROD.OUTLOOK.COM 2024-03-06T05:30:08.267Z 08DC3CBA6D2531E1]
+". Authenticator XOAUTH2 returned Expected response code 235 but got code "535", with message "535 5.7.3 Authentication unsuccessful [PN3PR01CA0037.INDPRD01.PROD.OUTLOOK.COM 2024-03-06T05:30:18.611Z 08DC3CBA6D2531E1]
+".
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/Esmtp/AuthHandler.php:191
+    187|             $message = 'Failed to authenticate on SMTP server with username "'.$this->username.'" using '.$count.' possible authenticators.';
+    188|             foreach ($errors as $error) {
+    189|                 $message .= ' Authenticator '.$error[0].' returned '.$error[1].'.';
+    190|             }
+  > 191|             throw new Swift_TransportException($message);
+    192|         }
+    193|     }
+    194| 
+    195|     /**
+
+      [2m+7 vendor frames [22m
+  8   app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  23  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   ErrorException 
+
+  Trying to get property 'name' of non-object
+
+  at app/Console/Commands/Bgreminder.php:58
+    54|             ->where('bg_trackers.id',$data->id)
+    55|             ->select('a.*', 'bg_trackers.*')
+    56|             ->first();
+    57| 
+  > 58|             $data = array('name'=>$user->name,'product'=>$user->product,'bg_no'=>$user->bg_no, 'bg_amount'=>$user->bg_amount,'bank_name'=>$user->bank_name,'issued_dt'=>$user->issued_dt,'expiry_dt'=>$user->expiry_dt,'email'=>$user->email,'');
+    59| 
+    60|             Mail::send('emails.bg_reminder', $data, function($message) use($data) {
+    61|             $message->to($data['email'],$data['name'])->subject
+    62|             ('BG Roll Over | PLI Scheme for Bulk Drugs | Reminder!');
+
+  1   app/Console/Commands/Bgreminder.php:58
+      Illuminate\Foundation\Bootstrap\HandleExceptions::handleError()
+
+      [2m+14 vendor frames [22m
+  16  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): unable to connect to tcp://smtp.office365.com:587 (Network is unreachable)
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+   ErrorException 
+
+  stream_socket_enable_crypto(): SSL: Handshake timed out
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:94
+    90|         // STREAM_CRYPTO_METHOD_TLS_CLIENT only allow tls1.0 connections (some php versions)
+    91|         // To support modern tls we allow explicit tls1.0, tls1.1, tls1.2
+    92|         // Ssl3 and older are not allowed because they are vulnerable
+    93|         // @TODO make tls arguments configurable
+  > 94|         return stream_socket_enable_crypto($this->stream, true, STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT);
+    95|     }
+    96| 
+    97|     /**
+    98|      * Perform any shutdown logic needed.
+
+      [2m+8 vendor frames [22m
+  9   app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()
+
+      [2m+14 vendor frames [22m
+  24  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Swift_TransportException 
+
+  Connection could not be established with host smtp.office365.com :stream_socket_client(): php_network_getaddresses: getaddrinfo failed: Name or service not known
+
+  at vendor/swiftmailer/swiftmailer/lib/classes/Swift/Transport/StreamBuffer.php:269
+    265|         }
+    266|         $streamContext = stream_context_create($options);
+    267| 
+    268|         set_error_handler(function ($type, $msg) {
+  > 269|             throw new Swift_TransportException('Connection could not be established with host '.$this->params['host'].' :'.$msg);
+    270|         });
+    271|         try {
+    272|             $this->stream = stream_socket_client($host.':'.$this->params['port'], $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $streamContext);
+    273|         } finally {
+
+  1   [internal]:0
+      Swift_Transport_StreamBuffer::{closure}()
+
+      [2m+8 vendor frames [22m
+  10  app/Console/Commands/Bgreminder.php:66
+      Illuminate\Support\Facades\Facade::__callStatic()

@@ -1,0 +1,304 @@
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Error 
+
+  Call to undefined function App\Console\Commands\getCurrentQuarterValue()
+
+  at app/Console/Commands/ParkClaimVariable.php:62
+    58|             $currentFinancialYear = date('Y') . '-' . (date('Y') + 1);
+    59|         }
+    60|         //currentQuarter 
+    61|         $curMonth = date("m", time());
+  > 62|         $currentQuarter = getCurrentQuarterValue($curMonth);
+    63| 
+    64|         $getDataParkClaimVariable = DB::table('park_claimvariable_list')->get();
+    65|         $checkEntryInTable = $getDataParkClaimVariable->where('financial_year', $currentFinancialYear)->where('qtr_id', $currentQuarter)->first();
+    66|
+
+      [2m+14 vendor frames [22m
+  15  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
