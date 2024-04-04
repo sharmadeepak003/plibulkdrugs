@@ -218,14 +218,14 @@
                 </div>
                 <div class="card border-primary">
                     @foreach ($claimUserResponse as $q)
-                   
+                  
                     @if ($q->ques_id == 3)
                         <div class="card-body">
                             <div class="card-body mt-4">
                                 <table class="table table-sm table-bordered table-hover">
                                     <thead>
                                         <tr style="background:white;">
-                                            <th col="9" class="text-left">2.3 Whether there is any sales of
+                                            <th col="9" class="text-left">2.3 Whetherthere is any sales of
                                                 manufactured aligible product to related party as defined under clause 2.29 of scheme guidelines</th>
                                             <input type="hidden" name="ques[3]" value="3">
                                             <td col="3" class="text-center">

@@ -265,6 +265,18 @@
                                
                             </ul>
                         </li>
+
+                        
+@if (AUTH::user()->hasRole('Developer'))
+<li class="nav-item">
+    <a href="{{ route('admin.logs') }}" class="nav-link">
+        <i class="nav-icon fa fa-history"></i>
+        <p>
+            Logs
+        </p>
+    </a>
+</li>
+@endif
 @if (AUTH::user()->hasRole('Admin'))
 
 <li class="nav-item">

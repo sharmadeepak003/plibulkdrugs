@@ -1102,6 +1102,7 @@ class ClaimSalesDetailController extends Controller
 
     public function dvaedit($id)
     {
+        
         try{
             $raw_material = DB::table('claim_dva_key_material')->where('claim_id',$id)->orderby('id')->get();
 
