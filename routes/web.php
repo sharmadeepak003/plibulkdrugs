@@ -96,6 +96,11 @@ Route::group(['middleware' => ['role:Applicant', 'verified', 'TwoFA', 'IsApprove
 });
 
 
+Route::name('admin.')->prefix('admin')->middleware(['role:Developer', 'IsApproved'])->group(function(){
+    Route::get('logs', 'DeveloperController@getErrorLogs')->name('logs');
+ });
+
+
 Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry', 'IsApproved','TwoFA',])->group( function () {
 //for activate QRR [By Ajaharuddin Ansari]
     Route::get('qrr/qrractivedash', 'Admin\QRRController@qrractivedash')->name('qrr.qrractivedash');

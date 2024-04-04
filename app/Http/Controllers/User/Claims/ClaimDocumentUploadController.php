@@ -63,6 +63,7 @@ class ClaimDocumentUploadController extends Controller
             return view('user.claims.document_upload', compact('doc_part', 'apps'));
 
         } elseif ($section == 'B') {
+            
             $stage = ClaimStage::where('claim_id', $id)->where('stages', 8)->first();
             if ($stage) {
                 return redirect()->route('claimdocumentupload.edit', [$stage->claim_id, 'B']);
@@ -225,7 +226,7 @@ class ClaimDocumentUploadController extends Controller
 
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'A']);
         } elseif ($section == 'B') {
-           // dd('B', $request);
+           //dd('B', $request);
             $doc_types = DB::table('document_master')->where('doc_name', 'DocUp')->pluck('doc_type', 'doc_id')->toArray();
             DB::transaction(function () use ($doc_types, $request) {
                 foreach ($doc_types as $docid => $doctype) {
@@ -530,8 +531,9 @@ class ClaimDocumentUploadController extends Controller
             return view('user.claims.documentupload_edit', compact('apps', 'doc_data', 'genral_doc', 'bank_info', 'response'));
 
         } elseif ($section == 'B') {
-           
+            
             $doc_data = DB::table('claim_doc_info_map')->where('claim_id', $apps->claim_id)->where('app_id', $apps->app_id)->where('section', 'B')->get();
+            
             return view('user.claims.uploadsectionB_edit', compact('apps', 'doc_data'));
         } elseif ($section == 'C') {
             
@@ -692,12 +694,15 @@ class ClaimDocumentUploadController extends Controller
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'A']);
 
         } elseif ($section == 'B') {
-
             $doc_types = DB::table('document_master')->where('doc_name', 'DocUp')->pluck('doc_type', 'doc_id')->toArray();
-
+            // dd($doc_types);
+            //  dd($request->upload_doc[0]);
             DB::transaction(function () use ($doc_types, $request) {
                 foreach ($request->upload_doc as $key => $value) {
+                    // dd($request->upload_doc,$key ,$value);
+                   
                     if (array_key_exists('doc', $value)) {
+                      
                         $doc = DocumentUploads::where('app_id', $request->app_id)->where('id', $value['id'])->first();
                         $doc->app_id = $request->app_id;
                         $doc->mime = $value['doc']->getMimeType();

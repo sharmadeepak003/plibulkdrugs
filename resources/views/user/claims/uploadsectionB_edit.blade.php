@@ -52,7 +52,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1012)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"
                                                                     id="income_tx"></td>
@@ -64,7 +64,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1017)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
                                                             <td><a class="btn btn-success btn-sm"
@@ -79,7 +79,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1013)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"
                                                                     id="companies_act"></td>
@@ -94,7 +94,7 @@
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><a class="btn btn-success btn-sm"
                                                                     href="{{ route('doc.down', $doc->upload_id) }}">View</a>
                                                             </td>
@@ -107,7 +107,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1014)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"
                                                                     id="gst_return"></td>
@@ -119,7 +119,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1019)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
                                                             <td><a class="btn btn-success btn-sm"
@@ -134,7 +134,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1015)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
                                                             <td><a class="btn btn-success btn-sm"
@@ -145,7 +145,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1020)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
 
@@ -162,7 +162,7 @@
                                                     @foreach ($doc_data as $key => $doc)
                                                         @if ($doc->doc_id == 1016)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name=upload_doc[{{ $key }}][id]>
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
                                                                     name="upload_doc[{{ $key }}][doc]"></td>
                                                             <td><a class="btn btn-success btn-sm"
@@ -198,13 +198,13 @@
                                                     @foreach ($doc_data as $doc)
                                                         @if ($doc->doc_id == 1021)
                                                             <input type="hidden" value="{{ $doc->upload_id }}"
-                                                                name="upload_doc[{{ $counter2 }}][id]">
+                                                                name="upload_doc[{{ $key }}][id]">
                                                             <td><input type="file"
-                                                                    name="upload_doc[{{ $counter2 }}][doc]"></td>
+                                                                    name="upload_doc[{{ $key }}][doc]"></td>
                                                             <td><a class="btn btn-success btn-sm"
                                                                     href="{{ route('doc.down', $doc->upload_id) }}">View</a>
                                                             </td>
-                                                            @php $counter2++; @endphp
+                                                            @php $key++; @endphp
                                                         @endif
                                                     @endforeach
                                                 </tr>
