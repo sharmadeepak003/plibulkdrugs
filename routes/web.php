@@ -334,6 +334,7 @@ Route::group(['middleware' => ['role:Approved-Applicants|Admin-Ministry|Admin|De
     Route::get('newcorrespondence', 'new_correspondence\RequestController@index')->name('newcorrespondence.index');
     Route::resource('reqcreate', 'new_correspondence\RequestController');
     Route::get('correspondence/usersList/{user_type}', 'new_correspondence\RequestController@usersList');
+    Route::get('correspondence/applicationNumberList/{applicant_id}', 'new_correspondence\RequestController@applicationNumberList');
     Route::get('reqcreate/edit/{id}','new_correspondence\RequestController@edit')->name('reqcreate.edit');
     Route::post('raisecomp', 'new_correspondence\RequestController@raisecomp')->name('raisecomp');
     Route::get('category/{catid}','new_correspondence\RequestSubtypeController@getSubtype');

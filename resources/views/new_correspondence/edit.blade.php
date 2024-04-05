@@ -69,6 +69,13 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <th style="width: 40%" class='pl-4'> App
+                                                                            No
+                                                                        </th>
+                                                                        <td>{{ $req->app_no }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <th style="width: 40%" class='pl-4'> Category
                                                                         </th>
                                                                         <td style="width: 60%">{{ $req->category_desc }}

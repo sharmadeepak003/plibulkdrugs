@@ -11,7 +11,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <form action='{{ route('reqcreate.store') }}' id="reqcreate" role="form" method="post" class='form-horizontal'
+            <form action='{{ route('reqcreate.store') }}' id="reqcreate" role="form" method="post" class='form-horizontal prevent_multiple_submit'
                 files=true enctype='multipart/form-data' accept-charset="utf-8">
                 @csrf
                 {{-- <input type="hidden" id="app_id" name="app_id" value="{{ $apps->id }}">
@@ -34,7 +34,7 @@
                             <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
                                 To </label>
                             <div class="col-lg-9 col-12">
-                                <select class="form-control " name="user_type" id="user_type">
+                                <select class="form-control" name="user_type" id="user_type">
                                     <option value="">Select</option>
                                     @foreach ($valid_roles as $val)
                                         <option value="{{ $val->id }}">{{ $val->name }}</option>
@@ -42,13 +42,39 @@
                                 </select>
                             </div>
                         </div>
-
+                        @if(AUTH::user()->hasRole('Applicant'))
                         <div class="form-group row col-md-8 offset-2 mt-2">
                             <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
                                 User</label>
 
                             <div class="col-lg-9 col-12">
-                                <select class="custom-select" name="request_to" id="userlist" style="height:2.25rem;">
+                                {{-- <select class="custom-select" name="request_to" id="userlist" style="height:2.25rem;"> --}}
+                                <select class="form-control" name="request_to" id="userlist" style="height:2.25rem;">
+                                </select>
+
+                            </div>
+                        </div>
+                        @else
+                        <div class="form-group row col-md-8 offset-2 mt-2">
+                            <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
+                                Applicant List</label>
+
+                            <div class="col-lg-9 col-12">
+                                {{-- <select class="custom-select" name="request_to" id="userlist" style="height:2.25rem;"> --}}
+                                <select class="form-control" name="request_to" id="userlist" style="height:2.25rem;">
+                                </select>
+
+                            </div>
+                        </div>
+
+                        @endif
+
+                        <div class="form-group row col-md-8 offset-2 mt-2">
+                            <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
+                                Application No</label>
+
+                            <div class="col-lg-9 col-12">
+                                <select class="form-control" name="application_number" id="application_number" style="height:2.25rem;">
                                 </select>
 
                             </div>
@@ -71,7 +97,8 @@
                             <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
                                 Sub Category</label>
                             <div class="col-lg-9 col-12">
-                                <select class="custom-select" id="catsubtype" name="catsubtype" style="height:2.25rem;">
+                                {{-- <select class="custom-select" id="catsubtype" name="catsubtype" style="height:2.25rem;"> --}}
+                                <select class="form-control" id="catsubtype" name="catsubtype" style="height:2.25rem;">
                                 </select>
                             </div>
                         </div>
@@ -80,7 +107,8 @@
                             <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
                                 Type Of Request</label>
                             <div class="col-lg-9 col-12">
-                                <select class="custom-select" id="reqtype" name="reqtype" style="height:2.25rem;">
+                                {{-- <select class="custom-select" id="reqtype" name="reqtype" style="height:2.25rem;"> --}}
+                                <select class="form-control" id="reqtype" name="reqtype" style="height:2.25rem;">
                                 </select>
                             </div>
                         </div>
@@ -161,9 +189,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="row pb-2">
-                    <div class="col-md-2 offset-md-5">
-                        <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm submitshareper"
+                <div class="row">
+                    <div class="col-md-2 offset-md-0">
+                        <a href="{{ URL::previous() }}" class="btn btn-warning btn-sm form-control form-control-sm"><em class="fas fa-angle-double-left"></em> Back</a>
+                       
+                    </div>
+                    <div class="col-md-2 offset-md-3">
+                        <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm"
                             id="submitshareper"><i class="fas fa-save"></i>
                             Submit</button>
                     </div>
@@ -290,7 +322,30 @@
         }
     </script>
 
+    <script>
+        $(document).ready(function() {
+            const btn_modal = document.getElementById("submitshareper");
 
+            $('.prevent_multiple_submit').on('submit', function() {
+                $(".prevent_multiple_submit").parent().append(
+                    '<div class="offset-md-4 msg"><span class="text-danger text-sm text-center">Please wait while your request is being processed. &nbsp&nbsp&nbsp<i class="fa fa-spinner fa-spin" style="font-size:24px;color:black"></i></span></div>'
+                    );
+
+              
+                btn_modal.disabled = true;
+                setTimeout(function() {
+                    btn.disabled = false;
+                }, (1000 * 50));
+                setTimeout(function() {
+                    btn_modal.disabled = false;
+                }, (1000 * 50));
+                setTimeout(function() {
+                    $(".msg").hide()
+                }, (1000 * 50));
+            });
+
+        });
+    </script>
 
 
     <script src="{{ asset('js/jsvalidation.min.js') }}"></script>
