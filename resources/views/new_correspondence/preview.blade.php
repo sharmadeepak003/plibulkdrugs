@@ -71,6 +71,12 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <th style="width: 40%" class='pl-4'> App No
+                                                                            </th>
+                                                                            <td>{{ $req->app_no }}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <th style="width: 40%" class='pl-4'> Category
                                                                             </th>
                                                                             <td style="width: 60%">{{ $req->category_desc }}
@@ -94,7 +100,7 @@
                                                                                 Submittion Date
                                                                             </th>
                                                                             <td style="width: 60%">
-                                                                                {{ $req->first_applied_dt }}</td>
+                                                                                {{ Carbon\Carbon::parse($req->first_applied_dt)->format('d-m-Y') }}</td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -160,7 +166,7 @@
                                                                                             class='pl-4'>Submitted On</th>
                                                                                     @endif
                                                                                     <td style="width: 60%">
-                                                                                        {{ $reqDet->created_at }}</td>
+                                                                                        {{ Carbon\Carbon::parse($reqDet->created_at)->format('d-m-Y') }}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <th style="width: 40%" class='pl-4'>
@@ -202,10 +208,14 @@
                     </div>
                 </div>
 
-                <div class="row pb-2">
-                    <div class="col-md-2 offset-md-4">
+                <div class="row">
+                    <div class="col-md-2 offset-md-0">
+                        <a href="{{ URL::previous() }}" class="btn btn-warning btn-sm form-control form-control-sm"><em class="fas fa-angle-double-left"></em> Back</a>
+                       
+                    </div>
+                    <div class="col-md-2 offset-md-2">
                         <a href="javascript:void(0);" onclick="printPage();"
-                            class="btn btn-warning btn-sm form-control form-control-sm">Print<i
+                            class="btn btn-primary btn-sm form-control form-control-sm">Print&nbsp;<i
                                 class="fas fa-print"></i></a>
                     </div>
                     {{-- <div class="col-md-2 ">
@@ -225,6 +235,9 @@
         </div>
     </div>
 @endsection
+
+
 @push('scripts')
+
     @include('user.partials.js.corres_show')
 @endpush

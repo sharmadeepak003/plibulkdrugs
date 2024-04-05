@@ -13,9 +13,10 @@
                 <div class="card-header text-white bg-primary border-primary">
                     <div class="row">
                         <div class="col-md-10">
-                            <h5 class="text-center">Service Requests </h5>
+                            <h5 class="text-center">Service Requests</h5>
                         </div>
-                        @if (AUTH::user()->hasRole('Admin'))
+                        {{-- @if (AUTH::user()->hasRole('Admin')) --}}
+                        @if($hasRole[0] != 'Admin-Ministry')
                         <div class="col-md-2">
                             <a href="{{ route('reqcreate.create') }}"
                                 class="btn btn-warning btn-sm form-control form-control-sm">
@@ -36,6 +37,7 @@
                                             <th style="width: 2%">Sr No</th>
                                             <th style="width: 10%">Initiated By </th>
                                             <th style="width: 15%">Initiates To</th>
+                                            <th style="width: 15%">App No</th>
                                             <th style="width: 10%">Date</th>
                                             <th style="width: 10%">Category</th>
                                             {{-- <th style="width: 20%">Type</th> --}}
@@ -58,8 +60,8 @@
 
                                                 <td>{{ CompanyName($req->user_id) }}</td>
                                                 <td>{{ CompanyName($req->raised_for_user) }}</td>
-
-                                                <td>{{ Carbon\Carbon::parse($req->first_applied_dt)->format('Y-m-d') }}</td>
+                                                <td>{{ $req->app_no }}</td>
+                                                <td>{{ Carbon\Carbon::parse($req->first_applied_dt)->format('d-m-Y') }}</td>
                                                 <td>{{ $req->category_desc }}</td>
                                                 <td>{{ $req->type_desc }}</td>
                                                 {{-- <td>

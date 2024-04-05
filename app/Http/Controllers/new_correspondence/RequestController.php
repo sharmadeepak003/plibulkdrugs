@@ -138,9 +138,6 @@ class RequestController extends Controller
 
     public function create()
     {
-
-         $hasRole = Auth::user()->getRoleNames()->toArray();
-        //  dd($hasRole);
         $hasRole = Auth::user()->getRoleNames()->toArray();
     //    dd($hasRole);
         if($hasRole[0] == 'Admin-Meity' ){
@@ -192,15 +189,49 @@ class RequestController extends Controller
         return json_encode($users);
     }
 
+    public function applicationNumberList($app_id)
+    {
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        $getApplicatId = Auth::user()->id;
+        if($hasRole[0] == 'Admin')
+        {
+            $applicant_id = $app_id;
+            $applicantData = DB::table('users as u')
+            ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
+            ->where('aa.created_by',$applicant_id)
+            ->where('aa.status','S')
+            ->whereRaw('is_normal_user(u.id) = 1')
+            ->select('aa.id','aa.app_no')
+            ->get();
+        }
+        else
+        {
+            
+            $applicant_id = $getApplicatId;
+            $applicantData = DB::table('users as u')
+            ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
+            ->where('aa.created_by',$applicant_id)
+            ->where('aa.status','S')
+            ->select('aa.id','aa.app_no')
+            ->get();
+        }
+         
+       
+        
+    //dd($applicantData, $getApplicatId);
+        return json_encode($applicantData);
+    }
+
+
     public function store(Request $request)
     {
-        // dd($request);
+       
 
          $hasRole = Auth::user()->getRoleNames()->toArray();
-
+            
          $role = DB::table('model_has_roles')->join('roles','roles.id','model_has_roles.role_id')
          ->where('model_has_roles.model_id', $request->request_to)->first();
-
+//dd($request,$hasRole[0], $request->request_to, $role->name, Auth::user()->id);
         //  dd( $role);
      DB::transaction(function() use ($request ,$hasRole,$role){
          $files = $request->file('reqdoc');
@@ -208,6 +239,7 @@ class RequestController extends Controller
         $reqHd = new RequestHd;
         $reqHd->user_id = Auth::user()->id;
         $reqHd->raised_for_user = $request->request_to;
+        $reqHd->app_no = $request->application_number;
         $reqHd->first_applied_dt=Carbon::now();
         $reqHd->cat_id=$request->related_to;
         $reqHd->raise_by_role=$hasRole[0];
