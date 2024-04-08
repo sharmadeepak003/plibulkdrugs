@@ -216,9 +216,6 @@ class RequestController extends Controller
             ->get();
         }
          
-       
-        
-    //dd($applicantData, $getApplicatId);
         return json_encode($applicantData);
     }
 
