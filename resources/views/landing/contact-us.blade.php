@@ -29,7 +29,7 @@
                                 <br><br>Enquiry Mail : bdpli[at]ifciltd[dot]com
                             </p>
                             <b>For General support kindly contact on:</b>
-                            <p class="ml-3"><i class="fas fa-user mr-3"></i> Contact Person Name : Shivam Kumar </p>
+                            <p class="ml-3"><i class="fas fa-user mr-3"></i> Contact Person : Shivam Kumar </p>
                             <p class="ml-3" style="margin-top:-10px;"><i class="fas fa-phone mr-3"></i> Phone : +91 9643590975 </p>
                             <p class="ml-3" style="margin-top:-10px;"><i class="fas fa-envelope mr-3"></i> Email : shivam[dot]kumar[at]ifciltd[dot]com </p>
                             <br>

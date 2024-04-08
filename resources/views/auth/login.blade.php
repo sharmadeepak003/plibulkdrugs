@@ -105,8 +105,7 @@ Login - PLI Bulk Drugs
                                     {{-- <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please use a strong password to protect your account like Is at least 8 characters long, Contains at least one lowercase letter, Contains at least one uppercase letter, Contains at least one digit and Contains at least one special character from
                                         @$!%*?&
                                     </li> --}}
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i><span class="text-danger"> Password should be</span> at least 8 character long, should contains one lowercase letter, one uppercase letter, one number and one
-                                        special character from @$!%*?&
+                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i><span class="text-danger"> Password should be</span> at least 8 characters long, including one lowercase letter, one uppercase letter, one number, and one special character from @$!%*?&
                                     </li>
                                     <li class="list-group-item"><i class="fas fa-chevron-right"></i> <span class="text-danger">DO NOT</span> provide your
                                         username and password
