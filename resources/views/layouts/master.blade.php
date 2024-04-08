@@ -202,6 +202,11 @@
                             <p>General support kindly contact on:</p>
                             <p class="ml-3"><i class="fas fa-home mr-3"></i> IFCI Tower, 61, Nehru Place, New Delhi </p>
                             <p class="ml-3"><i class="fas fa-envelope mr-3"></i> bdpli[at]ifciltd[dot]com</p>
+
+                            <p class="ml-3"><i class="fas fa-user mr-3"></i> Contact Person : Shivam Kumar </p>
+                            <p class="ml-3"><i class="fas fa-phone mr-3"></i> Phone : +91 9643590975 </p>
+                            <p class="ml-3"><i class="fas fa-envelope mr-3"></i> Email : shivam[dot]kumar[at]ifciltd[dot]com </p>
+
                             <p>For technical support kindly contact on:</p>
                             <p class="ml-3"><i class="fas fa-envelope mr-3"></i> Email : advisory[dot]support[at]ifciltd[dot]com</p>
                             <p class="ml-3"><i class="fas fa-phone mr-3"></i> Phone : + 91 11 2623 0203  &nbsp;&nbsp;<b>[Only Office Hours]</b></p>

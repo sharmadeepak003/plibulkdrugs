@@ -92,17 +92,20 @@ Login - PLI Bulk Drugs
 
             </div>
             <div class="col-md-5 col-lg-5 offset-1">
-                <div class="row">
+                <div class="row" style="width: 120%;">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header bg-info instr-card-header">
                                 <b>Important Instructions</b>
                             </div>
                             <div class="card-body instr-card-body">
-                                <ul class="list-group">
+                                <ul class="list-group" style="background-color: #000; font-size:13px; font-weight:600;height: 358px;">
                                     <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please arrange for all the information before filling
                                         application</li>
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please use a strong password to protect your account
+                                    {{-- <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please use a strong password to protect your account like Is at least 8 characters long, Contains at least one lowercase letter, Contains at least one uppercase letter, Contains at least one digit and Contains at least one special character from
+                                        @$!%*?&
+                                    </li> --}}
+                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i><span class="text-danger"> Password should be</span> at least 8 characters long, including one lowercase letter, one uppercase letter, one number, and one special character from @$!%*?&
                                     </li>
                                     <li class="list-group-item"><i class="fas fa-chevron-right"></i> <span class="text-danger">DO NOT</span> provide your
                                         username and password
