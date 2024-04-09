@@ -152,12 +152,12 @@
                             <em class="fas fa-save"></em>Save as Draft
                         </button>
                     </div>
-                    {{-- <div class="col-md-2 offset-md-3">
+                    <div class="col-md-2 offset-md-3">
                         <a href="{{ route('claims.submit', $apps->claim_id) }}" id="finalSubmit"
                             class="btn btn-primary btn-sm form-control form-control-sm">
                             Final Submit <i class="fas fa-save"></i>
                         </a>
-                    </div> --}}
+                    </div>
                 </div>
             </form>
         </div>
