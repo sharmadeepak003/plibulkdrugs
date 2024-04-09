@@ -2923,9 +2923,9 @@
                 </div>
              </div>
             </div>
-            {{-- <div id="">
+            <div id="">
                 <span style="float: right;" id="tx">{{Carbon\Carbon::now()}} &nbsp;@if($claimMast->status == 'D') Draft @else Submitted @endif</span>
-            </div> --}}
+            </div>
          </div>
 
         </div>

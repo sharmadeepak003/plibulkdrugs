@@ -74,7 +74,6 @@
 
         <nav class="navbar navbar-expand-lg">
             <div class="navbar-header">
-
                 <button type="button" data-target="#navbarCollapse" data-toggle="collapse"
                     class="navbar-toggle navbar-toggler ml-auto">
                     <span class="navbar-toggler-icon"></span>
@@ -164,9 +163,9 @@
         <!--footer-main-->
         <footer class="footer-main">
             <div class="footer-top">
-                <div class="container text-center text-md-left mt-2">
+                <div class="container-fluid text-md-left mt-2">
                     <div class="row">
-                        <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-2">
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-3">
                             <h6 class="text-uppercase font-weight-bold">IFCI Ltd.</h6>
                             <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
                             <p>
@@ -181,36 +180,35 @@
 
                         </div>
 
-                        <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4 text-center">
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-2">
                             <h6 class="text-uppercase font-weight-bold">Useful links</h6>
-                            <hr class="deep-purple accent-2 mb-2 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                            <p>
-                                <a href="https://www.ifciltd.com/?q=en/content/what-we-are">About Us</a>
-                            </p>
-                            <p>
-                                <a href="./guidelines">Schemes & Guidelines</a>
-                            </p>
-
-                            <p>
-                                <a href="./contact-us">Contact Us</a>
-                            </p>
+                            <hr class="deep-purple accent-2 mb-2 mt-0 d-inline-block mx-auto">
+                            <p><a href="https://www.ifciltd.com/?q=en/content/what-we-are">About Us</a></p>
+                            <p><a href="./guidelines">Schemes & Guidelines</a></p>
+                            <p><a href="./contact-us">Contact Us</a></p>
                         </div>
-                        <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-md-0 mb-1">
+
+
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-3">
                             <!-- Links -->
                             <h6 class="text-uppercase font-weight-bold">Contact</h6>
-                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+                            <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto">
                             <p>General support kindly contact on:</p>
-                            <p class="ml-3"><i class="fas fa-home mr-3"></i> IFCI Tower, 61, Nehru Place, New Delhi </p>
-                            <p class="ml-3"><i class="fas fa-envelope mr-3"></i> bdpli[at]ifciltd[dot]com</p>
-
                             <p class="ml-3"><i class="fas fa-user mr-3"></i> Contact Person : Shivam Kumar </p>
                             <p class="ml-3"><i class="fas fa-phone mr-3"></i> Phone : +91 9643590975 </p>
                             <p class="ml-3"><i class="fas fa-envelope mr-3"></i> Email : shivam[dot]kumar[at]ifciltd[dot]com </p>
+                            
+                            <p class="ml-3"><i class="fas fa-home mr-3"></i> IFCI Tower, 61, Nehru Place, New Delhi </p>
+                            <p class="ml-3"><i class="fas fa-envelope mr-3"></i> bdpli[at]ifciltd[dot]com</p>
+                        </div>
 
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-1">
+                           
+                            <h6 class="text-uppercase font-weight-bold">TECHNICAL CONTACT</h6>
+                            <div style="height: 30px; clear:both;"></div>
                             <p>For technical support kindly contact on:</p>
                             <p class="ml-3"><i class="fas fa-envelope mr-3"></i> Email : advisory[dot]support[at]ifciltd[dot]com</p>
-                            <p class="ml-3"><i class="fas fa-phone mr-3"></i> Phone : + 91 11 2623 0203  &nbsp;&nbsp;<b>[Only Office Hours]</b></p>
-                           
+                            <p class="ml-3"><i class="fas fa-phone mr-3"></i> Phone : + 91 9870200156 , + 91 11 2623 0203  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>[Only Office Hours]</b></p>
                         </div>
                     </div>
                 </div>

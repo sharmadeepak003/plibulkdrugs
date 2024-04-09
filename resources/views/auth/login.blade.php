@@ -99,24 +99,24 @@ Login - PLI Bulk Drugs
                                 <b>Important Instructions</b>
                             </div>
                             <div class="card-body instr-card-body">
-                                <ul class="list-group" style="background-color: #000; font-size:13px; font-weight:600;height: 358px;">
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please arrange for all the information before filling
+                                <ul class="list-group" style="background-color: #000; font-size:13px; height: 358px;">
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> Please arrange for all the information before filling
                                         application</li>
                                     {{-- <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please use a strong password to protect your account like Is at least 8 characters long, Contains at least one lowercase letter, Contains at least one uppercase letter, Contains at least one digit and Contains at least one special character from
                                         @$!%*?&
                                     </li> --}}
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i><span class="text-danger"> Password should be</span> at least 8 characters long, including one lowercase letter, one uppercase letter, one number, and one special character from @$!%*?&
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i><span class="text-danger"> Password should be</span> at least 8 characters long, including one lowercase letter, one uppercase letter, one number, and one special character from @$!%*?&
                                     </li>
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i> <span class="text-danger">DO NOT</span> provide your
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> <span class="text-danger">DO NOT</span> provide your
                                         username and password
                                         anywhere other than in this page</li>
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i> Your username and password are highly confidential.
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> Your username and password are highly confidential.
                                         <span class="text-danger">NEVER</span>
                                         part with them. IFCI will never ask for this information</li>
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i> <span class="text-danger">ALWAYS</span> visit the portal
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> <span class="text-danger">ALWAYS</span> visit the portal
                                         directly instead of
                                         clicking on the links provided in emails or third party websites</li>
-                                    <li class="list-group-item"><i class="fas fa-chevron-right"></i>
+                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i>
                                         <span class="text-danger">NEVER</span> respond to any popup,email, SMS or
                                         phone call, no matter how appealing or official looking, seeking your
                                         personal information such as username, password(s), mobile number, etc.
