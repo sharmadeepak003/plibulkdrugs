@@ -106,6 +106,11 @@
                             Scheme & Guidelines
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('brochure_doc',[0]) }}">
+                            Product Brochure
+                        </a>
+                    </li>
                     {{-- @if(Carbon\Carbon::now()->lt(Carbon\Carbon::parse('2022-03-13 23:59:00')))  --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('register') }}">

@@ -152,6 +152,14 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('app_brochure.index') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-file text-info"></i>
+                                    <p>
+                                        Product Brochures
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('grievance.index') }}" class="nav-link active">
                                     <i class="nav-icon fas fa fa-cogs"></i>
                                     <p>
