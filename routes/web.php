@@ -16,6 +16,16 @@ Route::get('/copyright-policy', function () {return view('landing.copyright-poli
 Route::get('/privacy-policy', function () {return view('landing.privacy-policy');})->name('privacy-policy');
 Route::get('/hyperlink-policy', function () {return view('landing.hyperlink-policy');})->name('hyperlink-policy');
 
+// below code for product brochure on the front page 10042024
+Route::get('/brochure_doc/{tar_seg_id}', 'LandingController@companyProductDoc')->name('brochure_doc');
+Route::post('/brochure', 'LandingController@compProdDocument')->name('brochure');
+Route::get('/brochure_product/{company_id}', 'LandingController@brochureProduct')->name('brochureProduct');
+Route::get('/brochure_download_doc/{id}', 'LandingController@brochureDownloadDoc')->name('brochure_download_doc');
+Route::get('/brochure_company/{company_id}', 'LandingController@brochureCompany')->name('brochureCompany');
+Route::get('/brochure_download_doc/{id}', 'LandingController@brochureDownloadDoc')->name('brochure_download_doc');
+Route::get('/other_brochure_dow_doc/{id}', 'LandingController@otherBrochureDownloadDoc')->name('other_brochure_dow_doc');
+
+
 Auth::routes(['verify' => true]);
 Auth::routes(['register' => false]);
 
@@ -184,9 +194,12 @@ Route::get('qrr/exportall/{qtr}/{type}', 'Admin\QRRController@qrrExportAll')->na
     Route::get('prayas/getdata','Admin\PrayasController@getdata')->name('prayas.getdata');
     Route::post('prayas/data','Admin\PrayasController@data')->name('prayas.data');
     Route::post('prayas/excel_data','Admin\PrayasController@excel_data')->name('prayas.excel_data');
-    Route::get('prayas/dash/{qtr}/{project_code}','Admin\PrayasController@dash')->name('prayas.dash');
+    Route::get('prayas/dash/{qtr}/{project_code}/{fy}','Admin\PrayasController@dash')->name('prayas.dash');
     Route::get('prayas/fixdata/{qtr}/{project_code}/{date}','Admin\PrayasController@fixdata')->name('prayas.fixdata');
     Route::get('prayas/pushdata/{project_code}/{date}','Admin\PrayasController@finalpushdata')->name('prayas.pushdata');
+
+    Route::get('prayas/download/excelformat','Admin\PrayasController@downloadexcelformat')->name('prayas.download.excelformat');
+    Route::post('prayas/excel/data', 'Admin\PrayasController@insertPrayasExcel')->name('prayas.excel.data');
 //Claim
     Route::get('claim', 'Admin\ClaimController@claimdashboard')->name('claim.claimdashboard');
 
@@ -229,14 +242,21 @@ Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 've
     Route::get('qrradditionalinfo/create/{id}/{qrrid}','User\QRR\QrrAdditionalInfoController@create')->name('qrradditionalinfo.create');
     Route::resource('qrradditionalinfo', 'User\QRR\QrrAdditionalInfoController', ['except' => 'create']);
     Route::get('qrradditionalinfo/deleteapproval/{id}','User\QRR\QrrAdditionalInfoController@deleteapproval')->name('qrradditionalinfo.deleteapproval');
-Route::resource('grievance', 'User\Grievance\GrievanceController');
-
-
-
-   
+    Route::resource('grievance', 'User\Grievance\GrievanceController');
 
 
  });
+
+ // Belwo code for Product Brochure 10042024
+ Route::group(['middleware' => ['role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
+    Route::resource('app_brochure', 'User\BrochureDocumentController',['except' => 'create']);
+    Route::get('app_brochure/brochure_list/{id}', 'User\BrochureDocumentController@brochureList')->name('app_brochure.brochure_list');
+    Route::get('app_brochure/bro_down/{id}', 'User\BrochureDocumentController@brochourDownload')->name('app_brochure.bro_down');
+    Route::get('app_brochure/other_broch_down/{id}', 'User\BrochureDocumentController@brochourOtherDocDownload')->name('app_brochure.other_broch_down');
+    Route::get('app_brochure/delete/{id}/{app_id}', 'User\BrochureDocumentController@brochureDestroy')->name('app_brochure.delete');
+	Route::get('app_brochure/edit_document_listing/{app_id}/{id}','User\BrochureDocumentController@editDocumentListing')->name('app_brochure.edit_document_listing');
+ });
+//  End Code 
 
  Route::group(['middleware' => ['role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
     
@@ -387,6 +407,20 @@ Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry|A
      Route::get('parkclaimvariable/finalsubmit/{id}','Admin\Mail\ParkClaimVariableController@finalsubmit')->name('parkclaimvariable.finalsubmit');
      Route::get('parkclaimvariable/view/{id}', 'Admin\Mail\ParkClaimVariableController@view')->name('parkclaimvariable.view');
      // End are the Park Claim Variable routes by Deepak Sharma
+
+
+     // admin product bruchure 10042024
+
+     Route::get('admin_brochure/create/{id}', 'Admin\BrochureAdminDocumentController@create')->name('admin_brochure.create');
+    Route::get('admin_brochure/brochure_list/{id}', 'Admin\BrochureAdminDocumentController@brochureList')->name('admin_brochure.brochure_list');
+    Route::get('admin_brochure/bro_down/{id}', 'Admin\BrochureAdminDocumentController@brochourDownload')->name('admin_brochure.bro_down');
+    Route::get('admin_brochure/delete/{id}/{app_id}', 'Admin\BrochureAdminDocumentController@brochureDestroy')->name('admin_brochure.delete');
+    Route::resource('admin_brochure', 'Admin\BrochureAdminDocumentController',['except' => 'create','destroy']);
+
+    Route::get('admin_brochure/edit_document_listing/{app_id}/{id}','Admin\BrochureAdminDocumentController@editDocumentListing')->name('admin_brochure.edit_document_listing');
+    Route::get('admin_brochure/other_broch_down/{id}', 'Admin\BrochureAdminDocumentController@brochourOtherDocDownload')->name('admin_brochure.other_broch_down');
+    Route::get('applicant_brochure/bro_down/{id}', 'Admin\BrochureAdminDocumentController@appBrochourDownload')->name('applicant_brochure.bro_down');
+    Route::get('applicant_brochure/other_broch_down/{id}', 'Admin\BrochureAdminDocumentController@appBrochourOtherDocDownload')->name('applicant_brochure.other_broch_down');
 
 });
 

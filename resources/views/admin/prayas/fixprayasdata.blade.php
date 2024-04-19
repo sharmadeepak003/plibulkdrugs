@@ -153,6 +153,29 @@ Quarterly Review Report Summary
                                     </tr>
                                     @endforeach
                                 </tbody>
+                                <tr>
+                                    <td colspan="4" style="text-align: center;"><b>Total</b></td>
+
+                                    <td class="text-right">
+                                        {{ empty($detail) ? 'N/A' : $detail->sum('estimated_investement') }}</td>
+                                    <td class="text-right">
+                                        {{ empty($detail) ? 'N/A' : $detail->sum('actual_investemen') }}</td>
+                                    <td class="text-right">{{ empty($detail) ? 'N/A' : $detail->sum('estimated_sales') }}
+                                    </td>
+                                    <td class="text-right">{{ empty($detail) ? 'N/A' : $detail->sum('actual_sales') }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ empty($detail) ? 'N/A' : $detail->sum('estimated_exports') }}</td>
+                                    <td class="text-right">{{ empty($detail) ? 'N/A' : $detail->sum('actual_exports') }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ empty($detail) ? 'N/A' : $detail->sum('estimated_employment') }}</td>
+                                    <td class="text-right">
+                                        {{ empty($detail) ? 'N/A' : $detail->sum('actual_employment') }}</td>
+                                    <td class="text-right">{{ empty($detail) ? 'N/A' : $detail->sum('estimated_dva') }}
+                                    </td>
+                                    <td class="text-right">{{ empty($detail) ? 'N/A' : $detail->sum('actual_dva') }}</td>
+                                </tr>
                             </table>
                         </div>
 

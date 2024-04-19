@@ -266,6 +266,15 @@
                             </ul>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('admin.admin_brochure.index') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-file text-info"></i>
+                                <p>
+                                    Product Brochures
+                                </p>
+                            </a>
+                        </li>
+
                         
 @if (AUTH::user()->hasRole('Developer'))
 <li class="nav-item">
