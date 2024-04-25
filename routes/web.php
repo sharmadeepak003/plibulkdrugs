@@ -261,6 +261,8 @@ Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 've
  Route::group(['middleware' => ['role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
     
     Route::resource('claims', 'User\Claims\ClaimController');
+     // claimincentivestatus 23042024
+     Route::get('claimincentivestatus/{claimId}','User\Claims\CLaimController@claimincentivestatus')->name('claims.claimincentivestatus');
     // Route::get('claims/create/{id}','User\Claims\ClaimController@create')->name('claims.create');
 
 Route::get('claims/create/{id}/{fy}','User\Claims\ClaimController@create')->name('claims.create');
@@ -312,7 +314,7 @@ Route::get('claimdocumentupload/incentiveDoc/{id}', 'User\Claims\ClaimDocumentUp
 
  });
  
- Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry|Applicant','IsApproved'])->group( function () {
+ Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Developer|Admin-Ministry|Applicant','IsApproved'])->group( function () {
     Route::get('authorize_signatory_list', 'AuthorisedSignatory\AuthorizeSignatoryRequestController@authorizeSignatoryList')->name('authorizeSignatoryList');
     Route::get('authorizechangelist', 'AuthorisedSignatory\AuthorizeSignatoryRequestController@authorizeChangeList')->name('users.authorizeSignatoryList');
     Route::get('authorizechangedetail/{id}', 'AuthorisedSignatory\AuthorizeSignatoryRequestController@authorizeChangeDetail')->name('users.authorizechagedetail');
@@ -331,6 +333,10 @@ Route::get('claims/incentive/{fy}', 'Admin\ClaimIncentiveController@claimIncenti
     Route::get('claims/correspondanceEdit/{claim_id}','Admin\ClaimIncentiveController@editCorrespondance')->name('claims.correspondanceEdit');
     Route::patch('claims/updateCorres/{claim_id}', 'Admin\ClaimIncentiveController@updateCorres')->name('claims.updateCorres');
 Route::get('claims/correspondanceView/{claim_id}','Admin\ClaimIncentiveController@correspondanceView')->name('claims.correspondanceView');
+
+//24042024 by azeem
+Route::get('correspondence/ClaimNumberList/{user_type}', 'new_correspondence\RequestController@ClaimNumberList');
+Route::get('/correspondence_filter', 'new_correspondence\RequestController@corres_filter_data')->name('correspondence_filter');
 
 Route::get('grievances/list', 'Admin\Grievances\GrievancesController@index')->name('grievances_list');
 Route::get('grievances/respond/{id}', 'Admin\Grievances\GrievancesController@respond')->name('grievances_respond');
@@ -362,6 +368,9 @@ Route::group(['middleware' => ['role:Approved-Applicants|Admin-Ministry|Admin|De
     Route::get('req_download/{id}', 'new_correspondence\RequestController@reqDownload')->name('req_download');
     Route::get('checksts/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscheck')->name('checksts');
     Route::get('visiblecom/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscm')->name('visiblecom');
+     
+    //242042024 by azeem
+    Route::get('claimcorrespondence/{claim_id}', 'new_correspondence\RequestController@claimcorrespondence')->name('claimcorrespondence');
 });
 
 Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry|Applicant','IsApproved'])->group( function () {

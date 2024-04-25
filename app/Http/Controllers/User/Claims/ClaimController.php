@@ -90,7 +90,9 @@ class ClaimController extends Controller
                 ->leftjoin('claims_masters', 'approved_apps_details.id', 'claims_masters.app_id')
                 ->where('user_id', Auth::user()->id)
                 //->where('claims_masters.fy',$id)
-                ->select('approved_apps_details.id as application_id', 'approved_apps_details.*', 'claims_masters.*')->get();
+                ->select('approved_apps_details.id as application_id', 'approved_apps_details.*', 'claims_masters.*')
+                ->distinct('approved_apps_details.app_no')
+                ->get();
            
 
             $claimMaster = DB::table('claims_masters')
@@ -449,6 +451,16 @@ class ClaimController extends Controller
             return redirect()->back();
         }
 
+    }
+
+
+    public function claimincentivestatus(Request $request, $claimId)
+    {
+        
+        $getClaimIncentiveData =  DB::table('admin_claim_incentive')->where('claim_id',$claimId)->where('claim_status','=','S')->get();
+
+        return view('user.claims.claimincentivestatus', compact('getClaimIncentiveData'));
+        dd($claimId, $getClaimIncentiveData);
     }
 
 

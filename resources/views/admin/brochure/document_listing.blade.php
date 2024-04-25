@@ -18,7 +18,8 @@ Brochure - Document
     <div class="col-md-0 offset-md-1">
         <span  style="color:#DC3545;font-size:15px"> <b> Application Name : </b> </span>
     </div>
-    <div class="col-md-0" style="font-size:15px">{{$apps->user->name}}</div>
+    {{-- <div class="col-md-0" style="font-size:15px">{{$apps->user->name}}</div> --}}
+    <div class="col-md-0" style="font-size:15px">{{$getUserName->name}}</div>
 </div>
 <div class="row">
     <div class="col-md-0 offset-md-1">

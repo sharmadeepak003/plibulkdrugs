@@ -48,7 +48,7 @@
                                 User</label>
 
                             <div class="col-lg-9 col-12">
-                                {{-- <select class="custom-select" name="request_to" id="userlist" style="height:2.25rem;"> --}}
+                            
                                 <select class="form-control" name="request_to" id="userlist" style="height:2.25rem;">
                                 </select>
 
@@ -60,7 +60,6 @@
                                 Applicant List</label>
 
                             <div class="col-lg-9 col-12">
-                                {{-- <select class="custom-select" name="request_to" id="userlist" style="height:2.25rem;"> --}}
                                 <select class="form-control" name="request_to" id="userlist" style="height:2.25rem;">
                                 </select>
 
@@ -91,6 +90,16 @@
                                         <option value="{{ $moduleRow->id }}">{{ $moduleRow->category_desc }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group row col-md-8 offset-2 mt-2" style="display: none" id="claim_show_dv">
+                            <label class="col-form-label text-lg-left text-left col-lg-3 col-12 col-form-label-sm ">
+                                Claim No.</label>
+
+                            <div class="col-lg-9 col-12">
+                                <select class="form-control" name="claim_no" id="claim_no" style="height:2.25rem;">
+                                </select>
+
                             </div>
                         </div>
                         <div class="form-group row col-md-8 offset-2 mt-2">
@@ -205,147 +214,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            $(document).on("change", "#category", function() {
-                // dd('pk1');
-                var category = $(this).val();
-                //    alert('/category/' + category);
-                if (category) {
-                    $.ajax({
-                        url: '/category/' + category,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            // alert(category);
-                            if (category == 3) {
-                                $("#compNmLabel").show();
-                                $("#company_nm").show();
-                                $("#pan").hide();
-                                $("#panLabel").hide();
-                                $("#dp_folio").hide();
-                                $("#dpLabel").hide();
-                                $("#emp_id").hide();
-                                $("#empIdLabel").hide()
-                                $("#desig").hide();
-                                $("#desigLabel").hide();
-                            } else {
-                                if (category == 4) {
-                                    $("#emp_id").show();
-                                    $("#empIdLabel").show();
-                                    $("#desig").show();
-                                    $("#desigLabel").show();
-                                    $("#pan").hide();
-                                    $("#panLabel").hide();
-                                    $("#dp_folio").hide();
-                                    $("#dpLabel").hide();
-                                    $("#compNmLabel").hide();
-                                    $("#company_nm").hide();
-                                } else {
-                                    $("#emp_id").hide();
-                                    $("#empIdLabel").hide();
-                                    $("#desig").hide();
-                                    $("#desigLabel").hide();
-                                    $("#compNmLabel").hide();
-                                    $("#company_nm").hide();
-                                    $("#pan").show();
-                                    $("#panLabel").show();
-                                    $("#dp_folio").show();
-                                    $("#dpLabel").show();
-                                }
-                            }
-                            $('#catsubtype').empty();
-                            $('#catsubtype').append(
-                                '<option value="">Please Choose..</option>');
-                            $.each(data, function(key, value) {
-                                $('#catsubtype').append(
-                                    '<option value="' + value + '">' + key +
-                                    '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#catsubtype').empty();
-                }
 
-                $(document).on("change", "#catsubtype", function() {
-                    // dd('pk1');
-                    var catsubtype = $(this).val();
-                    // alert(catsubtype);
-                    if (category) {
-                        $.ajax({
-                            url: '/reqtype/' + category + '/' + catsubtype,
-                            type: "GET",
-                            dataType: "json",
-                            success: function(data) {
-                                // alert(category);
-                                $('#reqtype').empty();
-                                $('#reqtype').append(
-                                    '<option value="">Please Choose..</option>');
-                                $.each(data, function(key, value) {
-                                    $('#reqtype').append(
-                                        '<option value="' + value + '">' +
-                                        key +
-                                        '</option>');
-                                });
-                            }
-                        });
-                    } else {
-                        $('#reqtype').empty();
-                    }
-                });
-            });
-        });
-
-
-        var i = 0;
-        $("#add").click(function() {
-            ++i;
-            $("#dynamicTable").append(
-                '<div class="row pb-2"><div class="col-md-8 "><div class="form"><input type="file" name="reqdoc[]" class="form-control" multiple></div></div><div class="col-md-2"><div class="form"><button type="button" class="btn btn-danger remove-tr"><i class="fa fa-minus"></i></button></div></div></div>'
-            );
-        });
-        $(document).on('click', '.remove-tr', function() {
-            $(this).closest(".row").remove();
-        });
-    </script>
-    <script>
-        updateList = function() {
-            var input = document.getElementById('file');
-            var output = document.getElementById('fileList');
-
-            output.innerHTML = '<ul>';
-            for (var i = 0; i < input.files.length; ++i) {
-                output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
-            }
-            output.innerHTML += '</ul>';
-        }
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            const btn_modal = document.getElementById("submitshareper");
-
-            $('.prevent_multiple_submit').on('submit', function() {
-                $(".prevent_multiple_submit").parent().append(
-                    '<div class="offset-md-4 msg"><span class="text-danger text-sm text-center">Please wait while your request is being processed. &nbsp&nbsp&nbsp<i class="fa fa-spinner fa-spin" style="font-size:24px;color:black"></i></span></div>'
-                    );
-
-              
-                btn_modal.disabled = true;
-                setTimeout(function() {
-                    btn.disabled = false;
-                }, (1000 * 50));
-                setTimeout(function() {
-                    btn_modal.disabled = false;
-                }, (1000 * 50));
-                setTimeout(function() {
-                    $(".msg").hide()
-                }, (1000 * 50));
-            });
-
-        });
-    </script>
 
 
     <script src="{{ asset('js/jsvalidation.min.js') }}"></script>

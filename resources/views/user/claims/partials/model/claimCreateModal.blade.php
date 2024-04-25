@@ -31,6 +31,7 @@
                                         </tr> --}}
                                         <tr class="table-primary">
                                             <th class="text-center" >Sr No</th>
+                                            <th class="text-center">Product Name</th>
                                             <th class="text-center" style="width: 30%">Target Segment</th>
                                             <th class="text-center" >Application No</th>
                                             <th class="text-center" >Action</th>
@@ -41,6 +42,7 @@
                                         @foreach ($apps as $key=>$app)
                                             <tr>
                                                 <td class="text-center">{{ $key + 1 }}</td>
+                                                <td class="text-center">{{ $app->product}}</td>
                                                 <td class="text-center">{{ $app->target_segment }}</td>
                                                 <td class="text-center">{{$app->app_no}}</td>  
                                                 <td>

@@ -44,19 +44,29 @@ class BrochureAdminDocumentController extends Controller
     public function brochureList($id)
     {
         //dd($id);
-        $appMast = DB::table("approved_apps")->where('id', $id)->first();
-        if($appMast->round==1)
-        {
-            $apps = ApplicationMastRound1::where('id', $id)->where('status', 'S')->first();
-        }
-        else{
-            $apps = ApplicationMast::where('id', $id)->where('status', 'S')->first();
-        }
-        if (!$apps) {
-            alert()->error('Applicant Not Submitted!', 'Attention!')->persistent('Close');
-            return redirect()->route('adminshared.apps.dash');
-        }
+        // $appMast = DB::table("approved_apps")->where('id', $id)->first();
+        // if($appMast->round==1)
+        // {
+        //     $apps = ApplicationMastRound1::where('id', $id)->where('status', 'S')->first();
+        // }
+        // else{
+        //     $apps = ApplicationMast::where('id', $id)->where('status', 'S')->first();
+        // }
+        // if (!$apps) {
+        //     alert()->error('Applicant Not Submitted!', 'Attention!')->persistent('Close');
+        //     return redirect()->back();
+        // }
+            
+        $apps = DB::table("approved_apps")->where('status', 'S')->where('id', $id)->first();
+        
+        $getUserName = DB::table('users')->where('id',$apps->created_by)->first();
+// dd($id, $apps->created_by, $getUserName->name);
 
+        if (!$apps)
+        {
+            alert()->error('Applicant Not Submitted!', 'Attention!')->persistent('Close');
+            return redirect()->back();
+        }
         // $approved_prods=DB::select("select distinct on (u.name,aa.target_segment,a.product_name)
         //             a.p_id, a.product_name
         //             from approved_apps aa
@@ -97,7 +107,7 @@ class BrochureAdminDocumentController extends Controller
         //dd($arr_brochure_product_id);
         $getEligibleProdDetails = DB::table('approved_apps_details')->where('id',$id)->first();
 
-        return view('admin.brochure.document_listing', compact('apps','getEligibleProdDetails','approved_prods','contents','arr_brochure_product_id','arrBrochApplicant'));
+        return view('admin.brochure.document_listing', compact('apps','getEligibleProdDetails','approved_prods','contents','arr_brochure_product_id','arrBrochApplicant','getUserName'));
     }
 
     /**

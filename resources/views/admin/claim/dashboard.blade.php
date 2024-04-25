@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 @endpush
 
+
 @section('title')
     Claim - Dashboard
 @endsection
@@ -11,28 +12,27 @@
 @section('content')
     <div class="">
         <div class="card-body">
-            {{-- @php $a= '2023-24'; @endphp --}}
-           
-            <form method="post" action="{{ route('admin.claimyearwise') }}">
+            <form method="get" action="{{ route('admin.claims.claimdashboard', ['fy' => $fy]) }}">
                 @csrf
-            <div class="row">
-                <div class="col-md-4" style="margin-left: 10%">
-                    <label>Financial Year for which details are to be filled in</label>
-                </div>
-                <div class="col-md-3">
-                    <select name="fy_name" id="fy_name" class="form-control col-md-12">
-                        @foreach($fy as $financial_year)
-                        <option value="{{ $financial_year->id }}" {{ $financial_year->fy_name === $getFy ? 'selected' : '' }}>{{ $financial_year->fy_name }}</option>
+                <div class="row">
+                    <div class="col-md-12" style="margin-left: 10%">
+                        <label>Financial Year for which details are to be filled in</label>
+                    </div>
+                    <div class="col-md-2" style="margin-left: 30%">
+                        <select name="fy_name" id="fy_name" class="form-control col-md-12">
+                            <option value="2022-2023" {{ $fy === '2022-2023' ? 'selected' : '' }}>2022-23</option>
+                            <option value="2023-2024" {{ $fy === '2023-2024' ? 'selected' : '' }}>2023-24</option>
+                        </select>
 
-                        {{-- <option value="2023-2024" {{ $fy === '2023-2024' ? 'selected' : '' }}>2023-24</option> --}}
-                    @endforeach
-                    </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-sm btn-block btn-primary text-white">
+                            Filter
+                        </button>
+                    </div>
+
+
                 </div>
-                <div class="col-md-2">
-                    <button id="filterData" class="btn btn-sm btn-block btn-primary text-white">
-                        Filter</button>
-                </div>
-            </div>
             </form>
         </div>
     </div>
@@ -42,107 +42,128 @@
             <div class="card border-primary">
                 <div class="card-body">
                     <div class="table-responsive">
-                        {{-- <table class="table table-sm table-striped table-bordered table-hover" id="apps"> --}}
-                        <table class="table table-sm  table-bordered table-hover" id="apps" style="width: 100%">
+                        <table class="table table-sm table-striped table-bordered table-hover" id="apps">
                             <thead class="appstable-head">
                                 <tr class="table-info">
                                     <th class="text-center">Sr. No</th>
-                                    <th class="text-left">Applicant's Name</th>
-                                    <th class="text-center" style="width:5%">TS</th>
-                                    <th class="text-left">Product</th>
+                                    <th class="text-center">Applicant's Name</th>
+                                    <th class="text-center">Target Segment</th>
+                                    <th class="text-center">Round</th>
                                     <th class="text-center" style="width:7%">FY</th>
                                     <th class="text-center">Claim Period</th>
-                                    <th class="text-center">Quater</th>
-                                    <th class="text-left" style="width:10%">Status</th>
-                                    <!-- <th class="text-center">Documents</th> -->
+                                    <th class="text-center">Quarter</th>
+                                    <th class="text-center">Status</th>
                                     <th class="text-center">Submission Date</th>
                                     <th class="text-center">Revision Date</th>
                                     <th class="text-center">View</th>
                                     <th class="text-center">Document for 20% Incentive</th>
+                                    <th class="text-center">Correspondence</th>
                                 </tr>
                             </thead>
                             <tbody class="appstable-body">
-
-                                @foreach ($appData as $key => $app)
-                                    <tr>
-                                        <td class="text-center">{{ $key + 1 }}</td>
-                                        <td class="text-left">{{ $app->name }}</td>
-                                        <td class="text-center">TS-{{ $app->target_segment_id }}</td>
-                                        <td class="text-left">{{ $app->product }}</td>
-                                        <td class="text-center">
-                                            
-                                            @php 
-                                                $fiscalYear = $fy->where('id', $app->fy)->first();
-
-                                                $fyName = optional($fiscalYear)->fy_name;
-                                            @endphp
-                                            {{$fyName}}
-                                        </td>
-                                        <td class="text-center" style="white-space: nowrap;">
-                                            @if($app->claim_fill_period==1) Quarterly @endif
-                                             @if($app->claim_fill_period==2) Half-Yearly @endif
-                                             @if($app->claim_fill_period==3) Nine Months @endif
-                                             @if($app->claim_fill_period==4) Annual @endif
-                                        </td>
-                                        <td class="text-center" style="white-space: nowrap;">{{ $app->start_month }}-{{ $app->month }}</td>
-                                        <td class="text-left">
-                                            @if (isset($app->claim_status) && trim($app->claim_status) == 'S')
-                                                <span class="text-success"><b>Submitted</b></span>
-                                            @elseif(isset($app->claim_status) && trim($app->claim_status) == 'D')
-                                                <span class="text-primary"><b>Draft</b></span>
-                                            @else
-                                                <span class="text-danger"><b>Not Created</b></span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            @if (isset($app->claim_status) && trim($app->claim_status) == 'S')
-                                                {{ isset($app->submitted_at) ? date('d-M-Y', strtotime($app->submitted_at)) : '' }}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            {{ isset($app->revision_dt) ? date('d-M-Y', strtotime($app->revision_dt)) : '' }}
-                                        </td>
-
-                                        @if ($app->claim_status == 'S')
+                                {{-- {{dd(!empty($appData), count($appData))}} --}}
+                                @if (count($appData) > 0)
+                                    @foreach ($appData as $key => $app)
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td>{{ $app->name }}</td>
+                                            <td class="text-center">TS-{{ $app->target_segment }}</td>
+                                            <td class="text-center">{{ $app->round }}</td>
+                                            <td class="text-center">{{ $fy }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('claims.claimpreveiw', $app->claim_id) }}"
-                                                    class="btn btn-info btn-sm btn-block">
-                                                    <i class="right fas fa-eye"></i>
-                                                </a>
-                                            </td>
-                                        @else
-                                            <td class="text-center">
-                                                <a href="" class="btn btn-info btn-sm btn-block disabled">
-                                                    <i class="right fas fa-eye"></i>
-                                                </a>
-                                            </td>
-                                        @endif
-                                        {{-- {{dd($app)}} --}}
-                                        <td>
-                                            @if ($incentive_map_data->where('claim_id',$app->claim_id)->first()==Null)
-
-                                            @elseif ($incentive_map_data->where('claim_id',$app->claim_id)->first()->status=='D')
-                                            <button href="" disabled
-                                                class="btn btn-warning btn-sm btn-block"> Draft</button>
-                                                @elseif ($incentive_map_data->where('claim_id',$app->claim_id)->first()->status=='S')
-                                                <a href="{{ route('claimdocumentupload.show', $app->claim_id) }}"
-                                                    class="btn btn-success btn-sm btn-block"><i class="fa fa-eye"></i> Submitted
+                                                @if ($app->claim_period == 1)
+                                                    Quarterly
                                                 @endif
-                                            </a>
+                                                @if ($app->claim_period == 2)
+                                                    Half-Yearly
+                                                @endif
+                                                @if ($app->claim_period == 3)
+                                                    Nine Months
+                                                @endif
+                                                @if ($app->claim_period == 4)
+                                                    Annual
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{{ $app->start_month }}-{{ $app->end_month }}</td>
+                                            <td class="text-center">
+                                                @if (isset($app->claim_status) && trim($app->claim_status) == 'S')
+                                                    <span class="text-success"><b>Submitted</b></span>
+                                                @elseif(isset($app->claim_status) && trim($app->claim_status) == 'D')
+                                                    <span class="text-primary"><b>Draft</b></span>
+                                                @else
+                                                    <span class="text-danger"><b>Not Created</b></span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                {{ isset($app->submitted_at) ? date('d-M-Y', strtotime($app->submitted_at)) : '' }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ isset($app->revision_dt) ? date('d-M-Y', strtotime($app->revision_dt)) : '' }}
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($app->claim_status == 'S')
+                                                    <a href="{{ route('claims.claimpreview', $app->claim_id) }}"
+                                                        class="btn btn-info btn-sm btn-block">
+                                                        <i class="right fas fa-eye"></i>
+                                                    </a>
+                                                @else
+                                                    <button class="btn btn-info btn-sm btn-block disabled">
+                                                        <i class="right fas fa-eye"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $incentive_map = $incentive_map_data
+                                                        ->where('claim_id', $app->claim_id)
+                                                        ->first();
+                                                @endphp
+                                                @if ($incentive_map)
+                                                    @if ($incentive_map->status == 'D')
+                                                        <button class="btn btn-warning btn-sm btn-block"
+                                                            disabled>Draft</button>
+                                                    @elseif($incentive_map->status == 'S')
+                                                        <a href="{{ route('claimdocumentupload.show', $app->claim_id) }}"
+                                                            class="btn btn-success btn-sm btn-block"><i
+                                                                class="fa fa-eye"></i> Submitted</a>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td> <a href="{{ route('claimcorrespondence', $app->claim_id) }}"
+                                                class="btn btn-success btn-sm btn-block"><i
+                                                    class="fa fa-eye"></i> View</a></td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    {{-- {{dd('ddd')}} --}}
+                                    <tr>
+                                        <td colspan="12">
+                                            <p style="200px; clear:both;"></p>
+                                            <center><p style="color: red;">No Data Found!</p></center>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
+
+
                             </tbody>
                         </table>
                     </div>
+                    Note:<br>
+                    TS-1 = A. Cancer care / Radiotherapy Medical / Devices <br>
+                    TS-2 = B. Radiology & Imaging Medical Devices (both ionizing & non-ionizing radiation products) and
+                    Nuclear Imaging Devices <br>
+                    TS-3 = C. Anesthetics & Cardio-Respiratory Medical Devices including Catheters of Cardio Respiratory
+                    Category & Renal Care Medical Devices <br>
+                    TS-4 = D. All Implants including implantable electronic Devices
                 </div>
+
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('scripts')
-
     <script>
         $(document).ready(function () {
 
@@ -179,7 +200,6 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
-        
 
 
         });
