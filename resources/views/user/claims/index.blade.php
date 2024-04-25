@@ -71,6 +71,7 @@
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
                                             <th class="text-center">Document for 20% Incentive</th>
+                                            <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -212,6 +213,9 @@
                                                                 !! The 20% incentive form has been closed. !!
                                                             </button>
                                                         @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('claims.claimincentivestatus', $cm_val->id) }}" class="btn btn-warning btn-sm btn-block">View</a>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -344,7 +344,7 @@ class PrayasController extends Controller
 
 		$date_range = $this->get_date_range($project_data);
 
-		dd($date_range );
+		//dd($date_range);
 
 
         $kpi_data   = DB::table('prayas_value_data')->where('asondate',$date)->get();
@@ -353,7 +353,7 @@ class PrayasController extends Controller
 
         foreach ($kpi_data as $key => $val) {
             $data[$key]["Group_Id"] = $val->group_id;
-            $data[$key]["datadate"] = date('d-m-Y' ,strtotime($val->asondate));
+            $data[$key]["datadate"] = date('m/d/Y' ,strtotime($val->asondate));
             $data[$key]["KValue"] 	= 	$val->kvalue;
             $data[$key]["LValue"] 	= $val->lvalue;
         }
@@ -413,7 +413,7 @@ class PrayasController extends Controller
 
       public function kpi_dash_api_encrypt($plaintext, $key)
       {
-		dd("dd3");
+		//dd("dd3");
           $key_len    = strlen($key);
           //Set the method
           $method     = 'aes-128-cbc';
@@ -450,7 +450,7 @@ class PrayasController extends Controller
 
     public function push_to_kpi_dashboard($project_data)
     {
-		dd("dd2");
+		//dd("dd2");
 		$url = "http://prayasapi.darpan.nic.in/pushdata";
 		//Content type of data
 		$header     = array(

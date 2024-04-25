@@ -17,374 +17,401 @@ class RequestController extends Controller
 {
     public function index()
     {
-         $user_id=Auth::user()->id;
+        $user_id = Auth::user()->id;
+        $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
+        $users = DB::table('approved_apps')->join('users', 'users.id', '=', 'approved_apps.created_by')->select('users.*')->orderby('users.name')->where(DB::RAW("is_normal_user(users.id)"), 1)->get();
         $hasRole = Auth::user()->getRoleNames()->toArray();
-
-        $users = DB::table('users')->first();
-
-        // dd($hasRole);
-
-         if($hasRole[0] == 'Admin' )
-        {
-
-        $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->join('req_category','request_hd.cat_id','=','req_category.id')
-        ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-        ->join('type_of_request','type_of_request.id','=','request_hd.type_of_req')
-        // ->where('users.id',$user_id)
-        ->orderby('request_hd.status','asc')
-        ->orderby('request_hd.id','asc')
-        ->get(['request_hd.*', 'users.name','req_category.category_desc','subtype_desc','type_of_request.type_desc']);
-
-        }elseif($hasRole[0] == 'Admin-Meity'){
-            $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-            ->join('req_category','request_hd.cat_id','=','req_category.id')
-            ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-            ->join('type_of_request','type_of_request.id','=','request_hd.type_of_req')
-            ->where('request_hd.visible',1)
-            ->orWhere('request_hd.user_id',$user_id)
-            ->orwhere('request_hd.raised_for_user',$user_id)
-            ->orderby('request_hd.status','asc')
-            ->orderby('request_hd.id','asc')
-            ->get(['request_hd.*', 'users.name','req_category.category_desc','subtype_desc','type_of_request.type_desc']);
-
-        }
-        else{
-        $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->join('req_category','request_hd.cat_id','=','req_category.id')
-        ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-        ->join('type_of_request','type_of_request.id','=','request_hd.type_of_req')
-        ->where('request_hd.raised_for_user',$user_id)
-        ->orWhere('request_hd.user_id',$user_id)
-        ->orderby('request_hd.status','asc')
-        ->orderby('request_hd.id','asc')
-        ->get(['request_hd.*', 'users.name','req_category.category_desc','subtype_desc','type_of_request.type_desc'])
-            ;
+        if ($hasRole[0] == 'Admin') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                // ->where('users.id',$user_id)
+                ->orderby('request_hd.status', 'asc')
+                ->orderby('request_hd.id', 'asc')
+                ->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
+        } elseif ($hasRole[0] == 'Admin-Meity') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                ->where('request_hd.visible', 1)
+                ->orWhere('request_hd.user_id', $user_id)
+                ->orwhere('request_hd.raised_for_user', $user_id)
+                ->orderby('request_hd.status', 'asc')
+                ->orderby('request_hd.id', 'asc')
+                ->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
+        } else {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                ->where('request_hd.raised_for_user', $user_id)
+                ->orWhere('request_hd.user_id', $user_id)
+                ->orderby('request_hd.status', 'asc')
+                ->orderby('request_hd.id', 'asc')
+                ->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
         }
 
-
-    //   dd($user_id,$reqs);
-
-        return view('new_correspondence.index',compact('reqs','hasRole','users'));
+        return view('new_correspondence.index', compact('reqs', 'hasRole', 'users', 'moduleRows'));
     }
 
-    public function statuscheck($req_id,$checkid){
+
+    public function statuscheck($req_id, $checkid)
+    {
         // dd($checkid);
 
-         $updatestatus = RequestHd::where('id',$req_id)->first();
+        $updatestatus = RequestHd::where('id', $req_id)->first();
 
-           if($checkid == 1){
+        if ($checkid == 1) {
 
-             $updatestatus->fill([
-            'visible' => 1,
-            'created_at' =>  Carbon::now(),
-            'updated_at' =>  Carbon::now(),
-
-            ]);
-           }elseif($checkid == 0){
-
-             $updatestatus->fill([
-            'visible' => null,
-            'created_at' =>  Carbon::now(),
-            'updated_at' =>  Carbon::now(),
+            $updatestatus->fill([
+                'visible' => 1,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now(),
 
             ]);
+        } elseif ($checkid == 0) {
 
-           }
+            $updatestatus->fill([
+                'visible' => null,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now(),
+
+            ]);
+        }
 
 
-         DB::transaction(function () use ($updatestatus) {
-                    $updatestatus->save();
-
-                });
-                    alert()->success('Details Updated', 'Success')->persistent('Close');
-               return redirect()->back();
+        DB::transaction(function () use ($updatestatus) {
+            $updatestatus->save();
+        });
+        alert()->success('Details Updated', 'Success')->persistent('Close');
+        return redirect()->back();
     }
 
-     public function statuscm($req_id,$checkid){
+    public function statuscm($req_id, $checkid)
+    {
         // dd($checkid);
 
-         $updatestatus = RequestHd::where('id',$req_id)->first();
+        $updatestatus = RequestHd::where('id', $req_id)->first();
 
-           if($checkid == 1){
+        if ($checkid == 1) {
 
-             $updatestatus->fill([
-            'visible_com' => 1,
-            'created_at' =>  Carbon::now(),
-            'updated_at' =>  Carbon::now(),
-
-            ]);
-           }elseif($checkid == 0){
-
-             $updatestatus->fill([
-            'visible_com' => null,
-            'created_at' =>  Carbon::now(),
-            'updated_at' =>  Carbon::now(),
+            $updatestatus->fill([
+                'visible_com' => 1,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now(),
 
             ]);
+        } elseif ($checkid == 0) {
 
-           }
+            $updatestatus->fill([
+                'visible_com' => null,
+                'created_at' =>  Carbon::now(),
+                'updated_at' =>  Carbon::now(),
+
+            ]);
+        }
 
 
-         DB::transaction(function () use ($updatestatus) {
-                    $updatestatus->save();
-
-                });
-                    alert()->success('Details Updated', 'Success')->persistent('Close');
-               return redirect()->back();
+        DB::transaction(function () use ($updatestatus) {
+            $updatestatus->save();
+        });
+        alert()->success('Details Updated', 'Success')->persistent('Close');
+        return redirect()->back();
     }
 
 
 
     public function create()
     {
+
         $hasRole = Auth::user()->getRoleNames()->toArray();
-    //    dd($hasRole);
-        if($hasRole[0] == 'Admin-Meity' ){
-             $valid_roles = DB::table('req_user as cum')
+        //  dd($hasRole);
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        //    dd($hasRole);
+        if ($hasRole[0] == 'Admin-Meity') {
+            $valid_roles = DB::table('req_user as cum')
                 ->join('roles', 'roles.id', '=', 'cum.role_id')
-                ->whereNotIn('cum.id',[1,2,4])
-                ->select('cum.name','cum.id')
+                ->whereNotIn('cum.id', [1, 2, 4])
+                ->select('cum.name', 'cum.id')
                 ->orderBy('roles.id')
                 ->get();
-        // dd($valid_roles);
-        }elseif($hasRole[0] == 'Admin'){
+            // dd($valid_roles);
+        } elseif ($hasRole[0] == 'Admin') {
 
             $valid_roles = DB::table('req_user as cum')
                 ->join('roles', 'roles.id', '=', 'cum.role_id')
-                ->whereNotIn('cum.id',[2,3])
-                ->select('cum.name','cum.id')
+                ->whereNotIn('cum.id', [2, 3])
+                ->select('cum.name', 'cum.id')
                 ->orderBy('roles.id')
                 ->get();
-
-        }
-        else{
+        } else {
             $valid_roles = DB::table('req_user as cum')
-            ->join('roles', 'roles.id', '=', 'cum.role_id')
-            ->where('roles.id','2')
-            ->select('cum.name','cum.id')
-            ->orderBy('roles.id')
-            ->get();
+                ->join('roles', 'roles.id', '=', 'cum.role_id')
+                ->where('roles.id', '2')
+                ->select('cum.name', 'cum.id')
+                ->orderBy('roles.id')
+                ->get();
         }
-        $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->where('users.id',Auth::user()->id)
-        ->get(['request_hd.*', 'users.name']);
-        $moduleRows = DB::table('req_category')->where('active_flg','1')->get();
+        $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+            ->where('users.id', Auth::user()->id)
+            ->get(['request_hd.*', 'users.name']);
+        $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
         $reqcats_sub = DB::table('req_category_subtype')->get();
         $typeOfReq = DB::table('type_of_request')->get();
-        return view('new_correspondence.create',compact('reqs','moduleRows','reqcats_sub','typeOfReq','valid_roles'));
+        return view('new_correspondence.create', compact('reqs', 'moduleRows', 'reqcats_sub', 'typeOfReq', 'valid_roles'));
     }
 
 
 
-      public function usersList($request_type)
+    public function usersList($request_type)
     {
-        $role_id = DB::table('req_user')->where('id',$request_type)->first();
+        $role_id = DB::table('req_user')->where('id', $request_type)->first();
         $users = DB::table('users as u')
-        ->join('model_has_roles as mhr', 'mhr.model_id', '=', 'u.id')
-        ->where('mhr.role_id',$role_id->role_id)
-        ->select('u.name','u.id')
-        ->get();
-    //   console.log($user);
+            ->join('model_has_roles as mhr', 'mhr.model_id', '=', 'u.id')
+            ->where('mhr.role_id', $role_id->role_id)
+            ->select('u.name', 'u.id')
+            ->get();
+
+
         return json_encode($users);
     }
 
     public function applicationNumberList($app_id)
     {
+
         $hasRole = Auth::user()->getRoleNames()->toArray();
         $getApplicatId = Auth::user()->id;
-        if($hasRole[0] == 'Admin')
-        {
+        if ($hasRole[0] == 'Admin') {
             $applicant_id = $app_id;
             $applicantData = DB::table('users as u')
-            ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
-            ->where('aa.created_by',$applicant_id)
-            ->where('aa.status','S')
-            ->whereRaw('is_normal_user(u.id) = 1')
-            ->select('aa.id','aa.app_no')
-            ->get();
-        }
-        else
-        {
-            
+                ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
+                ->where('aa.created_by', $applicant_id)
+                ->where('aa.status', 'S')
+                ->whereRaw('is_normal_user(u.id) = 1')
+                ->select('aa.id', 'aa.app_no')
+                ->get();
+        } else {
+
             $applicant_id = $getApplicatId;
             $applicantData = DB::table('users as u')
-            ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
-            ->where('aa.created_by',$applicant_id)
-            ->where('aa.status','S')
-            ->select('aa.id','aa.app_no')
-            ->get();
+                ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
+                ->where('aa.created_by', $applicant_id)
+                ->where('aa.status', 'S')
+                ->select('aa.id', 'aa.app_no')
+                ->get();
         }
-         
-        return json_encode($applicantData);
+
+        $applicant_data_vw = [
+            'applicantData' => $applicantData
+        ];
+
+        return json_encode($applicant_data_vw);
     }
 
 
     public function store(Request $request)
     {
-       
 
-         $hasRole = Auth::user()->getRoleNames()->toArray();
-            
-         $role = DB::table('model_has_roles')->join('roles','roles.id','model_has_roles.role_id')
-         ->where('model_has_roles.model_id', $request->request_to)->first();
-//dd($request,$hasRole[0], $request->request_to, $role->name, Auth::user()->id);
-        //  dd( $role);
-     DB::transaction(function() use ($request ,$hasRole,$role){
-         $files = $request->file('reqdoc');
-        $reqdoc = $request->reqdoc;
-        $reqHd = new RequestHd;
-        $reqHd->user_id = Auth::user()->id;
-        $reqHd->raised_for_user = $request->request_to;
-        $reqHd->app_no = $request->application_number;
-        $reqHd->first_applied_dt=Carbon::now();
-        $reqHd->cat_id=$request->related_to;
-        $reqHd->raise_by_role=$hasRole[0];
-        $reqHd->cat_subtype=$request->catsubtype;
-        $reqHd->type_of_req=$request->reqtype;
-        $reqHd->raise_by_role = $hasRole[0];
-        $reqHd->pending_with =$role->name;
-        // if($hasRole[0] == 'Meity' || $hasRole[0] == 'ActiveUser' ){
-        //      $reqHd->pending_with='Admin';
-        //     $reqHd->raise_by_role='User';
-        // }else{
-        //     // dd('d');
-        //      $reqHd->pending_with='User';
-        //       $reqHd->raise_by_role=$hasRole[0];
-        // }
-        $reqHd->pending_since=Carbon::now();
-        $reqHd->status='S';
-        $dt = Carbon::parse($reqHd->first_applied_dt);
-        $prvYear= DB::select(DB::raw("SELECT req_id_generate('$dt')"));
-        foreach($prvYear as $values){
-            $reqHd->req_id = $values->req_id_generate;
-        }
-     //   dd($reqHd);
-        $reqHd->save();
 
-        $DetailUploadId = array();
-        if ($reqdoc){
-        foreach($reqdoc as $value){
-            $newDoc = $value;
-            $doc = new RequestDocumentUploads;
-                $doc->req_id = $reqHd->id;
-                $doc->mime = $newDoc->getMimeType();
-                $doc->file_size = $newDoc->getSize();
-                $doc->updated_at = Carbon::now();
-                $doc->user_id = Auth::user()->id;
-                $doc->created_at = Carbon::now();
-                $doc->file_name = $newDoc->getClientOriginalName();
-                $doc->uploaded_file = fopen($newDoc->getRealPath(), 'r');
-                // dd($doc);
-            $doc->save();
-            array_push($DetailUploadId, $doc->id);
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+
+        $role = DB::table('model_has_roles')->join('roles', 'roles.id', 'model_has_roles.role_id')
+            ->where('model_has_roles.model_id', $request->request_to)->first();
+        if (isset($request->claim_no)) {
+            $claim_id = $request->claim_no;
+        } else {
+            $claim_id = NULL;
         }
-      }
-        // dd($DetailUploadId);
-        $reqdet = new RequestDet;
-                $reqdet->req_id = $reqHd->id;
-                $reqdet->msg =$request->msg;
-                $reqdet->doc_id =$DetailUploadId;
-                $reqdet->created_by = Auth::user()->id;
-                // dd($reqdet);
+
+        //  dd( $request->application_number);
+        DB::transaction(function () use ($request, $hasRole, $role, $claim_id) {
+            $files = $request->file('reqdoc');
+            $reqdoc = $request->reqdoc;
+            $reqHd = new RequestHd;
+            $reqHd->user_id = Auth::user()->id;
+            $reqHd->raised_for_user = $request->request_to;
+            $reqHd->app_no = $request->application_number;
+            $reqHd->claim_id =  $claim_id;
+            $reqHd->first_applied_dt = Carbon::now();
+            $reqHd->cat_id = $request->related_to;
+            $reqHd->raise_by_role = $hasRole[0];
+            $reqHd->cat_subtype = $request->catsubtype;
+            $reqHd->type_of_req = $request->reqtype;
+            $reqHd->raise_by_role = $hasRole[0];
+            $reqHd->pending_with = $role->name;
+            // if($hasRole[0] == 'Meity' || $hasRole[0] == 'ActiveUser' ){
+            //      $reqHd->pending_with='Admin';
+            //     $reqHd->raise_by_role='User';
+            // }else{
+            //     // dd('d');
+            //      $reqHd->pending_with='User';
+            //       $reqHd->raise_by_role=$hasRole[0];
+            // }
+            $reqHd->pending_since = Carbon::now();
+            $reqHd->status = 'S';
+            $dt = Carbon::parse($reqHd->first_applied_dt);
+            $prvYear = DB::select(DB::raw("SELECT req_id_generate('$dt')"));
+            foreach ($prvYear as $values) {
+                $reqHd->req_id = $values->req_id_generate;
+            }
+            //   dd($reqHd);
+            $reqHd->save();
+
+            $DetailUploadId = array();
+            if ($reqdoc) {
+                foreach ($reqdoc as $value) {
+                    $newDoc = $value;
+                    $doc = new RequestDocumentUploads;
+                    $doc->req_id = $reqHd->id;
+                    $doc->mime = $newDoc->getMimeType();
+                    $doc->file_size = $newDoc->getSize();
+                    $doc->updated_at = Carbon::now();
+                    $doc->user_id = Auth::user()->id;
+                    $doc->created_at = Carbon::now();
+                    $doc->file_name = $newDoc->getClientOriginalName();
+                    $doc->uploaded_file = fopen($newDoc->getRealPath(), 'r');
+                    // dd($doc);
+                    $doc->save();
+                    array_push($DetailUploadId, $doc->id);
+                }
+            }
+            // dd($DetailUploadId);
+            $reqdet = new RequestDet;
+            $reqdet->req_id = $reqHd->id;
+            $reqdet->msg = $request->msg;
+            $reqdet->doc_id = $DetailUploadId;
+            $reqdet->created_by = Auth::user()->id;
+            // dd($reqdet);
 
             $reqdet->save();
+        });
 
-          });
-            alert()->success('Record Submitted', 'Success')->persistent('Close');
-            return redirect()->route('newcorrespondence.index');
+        $recipientRow = User::where('id', $request->request_to)->first();
+
+        //$request_type=DB::table('cm_requesttype_master')->where('id',$request->request_type)->first();
+        $request_type = DB::table('type_of_request')->where('id', $request->reqtype)->first();
+        // $request_type = DB::table('type_of_request')
+        //         ->where('cat_id', $request->related_to)
+        //         ->where('cat_subtype', $request->catsubtype)
+        //         ->where('status','Y')
+        //         ->where('req_type','R')
+        //         ->orderBy('id')
+        //        ->get();
+        //dd($request_type);
+
+        $moduleRow = DB::select("select * from req_category where id=" . $request->related_to);
+
+        $module_name = $moduleRow[0]->category_desc;
+        //$userTypeRows=DB::select('select * from cm_user_master where id='.$request->user_type);
+        //$userTypeRows=DB::select('select * from cm_user_master where id='.$request->user_type);
+        $userTypeRows = DB::select('select * from req_user where id=' . $request->user_type);
+        $user_type = $userTypeRows[0]->name;
+        //dd($request->msg);
+        $portal_name = env('APP_NAME');
+        $data = array('email' => $recipientRow->email, 'user_name' => $recipientRow->name, 'module_name' => $module_name, 'user_type' => $user_type, 'request_type' => $request_type->type_desc, 'user_name' => Auth::user()->name, 'body_message' => $request->msg, 'status' => 'open');
+        Mail::send('emails.requestsubmit', $data, function ($message) use ($data, $portal_name) {
+            $message->to($data['email'])->subject("PLI Scheme for Medical Devices || Query Submitted Succesfully");
+            $message->cc('mdpli@ifciltd.com', 'PLI Medical Devices');
+        });
+
+        alert()->success('Record Submitted', 'Success')->persistent('Close');
+        return redirect()->route('newcorrespondence.index');
     }
 
     public function show($id)
     {
-         $user_id=Auth::user()->id;
+        $user_id = Auth::user()->id;
         $hasRole = Auth::user()->getRoleNames()->toArray();
-         $reqHd =RequestHd::where('id',$id)->first();
-        $reqDets=RequestDet::where('req_id',$id)->get();
+        $reqHd = RequestHd::where('id', $id)->first();
+        $reqDets = RequestDet::where('req_id', $id)->get();
 
-         if($hasRole[0] == 'Admin' || $hasRole[0] == 'Admin-Meity')
-        {
-               $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->join('req_category','request_hd.cat_id','=','req_category.id')
-        ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-        ->join('type_of_request','request_hd.type_of_req','=','type_of_request.id')
-        // ->where('request_hd.user_id',Auth::user()->id)
-        // ->where('request_hd.raised_for_user',$user_id)
-        ->where('request_hd.id',$id)
-        ->get(['request_hd.*', 'users.name','users.email','users.mobile',
-        'req_category.category_desc','subtype_desc','type_of_request.type_desc']);
-
-        }else{
-               $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->join('req_category','request_hd.cat_id','=','req_category.id')
-        ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-        ->join('type_of_request','request_hd.type_of_req','=','type_of_request.id')
-        ->where('request_hd.id',$id)
-        ->get(['request_hd.*', 'users.name','users.email','users.mobile',
-        'req_category.category_desc','subtype_desc','type_of_request.type_desc']);
-        // dd($reqs);
+        if ($hasRole[0] == 'Admin' || $hasRole[0] == 'Admin-Meity') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'request_hd.type_of_req', '=', 'type_of_request.id')
+                // ->where('request_hd.user_id',Auth::user()->id)
+                // ->where('request_hd.raised_for_user',$user_id)
+                ->where('request_hd.id', $id)
+                ->get([
+                    'request_hd.*', 'users.name', 'users.email', 'users.mobile',
+                    'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc'
+                ]);
+        } else {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'request_hd.type_of_req', '=', 'type_of_request.id')
+                ->where('request_hd.id', $id)
+                ->get([
+                    'request_hd.*', 'users.name', 'users.email', 'users.mobile',
+                    'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc'
+                ]);
+            // dd($reqs);
         }
 
 
         // $days=DB::table('cat_days_param')->get();
-    //   dd($reqs,$id,$hasRole);
+        //   dd($reqs,$id,$hasRole);
 
-        $docs =RequestDocumentUploads::get();
-                // dd($doc);
-        return view('new_correspondence.preview', compact('reqHd', 'reqDets', 'docs','reqs'));
-
+        $docs = RequestDocumentUploads::get();
+        // dd($doc);
+        return view('new_correspondence.preview', compact('reqHd', 'reqDets', 'docs', 'reqs'));
     }
 
     public function edit($id)
     {
         // dd('user_id',Auth::user()->id);
 
-        $reqHd =RequestHd::where('id',$id)->first();
-        $reqDets=RequestDet::where('req_id',$id)->get();
+        $reqHd = RequestHd::where('id', $id)->first();
+        $reqDets = RequestDet::where('req_id', $id)->get();
 
         // $a = $reqDets->join(DB::raw("SELECT get_user_role($reqDets.created_by) as new_model"));
 
         //   dd($a);
 
-        $reqs =RequestHd::join('users','request_hd.user_id','=','users.id')
-        ->join('req_category','request_hd.cat_id','=','req_category.id')
-        ->join('req_category_subtype','request_hd.cat_subtype','=','req_category_subtype.id')
-        ->where('request_hd.id',$id)
-        ->get(['request_hd.*', 'users.name','users.email','users.mobile',
-        'req_category.category_desc','subtype_desc']);
+        $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+            ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+            ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+            ->where('request_hd.id', $id)
+            ->get([
+                'request_hd.*', 'users.name', 'users.email', 'users.mobile',
+                'req_category.category_desc', 'subtype_desc'
+            ]);
 
-        $docs =RequestDocumentUploads::get();
-                // dd($reqHd);
-        return view('new_correspondence.edit', compact('reqHd', 'reqDets', 'docs','reqs'));
-
+        $docs = RequestDocumentUploads::get();
+        // dd($reqHd);
+        return view('new_correspondence.edit', compact('reqHd', 'reqDets', 'docs', 'reqs'));
     }
 
     public function update(Request $request, $id)
     {
         // dd($request);
         $reqdoc = $request->reqdoc;
-        $user_id=Auth::user()->id;
+        $user_id = Auth::user()->id;
         $hasRole = Auth::user()->getRoleNames()->toArray();
         // dd($request);
-        $reqHd =RequestHd::where('id',$request->reqhd_id)->first();
+        $reqHd = RequestHd::where('id', $request->reqhd_id)->first();
         $x =  $reqHd->raise_by_role;
         $reqHd->raise_by_role = $reqHd->pending_with;
-        $reqHd->pending_with =$x;
+        $reqHd->pending_with = $x;
 
         // if($hasRole[0] == 'ActiveUser' || $hasRole[0] == 'Meity'){
         // $reqHd->pending_with=$reqHd->raise_by_role;
         // }else{
         // $reqHd->pending_with='User';
         // }
-        $reqHd->pending_since=Carbon::now();
-        $reqHd->status=$request->status;
+        $reqHd->pending_since = Carbon::now();
+        $reqHd->status = $request->status;
         // dd($reqHd);
         $reqHd->save();
         $DetailUploadId = array();
-      if ($reqdoc){
-        foreach($reqdoc as $value){
-            $newDoc = $value;
-            $doc = new RequestDocumentUploads;
+        if ($reqdoc) {
+            foreach ($reqdoc as $value) {
+                $newDoc = $value;
+                $doc = new RequestDocumentUploads;
                 $doc->req_id = $reqHd->id;
                 $doc->mime = $newDoc->getMimeType();
                 $doc->file_size = $newDoc->getSize();
@@ -394,20 +421,20 @@ class RequestController extends Controller
                 $doc->file_name = $newDoc->getClientOriginalName();
                 $doc->uploaded_file = fopen($newDoc->getRealPath(), 'r');
                 // dd($doc);
-            $doc->save();
-            array_push($DetailUploadId, $doc->id);
+                $doc->save();
+                array_push($DetailUploadId, $doc->id);
+            }
         }
-    }
         // dd($DetailUploadId);
         $reqdet = new RequestDet;
-                $reqdet->req_id = $reqHd->id;
-                $reqdet->msg =$request->msg;
-                $reqdet->doc_id =$DetailUploadId;
-                $reqdet->created_by = Auth::user()->id;
-                // dd($reqdet);
-            $reqdet->save();
-            alert()->success('Record Submitted', 'Success')->persistent('Close');
-            return redirect()->route('newcorrespondence.index');
+        $reqdet->req_id = $reqHd->id;
+        $reqdet->msg = $request->msg;
+        $reqdet->doc_id = $DetailUploadId;
+        $reqdet->created_by = Auth::user()->id;
+        // dd($reqdet);
+        $reqdet->save();
+        alert()->success('Record Submitted', 'Success')->persistent('Close');
+        return redirect()->route('newcorrespondence.index');
     }
 
     public function destroy($id)
@@ -416,40 +443,40 @@ class RequestController extends Controller
     }
     public function raisecomp(Request $request)
     {
-        $reqHd =RequestHd::find($request->reqhd_id);
-        $reqHd->pending_with='Admin';
-        $reqHd->pending_since=Carbon::now();
-        $reqHd->status='S';
+        $reqHd = RequestHd::find($request->reqhd_id);
+        $reqHd->pending_with = 'Admin';
+        $reqHd->pending_since = Carbon::now();
+        $reqHd->status = 'S';
         // $reqHd->complaint_id='CM001';
-        $reqHd->complaint_raised_on=Carbon::now();
+        $reqHd->complaint_raised_on = Carbon::now();
         // dd($reqHd->pending_since);
         $dt = Carbon::parse($reqHd->complaint_raised_on);
-        $prvYear= DB::select(DB::raw("SELECT complaint_id_generate('$dt')"));
-        foreach($prvYear as $values){
+        $prvYear = DB::select(DB::raw("SELECT complaint_id_generate('$dt')"));
+        foreach ($prvYear as $values) {
             $reqHd->complaint_id = $values->complaint_id_generate;
         }
         $reqHd->save();
         $reqdet = new RequestDet;
         $reqdet->req_id = $request->reqhd_id;
-        $reqdet->msg ='Complaint Raised';
+        $reqdet->msg = 'Complaint Raised';
         $reqdet->created_by = Auth::user()->id;
         // dd($reqdet);
-    $reqdet->save();
-    alert()->success('Complaint Raised Successfully', 'Success')->persistent('Close');
-    return redirect()->route('index');
+        $reqdet->save();
+        alert()->success('Complaint Raised Successfully', 'Success')->persistent('Close');
+        return redirect()->route('index');
     }
 
     public function reqDownload($id)
     {
         // dd($id);
         $doc = DB::table('request_document_uploads as du')
-            ->where('du.id',$id)
-            ->select('du.mime','du.file_name','du.uploaded_file')
-        ->first();
-      // dd($doc);
+            ->where('du.id', $id)
+            ->select('du.mime', 'du.file_name', 'du.uploaded_file')
+            ->first();
+        // dd($doc);
         ob_start();
         fpassthru($doc->uploaded_file);
-        $docc= ob_get_contents();
+        $docc = ob_get_contents();
         ob_end_clean();
         $ext = '';
 
@@ -468,12 +495,86 @@ class RequestController extends Controller
         }
 
         return response($docc)
-        ->header('Cache-Control', 'no-cache private')
-        ->header('Content-Description', 'File Transfer')
-        ->header('Content-Type', $doc->mime)
-        ->header('Content-length', strlen($docc))
-        ->header('Content-Disposition', 'attachment; filename='.$doc->file_name.'.'.$ext)
-        ->header('Content-Transfer-Encoding', 'binary');
+            ->header('Cache-Control', 'no-cache private')
+            ->header('Content-Description', 'File Transfer')
+            ->header('Content-Type', $doc->mime)
+            ->header('Content-length', strlen($docc))
+            ->header('Content-Disposition', 'attachment; filename=' . $doc->file_name . '.' . $ext)
+            ->header('Content-Transfer-Encoding', 'binary');
     }
 
+    public function corres_filter_data(Request $request)
+    {
+        $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
+        $users = DB::table('approved_apps')->join('users', 'users.id', '=', 'approved_apps.created_by')->select('users.*')->orderby('users.name')->where(DB::RAW("is_normal_user(users.id)"), 1)->get();
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        $user_id = Auth::user()->id;
+        $company_id = $request->input('company_id');
+        $category_type = $request->input('category_type');
+        if ($hasRole[0] == 'Admin') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                ->orderBy('request_hd.status', 'asc')
+                ->orderBy('request_hd.id', 'asc');
+            if ($category_type !== 'all') {
+                $reqs->where('req_category.id', $category_type);
+            }
+            if ($company_id !== 'all') {
+                $reqs->where('request_hd.user_id', $company_id);
+            }
+            $reqs = $reqs->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
+        }
+        return view('new_correspondence.index', compact('reqs', 'hasRole', 'users', 'moduleRows', 'company_id', 'category_type'));
+    }
+
+    public function claimcorrespondence($claim_id)
+    {
+        $user_id = Auth::user()->id;
+        $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
+        $users = DB::table('approved_apps')->join('users', 'users.id', '=', 'approved_apps.created_by')->select('users.*')->orderby('users.name')->where(DB::RAW("is_normal_user(users.id)"), 1)->get();
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        if ($hasRole[0] == 'Admin') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                ->where('request_hd.claim_id', $claim_id)
+                ->orderby('request_hd.status', 'asc')
+                ->orderby('request_hd.id', 'asc')
+                ->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
+        } elseif ($hasRole[0] == 'Admin-Meity') {
+            $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
+                ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
+                ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
+                ->join('type_of_request', 'type_of_request.id', '=', 'request_hd.type_of_req')
+                ->where('request_hd.visible', 1)
+                ->orWhere('request_hd.user_id', $user_id)
+                ->orwhere('request_hd.raised_for_user', $user_id)
+                ->orderby('request_hd.status', 'asc')
+                ->orderby('request_hd.id', 'asc')
+                ->get(['request_hd.*', 'users.name', 'req_category.category_desc', 'subtype_desc', 'type_of_request.type_desc']);
+        }
+        return view('new_correspondence.index', compact('reqs', 'hasRole', 'users', 'moduleRows', 'claim_id'));
+    }
+
+    public function ClaimNumberList($app_id)
+    {
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        $app_id = Auth::user()->id;
+        if (in_array('Admin', $hasRole)) {
+            $app_id = $app_id;
+        }
+        $claim_no = DB::table('plimd.claims_masters as cm')
+            ->join('qtrs', 'qtrs.id', '=', 'cm.from_qtr_id')
+            ->join('qtrs as qtrs1', 'qtrs1.id', '=', 'cm.to_qtr_id')
+            ->select(DB::raw("CONCAT('Claim-', cm.fy, ' (',qtrs.month,'-',qtrs1.month,')') AS claim_number"), 'cm.id as claim_id', 'cm.app_id')
+            ->where('created_by', $app_id)
+            ->get();
+        $applicant_data_vw = [
+            'claim_no' => $claim_no
+        ];
+        return json_encode($applicant_data_vw);
+    }
 }

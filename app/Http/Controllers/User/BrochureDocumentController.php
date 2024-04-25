@@ -44,26 +44,19 @@ class BrochureDocumentController extends Controller
 
     public function brochureList($id)
     {
-        $appMast = DB::table("approved_apps")->where('created_by',Auth::user()->id)->where('id', $id)->first();
-       
-        if($appMast->round==1)
+        $apps = DB::table("approved_apps")->where('created_by',Auth::user()->id)->where('status', 'S')->where('id', $id)->first();
+      
+        
+    
+        if (!$apps)
         {
-            
-            $apps = ApplicationMastRound1::where('id', $id)->where('created_by',Auth::user()->id)->where('status', 'S')->first();
-            //dd($apps);
-        }
-        else{
-            $apps = ApplicationMast::where('id', $id)->where('created_by',Auth::user()->id)->where('status', 'S')->first();
-        }
-        if (!$apps) {
             alert()->error('Applicant Not Submitted!', 'Attention!')->persistent('Close');
-            return redirect()->route('adminshared.apps.dash');
+            return redirect()->back();
         }
 
-        // $approved_prods=DB::select("select * from approved_apps aa 
-        // join eligible_products ep on aa.eligible_product = ep.id
-        // join users u on aa.created_by = u.id
-        // where aa.status = 'S' and is_normal_user(u.id) = 1 and aa.id=$id");
+    
+
+   
         $approved_prods = DB::table('approved_apps as aa')
         ->join('eligible_products as ep', 'ep.id', '=', 'aa.eligible_product')
         ->join('users as u', 'u.id', '=', 'aa.created_by')

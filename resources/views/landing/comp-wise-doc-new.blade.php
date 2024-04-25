@@ -134,6 +134,7 @@ div.dataTables_wrapper div.dataTables_length select {
                                                                 'landing.partials.modal.brochureVersionModal'
                                                             )
                                                         @endif
+                                                        </td>
                                                         </tr>
                                                         
                                                     @endforeach
