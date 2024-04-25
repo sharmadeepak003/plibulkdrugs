@@ -45,6 +45,24 @@ return [
             'auth_mode' => null,
         ],
 
+        'ifcidgm' => [
+
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOSTD', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORTD', 587),
+            'encryption' => env('MAIL_ENCRYPTIOND', 'tls'),
+            'username' => env('MAIL_USERNAMED'),
+            'password' => env('MAIL_PASSWORDD'),
+            'timeout' => null,
+            'auth_mode' => null,
+              'from' => [
+                'address' => env('MAIL_USERNAMED'),
+                'name' => 'DGM Advisory',
+            ],
+
+
+        
+
         'ses' => [
             'transport' => 'ses',
         ],

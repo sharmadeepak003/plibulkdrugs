@@ -336,7 +336,7 @@ Route::get('claims/correspondanceView/{claim_id}','Admin\ClaimIncentiveControlle
 
 //24042024 by azeem
 Route::get('correspondence/ClaimNumberList/{user_type}', 'new_correspondence\RequestController@ClaimNumberList');
-Route::get('/correspondence_filter', 'new_correspondence\RequestController@corres_filter_data')->name('correspondence_filter');
+Route::get('correspondence_filter', 'new_correspondence\RequestController@corres_filter_data')->name('correspondence_filter');
 
 Route::get('grievances/list', 'Admin\Grievances\GrievancesController@index')->name('grievances_list');
 Route::get('grievances/respond/{id}', 'Admin\Grievances\GrievancesController@respond')->name('grievances_respond');

@@ -21,7 +21,7 @@ class RequestController extends Controller
         $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
         $users = DB::table('approved_apps')->join('users', 'users.id', '=', 'approved_apps.created_by')->select('users.*')->orderby('users.name')->where(DB::RAW("is_normal_user(users.id)"), 1)->get();
         $hasRole = Auth::user()->getRoleNames()->toArray();
-        if ($hasRole[0] == 'Admin') {
+        if(in_array("CorresReply", $hasRole) || in_array("SuperAdmin", $hasRole) || in_array("Admin", $hasRole)){
             $reqs = RequestHd::join('users', 'request_hd.user_id', '=', 'users.id')
                 ->join('req_category', 'request_hd.cat_id', '=', 'req_category.id')
                 ->join('req_category_subtype', 'request_hd.cat_subtype', '=', 'req_category_subtype.id')
@@ -168,11 +168,22 @@ class RequestController extends Controller
     public function usersList($request_type)
     {
         $role_id = DB::table('req_user')->where('id', $request_type)->first();
+
+        if($request_type==3)
+        {
         $users = DB::table('users as u')
+            ->join('model_has_roles as mhr', 'mhr.model_id', '=', 'u.id')
+            ->where('mhr.role_id', 11)
+            ->select('u.name', 'u.id')
+            ->get();
+        }
+    else{
+            $users = DB::table('users as u')
             ->join('model_has_roles as mhr', 'mhr.model_id', '=', 'u.id')
             ->where('mhr.role_id', $role_id->role_id)
             ->select('u.name', 'u.id')
             ->get();
+        }
 
 
         return json_encode($users);
@@ -312,9 +323,44 @@ class RequestController extends Controller
         $portal_name = env('APP_NAME');
         $data = array('email' => $recipientRow->email, 'user_name' => $recipientRow->name, 'module_name' => $module_name, 'user_type' => $user_type, 'request_type' => $request_type->type_desc, 'user_name' => Auth::user()->name, 'body_message' => $request->msg, 'status' => 'open');
         Mail::send('emails.requestsubmit', $data, function ($message) use ($data, $portal_name) {
-            $message->to($data['email'])->subject("PLI Scheme for Medical Devices || Query Submitted Succesfully");
-            $message->cc('mdpli@ifciltd.com', 'PLI Medical Devices');
+            $message->to($data['email'])->subject("PLI Scheme for Bulk Drugs || Query Submitted Succesfully");
+            $message->cc('bdpli@ifciltd.com', 'PLI Bulk Drugs');
         });
+
+        /**
+         * For DGM
+         */
+        if($request->hasFile('reqdoc')){
+        $docMsg  = 'Documents Available';
+        } else {
+        $docMsg  = 'No Documents';
+        }  
+
+        $reg = '';
+        if(in_array('Admin', Auth::user()->getRoleNames()->toArray()))
+        {
+            $reg = 'DGM-PLIBD';
+        }
+
+
+
+
+
+        $userDetails = DB::table('users')->where('id',$request->request_to)->first();
+        $data = array('name'=>$userDetails->name,'app_no'=>$request->application_no,
+                    'email'=>$userDetails->email,'msg'=>$request->msg,'docExist'=>$docMsg,'reg'=> $reg );
+
+
+
+
+        //  dd($data);
+                Mail::mailer('ifcidgm')
+                ->send('emails.correspondence', $data, function($message) use($data) {
+                    $message->to($data['email'],$data['name'])->subject
+                    ('PLIBD - Correspondence');
+                    $message->cc('bdpli@ifciltd.com', 'PLIBD');
+            });
+
 
         alert()->success('Record Submitted', 'Success')->persistent('Close');
         return redirect()->route('newcorrespondence.index');
