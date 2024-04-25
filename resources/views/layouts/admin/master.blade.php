@@ -10,12 +10,12 @@
     <title>PLI BD Portal</title>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('summernote/summernote-bs4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/admin/master.css') }}" rel="stylesheet">
 
 
 
- <link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet"/> 
+    <link href="{{ asset('Toastr/toastr.min.css') }}" rel="stylesheet" />
 
     @stack('styles')
 </head>
@@ -69,17 +69,18 @@
                     <div class="row">
                         <div class="col-sm-12">
                             @guest
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             @else
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();"
-                                class="btn btn-outline-warning btn-sm btn-block">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                    class="btn btn-outline-warning btn-sm btn-block">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             @endguest
                         </div>
                     </div>
@@ -91,210 +92,216 @@
                         data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="{{ route('admin.home') }}" class="nav-link active">
-                                <i class="nav-icon fas fa-chart-bar text-info"></i>
-                                <p>
-                                    Dashboard Summary
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="https://emails.azure.microsoft.com/redirect/?destination=https%3A%2F%2Fapp.powerbi.com%2FRedirect%3Faction%3DOpenLink%26linkId%3DUOlEGVafE5%26ctid%3De01f42f1-7a24-466f-8e70-66a4e507ee05%26pbi_source%3DlinkShare&p=bT1hYzdhYmE5MS03ZGQzLTRmZTMtOTc3My00YmFlMTNkMWY0YzcmdT1hZW8mbD1SZWRpcmVjdA%3D%3D"
-                                class="nav-link">
-                                <i class="nav-icon fas fa-chart-bar" aria-hidden="true"></i>
-                                <p>Reporting Dashboard</p>
-                            </a>
-                        </li>
-<li class="nav-item">
-                            <a href="{{ route('admin.prayas.getdata') }}" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>Prayas</p>
-                            </a>
-                        </li>
+                        @if (!Auth::user()->hasRole('CorresReply'))
 
-                        <li class="nav-item">
-                            <a href="{{ route('admin.claim.claimdashboard') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt "></i>
-                                <p>
-                                    Incentive Claim Form
-                                </p>
-                            </a>
-                        </li>
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('admin.bgtracker.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-coins"></i>
-                                <p>
-                                    BG Tracker
-                                </p>
-                            </a>
-                        </li>
-                        {{-- inject method you can call direct function from controller --}}
-                        @inject('qtr_id', 'App\Http\Controllers\Admin\QRRController')
 
-                        <li class="nav-item">
-                            <a href="{{ route('admin.qrr.dash',['qtr'=>$qtr_id::getqrr()]) }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt "></i>
-                                <p>
-                                    QRR
-                                </p>
-                            </a>
-                        </li>
-<li><a href="{{ route('admin.claims.incentive',['fy'=>'1']) }}" class="dropdown-item">Claims Incentive</a></li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.additionaldetail.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>Edit Detail</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.authoriseSignatorylist.admin_dash','ALL') }}" class="nav-link">
-                                <i class="nav-icon fas fa-edit""></i>
-                                <p>Change Request</p>
-                            </a>
-                        </li>
-                        <li class=" nav-item">
-                            <a href="{{ route('newcorrespondence.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-comment-alt"></i>
-                                <p>Correspondence Module</p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Registrations
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.home') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-chart-bar text-info"></i>
+                                    <p>
+                                        Dashboard Summary
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://emails.azure.microsoft.com/redirect/?destination=https%3A%2F%2Fapp.powerbi.com%2FRedirect%3Faction%3DOpenLink%26linkId%3DUOlEGVafE5%26ctid%3De01f42f1-7a24-466f-8e70-66a4e507ee05%26pbi_source%3DlinkShare&p=bT1hYzdhYmE5MS03ZGQzLTRmZTMtOTc3My00YmFlMTNkMWY0YzcmdT1hZW8mbD1SZWRpcmVjdA%3D%3D"
+                                    class="nav-link">
+                                    <i class="nav-icon fas fa-chart-bar" aria-hidden="true"></i>
+                                    <p>Reporting Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.prayas.getdata') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>Prayas</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.claim.claimdashboard') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt "></i>
+                                    <p>
+                                        Incentive Claim Form
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.bgtracker.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-coins"></i>
+                                    <p>
+                                        BG Tracker
+                                    </p>
+                                </a>
+                            </li>
+                            {{-- inject method you can call direct function from controller --}}
+                            @inject('qtr_id', 'App\Http\Controllers\Admin\QRRController')
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.qrr.dash', ['qtr' => $qtr_id::getqrr()]) }}" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt "></i>
+                                    <p>
+                                        QRR
+                                    </p>
+                                </a>
+                            </li>
+                            <li><a href="{{ route('admin.claims.incentive', ['fy' => '1']) }}"
+                                    class="dropdown-item">Claims Incentive</a></li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.additionaldetail.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>Edit Detail</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.authoriseSignatorylist.admin_dash', 'ALL') }}"
+                                    class="nav-link">
+                                    <i class="nav-icon fas fa-edit""></i>
+                                    <p>Change Request</p>
+                                </a>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Registrations
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.users.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Overview
+                                                <span class="right badge badge-danger">New</span>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>
+                                        Applications
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.apps.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Overview
+                                                <span class="right badge badge-danger">New</span>
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.appstatus.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Application Status</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.acknowledgement.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-inbox"></i>
+                                    <p>
+                                        Acknowledgment
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.MIS.index', ['qtr' => 202101]) }}" class="nav-link">
+                                    <i class="nav-icon fa fa-cloud"></i>
+                                    <p>
+                                        MIS
+                                    </p>
+                                </a>
+                            </li>
+                            @if (AUTH::user()->hasRole('Admin'))
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.users.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Overview
-                                            <span class="right badge badge-danger">New</span>
+                                    <a href="{{ route('admin.create_id') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-cloud"></i>
+                                        <p>
+                                            Admin Listing
                                         </p>
                                     </a>
                                 </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>
-                                    Applications
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
+                            @endif
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link active">
+                                    <em class="nav-icon fas fa-file-alt text-info"></em>
+                                    <p>
+                                        Invoice
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.mail.index') }}" class="nav-link active">
+                                            <em class="far fa-circle nav-icon"></em>
+                                            <p>PLI Fixed
+                                                {{-- <span class="right badge badge-danger">New</span> --}}
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.claimvariable.index') }}" class="nav-link active">
+                                            <em class="far fa-circle nav-icon"></em>
+                                            <p>PLI Claim Variable
+                                                {{-- <span class="right badge badge-danger">New</span> --}}
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('admin.parkclaimvariable.index') }}"
+                                            class="nav-link active">
+                                            <em class="far fa-circle nav-icon"></em>
+                                            <p>Park Claim Variable</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('admin.admin_brochure.index') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-file text-info"></i>
+                                    <p>
+                                        Product Brochures
+                                    </p>
+                                </a>
+                            </li>
+
+
+                            @if (AUTH::user()->hasRole('Developer'))
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.apps.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Overview
-                                            <span class="right badge badge-danger">New</span>
+                                    <a href="{{ route('admin.logs') }}" class="nav-link">
+                                        <i class="nav-icon fa fa-history"></i>
+                                        <p>
+                                            Logs
                                         </p>
                                     </a>
                                 </li>
+                            @endif
+                            @if (AUTH::user()->hasRole('Admin'))
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.appstatus.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Application Status</p>
+                                    <a href="{{ route('admin.grievances_list') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-comments"></i>
+                                        <p>Grievances</p>
                                     </a>
                                 </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.acknowledgement.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-inbox"></i>
-                                <p>
-                                    Acknowledgment
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('admin.MIS.index',['qtr'=>202101]) }}" class="nav-link">
-                                <i class="nav-icon fa fa-cloud"></i>
-                                <p>
-                                    MIS
-                                </p>
-                            </a>
-                        </li>
-                         @if (AUTH::user()->hasRole('Admin'))
-                        <li class="nav-item">
-                            <a href="{{ route('admin.create_id') }}" class="nav-link">
-                                <i class="nav-icon fa fa-cloud"></i>
-                                <p>
-                                    Admin Listing
-                                </p>
-                            </a>
-                        </li>
-                        @endif
-			<li class="nav-item has-treeview">
-                            <a href="#" class="nav-link active">
-                                <em class="nav-icon fas fa-file-alt text-info"></em>
-                                <p>
-                                    Invoice
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.mail.index') }}" class="nav-link active">
-                                        <em class="far fa-circle nav-icon"></em>
-                                        <p>PLI Fixed
-                                            {{-- <span class="right badge badge-danger">New</span> --}}
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" >
-                                    <a href="{{ route('admin.claimvariable.index') }}" class="nav-link active">
-                                        <em class="far fa-circle nav-icon"></em>
-                                        <p>PLI Claim Variable
-                                            {{-- <span class="right badge badge-danger">New</span> --}}
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.parkclaimvariable.index') }}"  class="nav-link active">
-                                        <em class="far fa-circle nav-icon"></em>
-                                        <p>Park Claim Variable</p>
-                                    </a>
-                                </li>          
-                               
-                            </ul>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('admin.admin_brochure.index') }}" class="nav-link active">
-                                <i class="nav-icon fas fa-file text-info"></i>
-                                <p>
-                                    Product Brochures
-                                </p>
-                            </a>
-                        </li>
-
-                        
-@if (AUTH::user()->hasRole('Developer'))
-<li class="nav-item">
-    <a href="{{ route('admin.logs') }}" class="nav-link">
-        <i class="nav-icon fa fa-history"></i>
-        <p>
-            Logs
-        </p>
-    </a>
-</li>
-@endif
-@if (AUTH::user()->hasRole('Admin'))
-
-<li class="nav-item">
-			<a href="{{ route('admin.grievances_list') }}" class="nav-link">
-			<i class="nav-icon fas fa-comments"></i>
-			<p>Grievances</p>
-			</a>
-		</li>
-			@endif
+                            @endif
+                            @endif
+                            <li class=" nav-item">
+                                <a href="{{ route('newcorrespondence.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-comment-alt"></i>
+                                    <p>Correspondence Module</p>
+                                </a>
+                            </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -330,8 +337,8 @@
     <script src="{{ asset('js/Chart.min.js') }}"></script>
     <script src="{{ asset('js/chartjs-plugin-datalabels.min.js') }}"></script>
     <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('summernote/summernote-bs4.min.js') }}"></script>
- <script src="{{ asset('Toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('summernote/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('Toastr/toastr.min.js') }}"></script>
 
 
 

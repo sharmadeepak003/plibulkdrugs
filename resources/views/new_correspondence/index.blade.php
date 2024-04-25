@@ -61,7 +61,7 @@
                         </div>
                         {{-- @if (AUTH::user()->hasRole('Admin')) --}}
 
-                        @if ($hasRole[0] != 'Admin-Ministry')
+                        {{-- @if ($hasRole[0] != 'Admin-Ministry')
                             @if (!isset($claim_id))
                                 <div class="col-md-2">
                                     <a href="{{ route('reqcreate.create') }}"
@@ -69,7 +69,14 @@
                                         <i class="fas fa-user-plus"></i> New Request</a>
                                 </div>
                             @endif
-                        @endif
+                        @endif --}}
+                        @if(in_array("CorresReply", $hasRole) || in_array("Applicant", $hasRole) )
+                        <div class="col-md-2">
+      <a href="{{ route('reqcreate.create') }}"
+         class="btn btn-warning btn-sm form-control form-control-sm">
+      <i class="fas fa-user-plus"></i> New Request</a>
+    </div>
+   @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -129,12 +136,17 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{-- {{ dd($hasRole[0]) }} --}}
                                                     @if ($hasRole[0] == $req->pending_with && $req->status != 'C')
+                                                    
+                                                    @if(in_array("CorresReply", $hasRole) || in_array("Applicant", $hasRole) )
                                                         <a href="{{ route('reqcreate.edit', ['id' => $req->id]) }}"
                                                             class="btn btn-warning btn-sm btn-block">Reply</a>
 
-                                                        </button>
+                                                    @else
+                                                        <a href="{{ route('reqcreate.show', $req->id) }}"
+                                                            class="btn btn-success btn-sm btn-block">View</a>
+
+                                                    @endif
                                                     @elseif ($req->status == 'C')
                                                         <a href="{{ route('reqcreate.show', $req->id) }}"
                                                             class="btn btn-success btn-sm btn-block">View</a>
