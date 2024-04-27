@@ -140,11 +140,13 @@
                                     <thead>
                                         <tr class="table-primary">
                                             <th class="text-center">Sr No</th>
-                                            <th class="text-center" style="width: 20%">Date of Submission of claims by beneficiary</th>
+                                            <th class="text-center" style="width: 20%">Claim Period</th>
+                                            <th class="text-center" style="">Detail of queries raised by PMA</th>
+                                            <th class="text-center" style="width: 20%">Date of Submission of incentive claim</th>
                                             <th class="text-center">Complete Information by Applicant</th>
-                                            <th class="text-center">Report to Ministry by PMA</th>
-                                            <th class="text-center">Date of approval of the claim by competent authority</th>
-                                            <th class="text-center">Date of disbursal of claim by PMA</th>
+                                            <th class="text-center">Report Submitted by PMA to Ministry</th>
+                                            <th class="text-center">Date of action taken by Compitent Authority</th>
+                                            <th class="text-center">Date of disbursment</th>
                                             <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
@@ -154,18 +156,22 @@
                                             @foreach ($getClaimIncentiveData as $key => $data)
                                                 <tr>
                                                     <td class="text-center">{{ $key + 1 }}</td>
-                                                    <td class="text-center"> {{date('Y-m-d',strtotime($data->claim_filing))}}</td>
-                                                    <td class="text-center">{{$data->expsubdate_reportinfo}}</td>
-                                                    <td class="text-center">{{$data->expsubdate_reportmeitytopma}}</td>
-                                                    <td class="text-center">{{$data->appr_date}}</td>
-                                                    <td class="text-center">{{$data->date_of_disbursal_claim_pma}}</td>
-                                                   
+                                                    <td class="text-center">{{$qtr->where('fy',$data->claim_fy)->first()->fy}} ({{$qtr->where('fy',$data->claim_fy)->first()->start_month}}-{{$qtr->where('fy',$data->claim_fy)->first()->month}})</td>
+                                                    <td class="text-center">{{($data->first_query_by_pma != null)?date('d-m-Y',strtotime($data->first_query_by_pma)):''}}</td>
+                                                    <td class="text-center">{{($data->claim_filing != null)?date('d-m-Y',strtotime($data->claim_filing)):''}}</td>
+                                                    <td class="text-center">{{($data->expsubdate_reportinfo != null)?date('d-m-Y',strtotime($data->expsubdate_reportinfo)):''}}</td>
+                                                    <td class="text-center">{{($data->expsubdate_reportmeitytopma != null)?date('d-m-Y',strtotime($data->expsubdate_reportmeitytopma)):''}}</td>
+                                                    <td class="text-center">{{($data->appr_date != null)?date('d-m-Y',strtotime($data->appr_date)):''}}</td>
+                                                    <td class="text-center">{{($data->date_of_disbursal_claim_pma !== null)?date('d-m-Y',strtotime($data->date_of_disbursal_claim_pma)):''}}</td>
+                                                    {{-- {{dd($data->status)}} --}}
                                                         @if($data->status == 'A')
                                                             <td class="text-center">Approved</td>
                                                         @elseif($data->status == 'UP')
-                                                        <td class="text-center">Under Process</td>
+                                                            <td class="text-center">Under Process</td>
+                                                        @elseif($data->status == 'R')
+                                                            <td class="text-center">Rejected</td>
                                                         @else
-                                                        <td class="text-center">Rejected</td>
+                                                            <td class="text-center"></td>
                                                         @endif
                                                     
                                             @endforeach
@@ -187,14 +193,15 @@
                 </div>
             </div>
             @foreach ($getClaimIncentiveData as $key => $data)
-            <div class="col-12">
-                <div class="bu">
+            <div class="col-12 mt-5">
+                <div class="bu mb-5">
                     @if($data->status == 'A')
                     <span class="badge badge-success">Approved</span>
                         @elseif($data->status == 'UP')
                         <span class="badge badge-warning">Under Process</span>
-                        @else
+                        @elseif($data->status == 'R')
                         <span class="badge badge-danger">Rejected</span>
+                        @else
                         @endif
                    
                 </div>
@@ -208,23 +215,23 @@
                   <div class="row justify-content-between">
                     <div class="order-tracking {{($data->claim_filing !== null)?'completed':''}} ">
                         <span class="is-complete"></span>
-                        <p>Date of Submission of claims by beneficiary<br><span>{{date('Y-m-d',strtotime($data->claim_filing))}}</span></p>
+                        <p>Submission of incentive claim</p>
                     </div>
                     <div class="order-tracking {{($data->expsubdate_reportinfo !== null)?'completed':''}}">
                         <span class="is-complete"></span>
-                        <p>Complete Information by Applicant<br><span>{{date('Y-m-d',strtotime($data->expsubdate_reportinfo))}}</span></p>
+                        <p>Complete Information by Applicant</p>
                     </div>
                     <div class="order-tracking {{($data->expsubdate_reportmeitytopma !== null)?'completed':''}}">
                         <span class="is-complete"></span>
-                        <p>Report to Ministry by PMA<br><span>{{date('Y-m-d',strtotime($data->expsubdate_reportmeitytopma))}}</span></p>
+                        <p>Report Submitted by PMA to Ministry</p>
                     </div>
                     <div class="order-tracking {{($data->appr_date !== null)?'completed':''}}">
                         <span class="is-complete"></span>
-                        <p>Date of approval of the claim by competent authority<br><span>{{($data->appr_date !== null)?date('Y-m-d',strtotime($data->appr_date)):''}}</span></p>
+                        <p>Action taken by Competent Authority</p>
                     </div>
                     <div class="order-tracking {{($data->date_of_disbursal_claim_pma !== null)?'completed':''}}">
                         <span class="is-complete"></span>
-                        <p>Date of disbursal of claim by PMA<br><span>{{($data->date_of_disbursal_claim_pma !== null)?date('Y-m-d',strtotime($data->date_of_disbursal_claim_pma)):''}}</span></p>
+                        <p>Disbursed</p>
                     </div>
                 </div>
                   

@@ -459,8 +459,9 @@ class ClaimController extends Controller
         
         $getClaimIncentiveData =  DB::table('admin_claim_incentive')->where('claim_id',$claimId)->where('claim_status','=','S')->get();
 
-        return view('user.claims.claimincentivestatus', compact('getClaimIncentiveData'));
-        dd($claimId, $getClaimIncentiveData);
+        $qtr = DB::table('qtr_master')->get();
+        return view('user.claims.claimincentivestatus', compact('getClaimIncentiveData','qtr'));
+        
     }
 
 

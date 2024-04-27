@@ -23,6 +23,7 @@ class ClaimIncentiveController extends Controller
         if($fy_id == 'ALL'){
             $claimData =  DB::table('admin_claim_incentive')->orderby('id','ASC')->get();
         }else{
+            
             $claim_fy = DB::table('fy_master')->where('id',$fy_id)->where('status',1)->first();
             $claimData =  DB::table('admin_claim_incentive')->where('claim_fy',$claim_fy->fy_name)->orderby('id','ASC')->get();
         }

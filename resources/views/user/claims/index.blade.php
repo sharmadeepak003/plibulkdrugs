@@ -140,7 +140,7 @@
                                                             @endif
                                                         @else
                                                             @if ($cm_val->status == 'S')
-                                                                <a href="{{ route('claims.claimpreveiw', $cm_val->claim_id) }}"
+                                                                <a href="{{ route('claims.claimpreview', $cm_val->claim_id) }}"
                                                                     class="btn btn-success btn-sm btn-block">View</a>
                                                             @else
                                                                 <button type="button"

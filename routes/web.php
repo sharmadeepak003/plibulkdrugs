@@ -262,7 +262,7 @@ Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 've
     
     Route::resource('claims', 'User\Claims\ClaimController');
      // claimincentivestatus 23042024
-     Route::get('claimincentivestatus/{claimId}','User\Claims\CLaimController@claimincentivestatus')->name('claims.claimincentivestatus');
+     Route::get('claimincentivestatus/{claimId}','User\Claims\ClaimController@claimincentivestatus')->name('claims.claimincentivestatus');
     // Route::get('claims/create/{id}','User\Claims\ClaimController@create')->name('claims.create');
 
 Route::get('claims/create/{id}/{fy}','User\Claims\ClaimController@create')->name('claims.create');
@@ -349,7 +349,7 @@ Route::get('grievances/respond/view/{id}','Admin\Grievances\GrievancesController
 
 // Preview or admin and users Claim
 Route::group(['middleware' => ['role:Approved-Applicants|Admin', 'verified', 'TwoFA']], function () {
-    Route::get('claims/claimpreveiw/{id}', 'User\Claims\ClaimPreviewController@claimpreveiw')->name('claims.claimpreveiw');
+    Route::get('claims/claimpreveiw/{id}', 'User\Claims\ClaimPreviewController@claimpreveiw')->name('claims.claimpreview');
     Route::get('doc/download/{docid}','User\Claims\ClaimPreviewController@downloadfile')->name('doc.download');
 //Route::get('doc/download/{docid}','User\Claims\ClaimPreviewController@downloadfile')->name('doc.down');
 Route::get('claimdocumentupload/show/{claim_id}', 'User\Claims\ClaimDocumentUploadController@show')->name('claimdocumentupload.show');

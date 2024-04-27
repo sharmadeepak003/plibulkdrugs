@@ -12,7 +12,7 @@
 @section('content')
     <div class="">
         <div class="card-body">
-            <form method="get" action="{{ route('admin.claims.claimdashboard', ['fy' => $fy]) }}">
+            <form method="get" action="{{ route('admin.claim.claimdashboard', ['fy' => $fy]) }}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12" style="margin-left: 10%">
@@ -22,6 +22,8 @@
                         <select name="fy_name" id="fy_name" class="form-control col-md-12">
                             <option value="2022-2023" {{ $fy === '2022-2023' ? 'selected' : '' }}>2022-23</option>
                             <option value="2023-2024" {{ $fy === '2023-2024' ? 'selected' : '' }}>2023-24</option>
+
+                           
                         </select>
 
                     </div>
@@ -69,7 +71,18 @@
                                             <td>{{ $app->name }}</td>
                                             <td class="text-center">TS-{{ $app->target_segment }}</td>
                                             <td class="text-center">{{ $app->round }}</td>
-                                            <td class="text-center">{{ $fy }}</td>
+                                            {{-- <td class="text-center">{{ $fy->where('id', $app->fy)->first()->fy_name }}</td> --}}
+                                            <td class="text-center">
+                                                @php
+                                                    $fiscalYear = $fy->where('id', $app->fy)->first();
+                                                @endphp
+                                                @if ($fiscalYear)
+                                                    {{ $fiscalYear->fy_name }}
+                                                @else
+                                                    
+                                                @endif
+                                            </td>
+                                            
                                             <td class="text-center">
                                                 @if ($app->claim_period == 1)
                                                     Quarterly
@@ -129,7 +142,7 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                            <td> <a href="{{ route('claimcorrespondence', $app->claim_id) }}"
+                                            <td> <a href="{{ url('claimcorrespondence', $app->claim_id) }}"
                                                 class="btn btn-success btn-sm btn-block"><i
                                                     class="fa fa-eye"></i> View</a></td>
                                         </tr>

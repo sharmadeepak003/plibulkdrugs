@@ -47,13 +47,15 @@ class ClaimController extends Controller
         $this->middleware(['role:Admin'], ['only' => ['claim_edit']]);
     }
 
-    public function claimdashboard()
+    public function claimdashboard(Request $request)
     {
-        $fy = DB::table('fy_master')->where('status', 1)->get();
+        
 
-
+        
         // dd($fy);
         $claim_fy=1;
+
+        
         
         $appData = DB::table('approved_apps_details as aa')
             ->leftJoin('claims_masters as cm', function($join) use($claim_fy){
@@ -64,11 +66,12 @@ class ClaimController extends Controller
                 ->where('cm.fy', $claim_fy);
             })
             ->whereRaw('is_normal_user(aa.user_id)=1')
-            ->select('aa.id as app_id','cm.fy','cad.claim_fill_period','aa.name','aa.product','aa.target_segment','aa.id as app_id','aa.target_segment_id','cm.id as claim_id','cm.status as claim_status','cm.submitted_at','cm.updated_at','qtr_master.start_month','qtr_master2.month','cm.revision_dt')
+            ->select('aa.id as app_id','cm.fy','cad.claim_fill_period as claim_period','aa.name','aa.product','aa.target_segment','aa.round as round','aa.id as app_id','aa.target_segment_id','cm.id as claim_id','cm.status as claim_status','cm.submitted_at','cm.updated_at','qtr_master.start_month','qtr_master2.month as end_month','cm.revision_dt')
             ->orderBy('cm.id')
             ->get();
             // dd($fy);
-
+            //dd($appData);
+            $fy = DB::table('fy_master')->where('status', 1)->get();
             $claim_ids= DB::table('claims_masters')->pluck('id')->toArray();
             // dd($claim_ids);
             $incentive_map_data=IncentiveDocMap::whereIn('claim_id',$claim_ids)->get();
@@ -81,6 +84,8 @@ class ClaimController extends Controller
     public function claimyearwise(Request $request)
     {
         $id = $request->fy_name;
+
+        
         
         $getFyData = DB::table('fy_master')->where('id',$id)->where('status', 1)->first();
         $getFy = $getFyData->fy_name;
