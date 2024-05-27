@@ -349,6 +349,8 @@ class PrayasController extends Controller
 
         $kpi_data   = DB::table('prayas_value_data')->where('asondate',$date)->get();
 
+		
+
 		$data = [];
 
         foreach ($kpi_data as $key => $val) {
@@ -358,6 +360,7 @@ class PrayasController extends Controller
             $data[$key]["LValue"] 	= $val->lvalue;
         }
 
+		dd($date,$project_data, $codes,$kpi_data,$date_range, $data);
 		 dd($data);
 
         $str =
@@ -402,8 +405,8 @@ class PrayasController extends Controller
 			),
 			"EncyptedData" => $ecrypted_data
 		)];
-			//dd($paylod);
-			//dd('end');
+			dd($paylod);
+			dd('end');
 		$response = $this->push_to_kpi_dashboard($paylod);
 
 		print 'RESPONSE: ' . print_r($response, true);

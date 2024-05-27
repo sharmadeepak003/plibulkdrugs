@@ -16,6 +16,9 @@ use App\Mail\AppSubmit;
 use App\ProjectParticulars;
 use App\InvestmentParticulars;
 use App\DocumentUploads;
+use App\SubmissionSms;
+use App\AdminSubmissionSms;
+use Str;
 
 
 class AppMastController extends Controller
@@ -139,8 +142,22 @@ class AppMastController extends Controller
         $user = Auth::user();
 
         DB::transaction(function () use ($appMast, $user) {
-            $appMast->save();
+            $->save();
         });
+
+         //below code for toappMast send SMS to Admin 07052024
+         $admin_number = DB::table('users')->where('email', 'dgm.md@ifciltd.com')->first();
+         $SMS = new SubmissionSms();
+         $module = "App";
+         $app_no = Str::replaceFirst('IFCI/', '', $appMast->app_no);
+         $message = array($app_no);
+         $smsResponse = $SMS->sendSMS(Auth::user()->mobile, $message, $module);
+
+         $SMS = new AdminSubmissionSms();
+         $module = "App";
+         $message2 = array($app_no, Auth::user()->name);
+         $smsResponse = $SMS->sendSMS($admin_number->mobile, $message2, $module);
+         // End below code for to send SMS to Admin 07052024
 
 
         try {

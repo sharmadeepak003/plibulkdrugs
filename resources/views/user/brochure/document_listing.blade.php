@@ -63,7 +63,7 @@ Brochure - Document
                                 <tr class="table-primary">
                                     <tr class="table-primary">
                                         <th class="text-center" style="width: 25%">Product Name &nbsp;<span style="color: red">*</span></th>
-                                        <th class="text-center" style="width: 15%">Website Link</th>
+                                        {{-- <th class="text-center" style="width: 15%">Website Link</th> --}}
                                       
                                         <th class="text-center" style="width: 20%">Upload Product Brochure &nbsp;<span style="color: red">*</span></th>
                                         <th class="text-center" style="width: 20%">Upload Tech. Comm. Specs.</th>
@@ -81,9 +81,9 @@ Brochure - Document
                                         {{-- @endif     --}}
                                     @endforeach 
                                 </select></td>
-                                <td>
+                                {{-- <td>
                                     <input type="text" class="form-control form-control-sm valid"  id="websitelink" name="websitelink">
-                                </td>
+                                </td> --}}
                                
                                 <td><input type="file" id="doc_type" name="doc_type"  class="form-control form-control-sm valid"></td>
                                 <td><input type="file" id="broch_other_doc" name="broch_other_doc"  class="form-control form-control-sm valid"></td>
@@ -113,7 +113,7 @@ Brochure - Document
                         <thead>
                             <tr class="table-primary">
                                 <th class="w-20 text-center">Product Name</th>
-                                <th class="w-15 text-center">Website Link</th>
+                                {{-- <th class="w-15 text-center">Website Link</th> --}}
                                 <th class="w-15 text-center">Date & Time</th>
                                 <th class="w-5 text-center">Brochure</th>
                                 <th class="w-5 text-center">Techno Commercial</th>
@@ -125,7 +125,7 @@ Brochure - Document
                             @foreach($contents as $key=>$content)
                             <tr>
                                 <td class="text-center">{{$content->product}}</td>
-                                <td class="text-center">{{$content->websitelink}}</td>
+                                {{-- <td class="text-center">{{$content->websitelink}}</td> --}}
                                 <td class="text-center">{{$content->created_at}}</td>
                                 
                                 <td class="text-center"> <a href="{{ route('app_brochure.bro_down', encrypt($content->id)) }}" 

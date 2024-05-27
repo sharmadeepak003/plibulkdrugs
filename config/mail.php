@@ -59,6 +59,7 @@ return [
                 'address' => env('MAIL_USERNAMED'),
                 'name' => 'DGM Advisory',
             ],
+        ],
 
 
         

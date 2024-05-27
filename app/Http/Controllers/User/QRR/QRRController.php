@@ -40,6 +40,9 @@ use App\InvestmentDetails;
 use App\ApprovalsRequired;
 use App\ManufactureProductCapacity;
 use Exception;
+use App\SubmissionSms;
+use App\AdminSubmissionSms;
+use Str;
 
 class QRRController extends Controller
 {
@@ -542,7 +545,9 @@ class QRRController extends Controller
 
     public function submit($id)
     {
+       
         try{
+           
             $qrrMast = QRRMasters::where('id', $id)->where('status', 'D')->first();
             if (!$qrrMast) {
                 $qrrMast = QRRMasters::where('id', $id)->where('status', 'S')->first();
@@ -575,7 +580,32 @@ class QRRController extends Controller
            
             DB::transaction(function () use ($qrrMast) {
 
+               
                 $qrrMast->save();
+ 
+                 //below code for to send SMS to Admin 07052024
+                $qrr_year = DB::table('qtr_master')->where('qtr_id', $qrrMast->qtr_id)->first();
+                $lastDigit = substr($qrr_year->qtr_id, -1);
+                $period = 'FY '.$qrr_year->fy.' Q'.$lastDigit;
+                //get APP No
+                $getAppNo = DB::table('approved_apps')->where('id',$qrrMast->app_id)->first('app_no');
+                $admin_number = DB::table('users')->where('email', 'dgm.md@ifciltd.com')->first();
+                $SMS = new SubmissionSms();
+                $module = "Qrr";
+                $app_no = Str::replaceFirst('IFCI/', '', $getAppNo->app_no);
+
+                $message = array($period,  $app_no);
+                // $smsResponse = $SMS->sendSMS(Auth::user()->mobile, $message, $module);
+                $smsResponse = $SMS->sendSMS(9625553032, $message, $module);
+ 
+                $SMS = new AdminSubmissionSms();
+                $module = "Qrr";
+                
+                $message2 = array($period, Auth::user()->name);
+                // $smsResponse = $SMS->sendSMS($admin_number->mobile, $message2, $module);
+                $smsResponse = $SMS->sendSMS(9625553032, $message2, $module);
+                dd('Please check your mobile');
+                // End below code for to send SMS to Admin 07052024
 
             //For mail [added by Ajaharuddin Ansari]
             $user1 = DB::table('qrr_master as qm')

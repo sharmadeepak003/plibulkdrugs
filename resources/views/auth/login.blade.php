@@ -14,11 +14,11 @@ Login - PLI Bulk Drugs
     <div class="container">
         <div class="row">
             <div class="col-md-5 col-lg-5 offset-1">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card" style="box-shadow: 0 20px 30px rgba(0,0,0,0.16), 0 20px 30px rgba(0,0,0,0.23);">
+                    <div class="card-header bg-info">
                         <h3>Sign In</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="background: white">
                         <form method="POST" action="{{ route('login') }}" id="loginForm">
                             @csrf
                             <div class="input-group form-group">
@@ -57,7 +57,7 @@ Login - PLI Bulk Drugs
                                 <input type="checkbox" name="remember" id="remember"
                                     {{ old('remember') ? 'checked' : '' }}>
 
-                                <label class="form-check-label" for="remember">
+                                <label class="form-check-label text-dark" for="remember">
                                     {{ __('Remember Me') }}
                                 </label>
                             </div>
@@ -80,11 +80,10 @@ Login - PLI Bulk Drugs
                                 </a>
                                 @endif
                             </div>
-
                         </form>
                     </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-center links">
+                    <div class="card-footer bg-info">
+                        <div class="d-flex justify-content-center links " style="height: auto">
                             Please login with your PAN as user ID
                         </div>
                     </div>
@@ -94,12 +93,12 @@ Login - PLI Bulk Drugs
             <div class="col-md-5 col-lg-5 offset-1">
                 <div class="row" style="width: 120%;">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-info instr-card-header">
-                                <b>Important Instructions</b>
+                        <div class="card" style="box-shadow: 0 20px 30px rgba(0,0,0,0.16), 0 20px 30px rgba(0,0,0,0.23);">
+                            <div class="card-header  instr-card-header bg-info">
+                                <h3>Important Instructions</h3>
                             </div>
                             <div class="card-body instr-card-body">
-                                <ul class="list-group" style="background-color: #000; font-size:13px; height: 358px;">
+                                <ul class="list-group">
                                     <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> Please arrange for all the information before filling
                                         application</li>
                                     {{-- <li class="list-group-item"><i class="fas fa-chevron-right"></i> Please use a strong password to protect your account like Is at least 8 characters long, Contains at least one lowercase letter, Contains at least one uppercase letter, Contains at least one digit and Contains at least one special character from
@@ -116,7 +115,7 @@ Login - PLI Bulk Drugs
                                     <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i> <span class="text-danger">ALWAYS</span> visit the portal
                                         directly instead of
                                         clicking on the links provided in emails or third party websites</li>
-                                    <li class="list-group-item" style="font-size: 13px;"><i class="fas fa-chevron-right"></i>
+                                    <li class="list-group-item" style="font-size: 13px;height:121px"><i class="fas fa-chevron-right"></i>
                                         <span class="text-danger">NEVER</span> respond to any popup,email, SMS or
                                         phone call, no matter how appealing or official looking, seeking your
                                         personal information such as username, password(s), mobile number, etc.

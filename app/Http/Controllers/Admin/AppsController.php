@@ -92,7 +92,7 @@ class AppsController extends Controller
 
     public function preview($id)
     {
-        // dd($id);
+      
         $appMast = Applications::where('status', 'S')->where('id', $id)->first();
         // dd($appMast);
 

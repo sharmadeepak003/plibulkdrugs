@@ -62,7 +62,7 @@ Brochure - Document
                             <thead>
                                 <tr class="table-primary">
                                     <th class="text-center" style="width: 25%">Product Name</th>
-                                    <th class="text-center" style="width: 20%">Website Link</th>
+                                    {{-- <th class="text-center" style="width: 20%">Website Link</th> --}}
                                     <th class="text-center" style="width: 20%">Upload Product Brochure</th>
                                     <th class="text-center" style="width: 20%">Upload Tech. Comm. Specs.</th>
                                 </tr>
@@ -78,7 +78,7 @@ Brochure - Document
                                         @endforeach 
                                     </select>
                                 </td>
-                                <td><input type="text" class="form-control form-control-sm valid"  id="websitelink" name="websitelink"></td>
+                                {{-- <td><input type="text" class="form-control form-control-sm valid"  id="websitelink" name="websitelink"></td> --}}
                                 <td><input type="file" id="doc_type" name="doc_type"  class="form-control form-control-sm valid"></td>
                                 <td><input type="file" id="broch_other_doc" name="broch_other_doc"  class="form-control form-control-sm valid"></td>
                             </tr>
@@ -107,7 +107,7 @@ Brochure - Document
                         <thead>
                             <tr class="table-primary">
                                 <th class="w-20 text-center">Product</th>
-                                <th class="w-15 text-center">Website Link</th>
+                                {{-- <th class="w-15 text-center">Website Link</th> --}}
                                 <th class="w-15 text-center">Date & Time</th>
                                 <th class="w-15 text-center">Created by</th>
                                 <th class="w-5 text-center">Brochure</th>
@@ -121,7 +121,7 @@ Brochure - Document
                             <tr>
                                 <td class="text-center">{{$content->product}}</td>
                                 
-                                <td class="text-center">{{$content->websitelink}}</td>
+                                {{-- <td class="text-center">{{$content->websitelink}}</td> --}}
                                 <td class="text-center">{{$content->created_at}}</td>
                                 <td class="text-center">{{$content->name}}</td>
                                 <td class="text-center"> <a href="{{ route('admin.admin_brochure.bro_down', encrypt($content->id)) }}" 
@@ -164,7 +164,7 @@ Brochure - Document
                         <thead>
                             <tr class="table-primary">
                                 <th class="w-20 text-center">Product</th>
-                                <th class="w-15 text-center">Website Link</th>
+                                {{-- <th class="w-15 text-center">Website Link</th> --}}
                                 <th class="w-15 text-center">Date & Time</th>
                                 <th class="w-15 text-center">Created by</th>
                                 <th class="w-5 text-center">Brochure</th>
@@ -176,7 +176,7 @@ Brochure - Document
                             <tr>
                                 <td class="text-center">{{$val->product}}</td>
                                
-                                <td class="text-center">{{$val->websitelink}}</td>
+                                {{-- <td class="text-center">{{$val->websitelink}}</td> --}}
                                 <td class="text-center">{{$val->created_at}}</td>
                                 <td class="text-center">{{$val->contact_person}}</td>
                                 <td class="text-center"> <a href="{{ route('admin.applicant_brochure.bro_down', encrypt($val->id)) }}" 

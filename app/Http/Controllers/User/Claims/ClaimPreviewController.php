@@ -162,6 +162,7 @@ class ClaimPreviewController extends Controller
         ->get();
        //dd($incetive_doc_map);
        //project detail
+       ///dd($id,$claimMast->created_by,$claimMast->app_id);
        $doc_data=DB::table('claim_doc_info_map')->where('claim_id',$id)->where('created_by',$claimMast->created_by)->where('app_id',$claimMast->app_id)->get();
         $genral_doc=DB::table('claim_gerneral_doc_detail')->where('created_by',$claimMast->created_by)->where('claim_id',$id)->where('app_id',$claimMast->app_id)->get();
         $response=DB::table('claim_gerneral_doc_detail')->where('created_by',$claimMast->created_by)->where('claim_id',$id)->where('app_id',$claimMast->app_id)->pluck('response')->first();
@@ -180,6 +181,8 @@ class ClaimPreviewController extends Controller
 
     
         $maxId =  DB::table('document_uploads as a')->max('id');
+
+        
         if((strlen($id)) > strlen($maxId)){
             $ids = decrypt($id);
         }else{
@@ -188,7 +191,7 @@ class ClaimPreviewController extends Controller
 
         $doc =  DB::table('document_uploads as a')->join('document_master as dm','dm.doc_id','=','a.doc_id')->where('a.id',$ids)->select('a.*','dm.doc_type')->first();
 
-        // dd($doc);
+       //dd($doc,$maxId, $ids );
 
         ob_start();
         fpassthru($doc->uploaded_file);

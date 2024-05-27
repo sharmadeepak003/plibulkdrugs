@@ -11,10 +11,71 @@
         input[type="file"]{
             padding:1px;
         }
+
+        #loader-overlay {
+
+display: none;
+
+position: fixed;
+
+top: 0;
+
+left: 0;
+
+width: 100%;
+
+height: 100%;
+
+background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+
+z-index: 9999; /* Ensure the loader is above other content */
+
+}
+
+
+
+.loader {
+
+position: absolute;
+
+top: 50%;
+
+left: 50%;
+
+transform: translate(-50%, -50%);
+
+border: 4px solid #f3f3f3; /* Light grey */
+
+border-top: 4px solid #3498db; /* Blue */
+
+border-radius: 50%;
+
+width: 50px;
+
+height: 50px;
+
+animation: spin 1s linear infinite; /* Animation */
+
+}
+
+
+
+@keyframes spin {
+
+0% { transform: rotate(0deg); }
+
+100% { transform: rotate(360deg); }
+
+}
     </style>
 @endpush
 
 @section('content')
+<div id="loader-overlay">
+
+    <div class="loader"></div>
+
+</div>
     <div class="row">
         <div class="col-lg-12">
             <form action="{{ route('claimdocumentupload.store','B') }}" id="application-create" role="form" method="POST"
@@ -39,59 +100,103 @@
                                             <thead>
                                                 <th>S.No</th>
                                                 <th></th>
+                                                <th></th>
                                                 <th>PDF Upload</th>
+                                                <th></th>
                                                 <th>Excel Upload</th>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>1</td>
-                                                    <td>Statutory Auditor's Certificate or Independent Chartered Accountant Certificate (with Annexure 1 to 4)
+                                                    <td>Statutory Auditor's Certificate or Independent Chartered Accountant Certificate with Annexure 1 to 4
                                                     </td>
+                                                    <td>
+                                                        <a href="{{ asset('docs/doc_claim/PLI_BD_SA_Certificate_Annexure_i_to_vi.pdf') }}">
+                                                            Format download</a>
+                                                    </td>
+                                                    {{-- <td><input type="file" name="CerSADoc[1]" id="income_tx" class="filePdfInput" filename="PLI_BD_SA_Certificate_Annexure_i_to_vi"></td> --}}
                                                     <td><input type="file" name="CerSADoc[1]" id="income_tx"></td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerSADocExcel[1]" ></td>
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
                                                     <td>Annexure 5 of Statutory Auditor's Certificate or Independent Chartered Accountant Certificate (Sales Register)
                                                     </td>
+                                                    <td>
+                                                        
+                                                    </td>
                                                     <td><input type="file" name="CerSaRegDoc[1]" id="companies_act" ></td>
-                                                    <td><input type="file" name="CerSaRegDocExcel[1]" ></td>
+                                                    <td><a href="{{ asset('docs/doc_claim/PLIBD_Sales_Register.csv') }}">Format
+                                                        download</a></td>
+                                                    <td><input type="file" name="CerSaRegDocExcel[1]" class="fileInput" filename="PLIBD_Sales_Register"></td>
 
                                                 </tr>
                                                 <tr>
                                                     <td>3</td>
                                                     <td>Annexure 6 of SA or Independent Chartered Accountant certifcate (Capex Register)
                                                     </td>
+                                                    <td>
+                                                    </td>
                                                     <td><input type="file" name="CerCapexDoc[1]" id="gst_return" ></td>
-                                                    <td><input type="file" name="CerCapexDocExcel[1]" ></td>
+                                                    <td>
+                                                        <a href="{{ asset('docs/doc_claim/PLIBD_Capex_Register.csv') }}">Format
+                                                            download</a>
+                                                    </td>
+                                                    <td><input type="file" name="CerCapexDocExcel[1]" class="fileInput" filename="PLIBD_Capex_Register"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>4</td>
                                                     <td>CE Certificate stating plant, machinery & equipment have been installed, price is reasonable as per market value and same is used in manufacturing of eligible product
                                                     </td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerCEDoc[1]" ></td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerCEDocExcel[1]" ></td>
                                                 </tr>
                                                 <tr>
                                                     <td>5</td>
-                                                    <td>CE Certificate on capacity installed	                                                    </td>
+                                                    <td>CE Certificate on capacity installed</td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerIntDoc[1]" ></td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerIntDocExcel[1]" ></td>
                                                 </tr>
                                                 <tr>
                                                     <td>6</td>
                                                     <td>Certificate from Statutory Auditor or Independent Chartered Accountant for Intellectual Property Rights (IPRs), patents and copyrights.
                                                     </td>
+                                                    
+                                                    <td></td>
                                                     <td><input type="file" name="CerIntePro[1]" ></td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerInteProExcel[1]" ></td>
                                                 </tr>
                                                 <tr>
                                                     <td>7</td>
                                                     <td> Certificate from Cost Accountant
                                                     </td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerCostDoc[1]" ></td>
+                                                    <td></td>
                                                     <td><input type="file" name="CerCostExcel[1]" ></td>
                                                 </tr>
+
+                                                <tr>
+                                                    <td>8</td>
+                                                    <td>Statutory Auditor's Certificate 
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ asset('docs/doc_claim/PLI_BD_SA_Certificate_for_Incentive_Claim.pdf') }}">
+                                                            Format download</a>
+                                                            
+                                                    </td>
+                                                    <td><input type="file" name="SatAudCerti[1]" id="companies_act" class="filePdfInput" filename="PLI_BD_SA_Certificate_for_Incentive_Claim"></td>
+                                                    <td colspan="3"></td>
+
+                                                </tr>
+
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -223,6 +328,128 @@
             });
         });
     </script>
+
+    {{-- azeem file format check --}}
+    <script>
+        $('.fileInput').change(function(event) {
+
+            var file = event.target.files[0];
+
+            var formData = new FormData();
+
+            formData.append('file', file);
+
+            var filename = $(this).attr('filename');
+
+            formData.append('filename', filename);
+
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajaxSetup({
+
+                headers: {
+
+                    'X-CSRF-TOKEN': csrfToken
+
+                }
+
+            });
+
+            $.ajax({
+                url: '/upload-format',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    $('#loader-overlay').show();
+                },
+
+                success: function(response)
+                {
+
+                    $('#loader-overlay').hide();
+                    if (response.code.trim() == "false") {
+                        swal({
+                            icon: 'error',
+                            text: response.message,
+                        });
+                        $('.fileInput').val('');
+
+                    }
+
+                },
+
+                error: function(xhr, status, error) {
+
+                    $('#message').text("Error uploading file");
+
+                }
+
+            });
+
+        });
+    </script>
+
+
+{{-- SA Certificate --}}
+
+<script>
+    $('.filePdfInput').change(function(event) {
+
+        var file = event.target.files[0];
+            if (file) {
+                var fileName = file.name;
+                var fileExtension = fileName.split('.').pop().toLowerCase(); // Get the file extension
+
+                if (fileExtension !== 'pdf') {
+                    alert('Please select a PDF file.');
+                    $('.filePdfInput').val('');
+                    // Clear the input field if the file is not a PDF
+                    document.getElementById('your-input-element-id').value = '';
+                }
+            }
+            var formData = new FormData();
+            formData.append('file', file);
+            var filename = $(this).attr('filename');
+            formData.append('filename', filename);
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+        $.ajax({
+            url: '/upload-pdf-format',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                $('#loader-overlay').show();
+            },
+            success: function(response) {
+                var responseObject = JSON.parse(response);
+                $('#loader-overlay').hide();
+                if (responseObject.status != 200) {
+                        swal({
+                            icon: 'error',
+                            text: responseObject.result,
+                        });
+
+                        $('.filePdfInput').val('');
+
+                    }
+            },
+            error: function(xhr, status, error) {
+                $('#message').text("Error uploading file");
+            }
+
+        });
+
+    });
+</script>
 @push('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\User\Claims\ClaimUploadBRequest', '#application-create') !!}
 @endpush

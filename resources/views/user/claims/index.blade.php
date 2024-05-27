@@ -110,7 +110,7 @@
 
 
                                                     @if ($cm_val->status == 'D')
-                                                        <td class="text-center" style="background-color: #f3cccc;">Draft
+                                                        <td class="text-center" style="background-color: #f3cccc;">Draft 
                                                         </td>
                                                     @elseif($cm_val->status == 'S')
                                                         <td class="text-center" style="background-color: #97f58a;">Submitted
@@ -121,7 +121,7 @@
                                                         @if ($getSelectedFy->fy_name == '2023-24')
                                                             @if (Carbon\Carbon::now()->lt(Carbon\Carbon::parse('2024-12-31 23:59:00')))
                                                                 @if ($cm_val->status == 'S')
-                                                                    <a href="{{ route('claims.claimpreveiw', $cm_val->claim_id) }}"
+                                                                    <a href="{{ route('claims.claimpreview', $cm_val->claim_id) }}"
                                                                         class="btn btn-success btn-sm btn-block">View</a>
                                                                 @elseif($cm_val->status == 'D')
                                                                     <button type="button"
@@ -140,7 +140,7 @@
                                                             @endif
                                                         @else
                                                             @if ($cm_val->status == 'S')
-                                                                <a href="{{ route('claims.claimpreveiw', $cm_val->claim_id) }}"
+                                                                <a href="{{ route('claims.claimpreview', $cm_val->claim_id) }}"
                                                                     class="btn btn-success btn-sm btn-block">View</a>
                                                             @else
                                                                 <button type="button"
@@ -180,7 +180,7 @@
                                                                         @elseif ($incentive_map_data->where('claim_id', $cm_val->id)->first()->status == 'S')
                                                                             <a href="{{ route('claimdocumentupload.show', $cm_val->id) }}"
                                                                                 class="btn btn-success btn-sm btn-block"><i
-                                                                                    class="fa fa-eye"></i> Submitted
+                                                                                    class="fa fa-eye"></i> Submitted {{$cm_val->id}}
                                                                             </a>
                                                                 @endif
                                                             @else
@@ -217,11 +217,12 @@
                                                     <td>
                                                         <a href="{{ route('claims.claimincentivestatus', $cm_val->id) }}" class="btn btn-warning btn-sm btn-block">View</a>
                                                     </td>
+                                                    
                                                 </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="10" style="color: red">No data found</td>
+                                                <td colspan="11" style="color: red"><center>No Data Found</center></td>
                                             </tr>
                                         @endif
                                     </tbody>

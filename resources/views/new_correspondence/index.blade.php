@@ -8,7 +8,7 @@
 @section('content')
     @if (Auth::user()->hasRole('Admin') or Auth::user()->hasRole('ViewOnlyUser'))
         @if (!isset($claim_id))
-            <form id="correspondenceFilterForm" action="{{ route('admin.correspondence_filter') }}" method="GET">
+            <form id="correspondenceFilterForm" action="{{ route('correspondence_filter') }}" method="GET">
                 @csrf
                 <div class="row m-3">
                     <div class="col-md-3 offset-md-1">
