@@ -232,6 +232,9 @@ Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 've
     Route::get('projectprogress/create/{id}/{qrr}','User\QRR\ProjectProgressController@create')->name('projectprogress.create');
     Route::resource('uploads', 'User\QRR\UploadsController');
     Route::get('uploads/create/{id}/{qrr}','User\QRR\UploadsController@create')->name('uploads.create');
+    Route::post('uploads/store', 'User\QRR\UploadsController@store')->name('uploads.store'); //06052024 PLIBD QRR Issue
+
+
     Route::resource('manuaddress', 'User\QRR\ManuFactAddressController');
     Route::get('manuaddress/delete/{id}', 'User\QRR\ManuFactAddressController@delete')->name('manuaddress.delete');
     Route::get('manuaddress/deleteProduct/{id}', 'User\QRR\ManuFactAddressController@deleteProduct')->name('manuaddress.deleteProduct');
@@ -257,6 +260,9 @@ Route::group(['middleware' => ['role:ActiveUser','role:Approved-Applicants', 've
 	Route::get('app_brochure/edit_document_listing/{app_id}/{id}','User\BrochureDocumentController@editDocumentListing')->name('app_brochure.edit_document_listing');
  });
 //  End Code 
+
+ Route::post('/upload-format', 'User\Claims\ClaimDocumentUploadController@uploadFormat');
+ Route::post('/upload-pdf-format', 'User\Claims\ClaimDocumentUploadController@uploadPdfFormat');
 
  Route::group(['middleware' => ['role:Approved-Applicants', 'verified', 'TwoFA', 'IsApproved']], function () {
     
@@ -313,7 +319,7 @@ Route::get('claimdocumentupload/incentiveDoc/{id}', 'User\Claims\ClaimDocumentUp
 
 
  });
- 
+
  Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Developer|Admin-Ministry|Applicant','IsApproved'])->group( function () {
     Route::get('authorize_signatory_list', 'AuthorisedSignatory\AuthorizeSignatoryRequestController@authorizeSignatoryList')->name('authorizeSignatoryList');
     Route::get('authorizechangelist', 'AuthorisedSignatory\AuthorizeSignatoryRequestController@authorizeChangeList')->name('users.authorizeSignatoryList');
@@ -326,24 +332,33 @@ Route::get('claimdocumentupload/incentiveDoc/{id}', 'User\Claims\ClaimDocumentUp
     Route::post('storeAuthoriseSignatory', 'AuthorisedSignatory\AuthoriseSignatoryController@storeAuthoriseSignatory')->name('storeAuthoriseSignatory');
 
 Route::get('claims/incentive/{fy}', 'Admin\ClaimIncentiveController@claimIncentive')->name('claims.incentive');
+
     Route::get('claims/incentiveExport','Admin\ClaimIncentiveController@claimIncentiveExport')->name('claims.incentiveExport');
     Route::patch('claims/incentive/update/{fy_id}', 'Admin\ClaimIncentiveController@claimIncentiveUpdate')->name('claims.incentiveUpdate');
     Route::get('claims/summaryReportView','Admin\ClaimIncentiveController@claimSummaryReportView')->name('claims.summaryReportView');
-	 Route::post('claims/correspondance/{claim_id}','Admin\ClaimIncentiveController@addCorrespondance')->name('claims.correspondance');
+	Route::post('claims/correspondance/{claim_id}','Admin\ClaimIncentiveController@addCorrespondance')->name('claims.correspondance');
     Route::get('claims/correspondanceEdit/{claim_id}','Admin\ClaimIncentiveController@editCorrespondance')->name('claims.correspondanceEdit');
     Route::patch('claims/updateCorres/{claim_id}', 'Admin\ClaimIncentiveController@updateCorres')->name('claims.updateCorres');
 Route::get('claims/correspondanceView/{claim_id}','Admin\ClaimIncentiveController@correspondanceView')->name('claims.correspondanceView');
 
-//24042024 by azeem
-Route::get('correspondence/ClaimNumberList/{user_type}', 'new_correspondence\RequestController@ClaimNumberList');
-Route::get('correspondence_filter', 'new_correspondence\RequestController@corres_filter_data')->name('correspondence_filter');
+
+
+
+//20% claim incentive new module 13052024
+Route::get('claims/incentive/twentyper/{fy}', 'Admin\ClaimIncentiveController@claimIncentiveTwentyPer')->name('claims.incentive.twentyper');
+Route::post('claims/incentive/twentyper/store/{fy_id}', 'Admin\ClaimIncentiveController@claimIncentiveStore')->name('claims.twentyper.incentiveStore');
+Route::post('claims/incentive/twentyper/store/', 'Admin\ClaimIncentiveController@claimIncentiveStore')->name('claims.twentyper.incentiveStore');
+
+
 
 Route::get('grievances/list', 'Admin\Grievances\GrievancesController@index')->name('grievances_list');
 Route::get('grievances/respond/{id}', 'Admin\Grievances\GrievancesController@respond')->name('grievances_respond');
 Route::post('grievances/respond/store', 'Admin\Grievances\GrievancesController@respondStore')->name('grievances_respond_store');
 Route::get('com_doc/{id}', 'Admin\Grievances\GrievancesController@downloadFile')->name('com_doc_down');
 Route::get('grievances/respond/view/{id}','Admin\Grievances\GrievancesController@view')->name('grievances_respond_view');
-
+// 
+Route::post('claims/twentyperclaim/{id}','Admin\ClaimIncentiveController@addTwentyPerClaim')->name('claims.twentyperclaim');
+Route::post('claims/twentyper/', 'Admin\ClaimIncentiveController@claimUpdate')->name('claims.twentyper.update');
 
 });
 
@@ -356,22 +371,7 @@ Route::get('claimdocumentupload/show/{claim_id}', 'User\Claims\ClaimDocumentUplo
 });
 
 
-Route::group(['middleware' => ['role:Approved-Applicants|Admin-Ministry|Admin|Developer','IsApproved','TwoFA']], function () {
-    Route::get('newcorrespondence', 'new_correspondence\RequestController@index')->name('newcorrespondence.index');
-    Route::resource('reqcreate', 'new_correspondence\RequestController');
-    Route::get('correspondence/usersList/{user_type}', 'new_correspondence\RequestController@usersList');
-    Route::get('correspondence/applicationNumberList/{applicant_id}', 'new_correspondence\RequestController@applicationNumberList');
-    Route::get('reqcreate/edit/{id}','new_correspondence\RequestController@edit')->name('reqcreate.edit');
-    Route::post('raisecomp', 'new_correspondence\RequestController@raisecomp')->name('raisecomp');
-    Route::get('category/{catid}','new_correspondence\RequestSubtypeController@getSubtype');
-    Route::get('reqtype/{catid}/{subtype}','new_correspondence\RequestSubtypeController@getReqType');
-    Route::get('req_download/{id}', 'new_correspondence\RequestController@reqDownload')->name('req_download');
-    Route::get('checksts/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscheck')->name('checksts');
-    Route::get('visiblecom/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscm')->name('visiblecom');
-     
-    //242042024 by azeem
-    Route::get('claimcorrespondence/{claim_id}', 'new_correspondence\RequestController@claimcorrespondence')->name('claimcorrespondence');
-});
+
 
 Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry|Applicant','IsApproved'])->group( function () {
 
@@ -432,5 +432,23 @@ Route::name('admin.')->prefix('admin')->middleware(['role:Admin|Admin-Ministry|A
     Route::get('applicant_brochure/other_broch_down/{id}', 'Admin\BrochureAdminDocumentController@appBrochourOtherDocDownload')->name('applicant_brochure.other_broch_down');
 
 });
+
+Route::group(['middleware' => ['role:Approved-Applicants|Admin-Ministry|Admin|Developer|Applicant','IsApproved','TwoFA']], function () {
+    Route::get('newcorrespondence', 'new_correspondence\RequestController@index')->name('newcorrespondence.index');
+    Route::resource('reqcreate', 'new_correspondence\RequestController');
+    Route::get('correspondence/usersList/{user_type}', 'new_correspondence\RequestController@usersList');
+    Route::get('correspondence/applicationNumberList/{applicant_id}', 'new_correspondence\RequestController@applicationNumberList');
+    Route::get('reqcreate/edit/{id}','new_correspondence\RequestController@edit')->name('reqcreate.edit');
+    Route::post('raisecomp', 'new_correspondence\RequestController@raisecomp')->name('raisecomp');
+    Route::get('category/{catid}','new_correspondence\RequestSubtypeController@getSubtype');
+    Route::get('reqtype/{catid}/{subtype}','new_correspondence\RequestSubtypeController@getReqType');
+    Route::get('req_download/{id}', 'new_correspondence\RequestController@reqDownload')->name('req_download');
+    Route::get('checksts/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscheck')->name('checksts');
+    Route::get('visiblecom/{req_id}/{checkid}', 'new_correspondence\RequestController@statuscm')->name('visiblecom');   
+    Route::get('correspondence/ClaimNumberList/{user_type}', 'new_correspondence\RequestController@ClaimNumberList'); 
+    Route::get('correspondence_filter', 'new_correspondence\RequestController@corres_filter_data')->name('correspondence_filter');
+    Route::get('claimcorrespondence/{claim_id}', 'new_correspondence\RequestController@claimcorrespondence')->name('claimcorrespondence');
+});
+
 
 

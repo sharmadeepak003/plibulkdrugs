@@ -56,7 +56,7 @@ div.dataTables_wrapper div.dataTables_length select {
                     <tr>
                         <th style="width: 15%;font-size:15px;">Product</th>
                         <td style="width: 30%;">
-                            <select class="custom-select" id="product_id"  name="product_id">
+                            <select class="custom-select" id="product_id"  name="product_id" required>
                                 <option value="" selected disabled>Select</option>
                                 @foreach ($approved_prods as $pval)
                                     <option value="{{$pval->id}}" @if(isset($intProductId)) @if($intProductId==$pval->id) selected @endif @endif>{{ $pval->product }}</option>

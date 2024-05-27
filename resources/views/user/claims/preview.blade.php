@@ -2540,7 +2540,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td>1</td>
-                                                        <td>Statutory Auditor's Certificate (with Annexure 1 to 4)</td>
+                                                        <td>Statutory Auditor's Certificate Annexure 1 to 4</td>
                                                         @foreach($doc_data as $key=>$doc)
                                                         @if($doc->doc_id == 1012)
 
@@ -2553,6 +2553,7 @@
                                                           <td><a class="btn btn-success btn-sm" href="{{ route('doc.download',encrypt($doc->upload_id)) }}">View</a></td>
                                                         @endif
                                                         @endforeach
+                                                        
                                                     </tr>
                                                     <tr>
                                                         <td>2</td>
@@ -2651,6 +2652,17 @@
                                                         <td><a class="btn btn-success btn-sm" href="{{ route('doc.download',encrypt($doc->upload_id)) }}">View</a></td>
                                                         @endif
                                                         @endforeach
+                                                    </tr>
+                                                    <tr>
+                                                        <td>8</td>
+                                                        <td>Statutory Auditor's Certificate</td>
+                                                        @foreach($doc_data as $key=>$doc)
+                                                        @if($doc->doc_id == 5010)
+
+                                                        <td><a class="btn btn-success btn-sm" href="{{ route('doc.download',encrypt($doc->upload_id)) }}">View</a></td>
+                                                        @endif
+                                                        @endforeach
+                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>

@@ -61,7 +61,7 @@ Brochure - Document
                             <thead>
                                 <tr class="table-primary">
                                     <th class="text-center" style="width: 25%">Product Name</th>
-                                    <th class="text-center" style="width: 20%">Website Link</th>
+                                    {{-- <th class="text-center" style="width: 20%">Website Link</th> --}}
                                     <th class="text-center" style="width: 20%">Upload</th>
                                     <th class="text-center" style="width: 20%">Techno Commercial</th>
                                 </tr>
@@ -78,7 +78,7 @@ Brochure - Document
                                     </select>
                                 </td>
                                 
-                                <td><input type="text" class="form-control form-control-sm valid"  id="websitelink" name="websitelink" value="{{ $brochure_doc->websitelink}}"></td>
+                                {{-- <td><input type="text" class="form-control form-control-sm valid"  id="websitelink" name="websitelink" value="{{ $brochure_doc->websitelink}}"></td> --}}
                                 <td><input type="file" id="doc_type" name="doc_type"  class="form-control form-control-sm valid">
                                     {{-- <a href="{{ route('app_brochure.bro_down', encrypt($brochure_doc->id)) }}" 
                                         class="btn btn-success btn-sm float-centre">
@@ -118,7 +118,7 @@ Brochure - Document
                             <tr class="table-primary">
                                 <th class="w-20 text-center">Product</th>
                                
-                                <th class="w-15 text-center">Website Link</th>
+                                {{-- <th class="w-15 text-center">Website Link</th> --}}
                                 <th class="w-15 text-center">Date & Time</th>
                                 <th class="w-15 text-center">Created by</th>
                                 <th class="w-5 text-center">Brochure</th>
@@ -132,7 +132,7 @@ Brochure - Document
                             <tr>
                                 <td>{{$content->product}}</td>
                                 
-                                <td>{{$content->websitelink}}</td>
+                                {{-- <td>{{$content->websitelink}}</td> --}}
                                 <td>{{$content->created_at}}</td>
                                 <td>{{$content->name}}</td>
                                 <td class="text-center"> <a href="{{ route('app_brochure.bro_down', encrypt($content->id)) }}" 

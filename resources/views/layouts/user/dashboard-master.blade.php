@@ -95,8 +95,8 @@
                             </a>
                         </li>
                         @if (Auth::user()->hasRole('Applicant'))
-                            <li class="nav-item has-treeview menu-open">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item has-treeview menu-close">
+                                <a href="#" class="nav-link active">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
                                         Applications
@@ -137,10 +137,14 @@
                                     </p>
                                 </a>
                             </li>
+                            
+                            
                             <li class="nav-item">
-                                <a href="{{ route('newcorrespondence.index') }}" class="nav-link active">
-                                    <i class="nav-icon fas fa-chart-bar text-info"></i>
-                                    <p>Correspondence </p>
+                                <a href="{{ route('app_brochure.index') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-file text-info"></i>
+                                    <p>
+                                        Product Brochures
+                                    </p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -151,14 +155,14 @@
                                     </p>
                                 </a>
                             </li>
+                            
                             <li class="nav-item">
-                                <a href="{{ route('app_brochure.index') }}" class="nav-link active">
-                                    <i class="nav-icon fas fa-file text-info"></i>
-                                    <p>
-                                        Product Brochures
-                                    </p>
+                                <a href="{{ route('newcorrespondence.index') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-chart-bar text-info"></i>
+                                    <p>Correspondence </p>
                                 </a>
                             </li>
+                          
                             <li class="nav-item">
                                 <a href="{{ route('grievance.index') }}" class="nav-link active">
                                     <i class="nav-icon fas fa fa-cogs"></i>
@@ -170,16 +174,7 @@
 
                         @endif
 
-                        @if(Auth::user()->id == 311)
-                        <li class="nav-item">
-                            <a href="{{ route('grievance.index') }}" class="nav-link active">
-                                <i class="nav-icon fas fa fa-cogs"></i>
-                                <p>
-                                    Grievance
-                                </p>
-                            </a>
-                        </li>
-                        @endif
+                      
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

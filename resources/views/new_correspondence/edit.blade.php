@@ -196,7 +196,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <form action='{{ route('reqcreate.update', $reqHd->id) }}' id="reqcreate" role="form" method="post"
-                        class='form-horizontal' files=true enctype='multipart/form-data' accept-charset="utf-8">
+                        class='form-horizontal prevent_multiple_submit' files=true enctype='multipart/form-data' accept-charset="utf-8">
                         {!! method_field('patch') !!}
                         @csrf
                         <input type="hidden" id="reqhd_id" name="reqhd_id" value="{{ $reqHd->id }}">
@@ -272,10 +272,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row pb-2">
-                            <div class="col-md-2 offset-md-5">
-                                <button type="submit"
-                                    class="btn btn-primary btn-sm form-control form-control-sm submitshareper"
+                        <div class="row">
+                            <div class="col-md-2 offset-md-0">
+                                <a href="{{ URL::previous() }}" class="btn btn-warning btn-sm form-control form-control-sm"><em class="fas fa-angle-double-left"></em> Back</a>
+                               
+                            </div>
+                            <div class="col-md-2 offset-md-3">
+                                
+                                <button type="submit" class="btn btn-primary btn-sm form-control form-control-sm"
                                     id="submitshareper"><i class="fas fa-save"></i>
                                     Submit</button>
                             </div>
@@ -295,6 +299,7 @@
     </div>
 @endsection
 @push('scripts')
+@include('new_correspondence.js.correspondence_request')
     <script type="text/javascript">
         var i = 0;
         $("#add").click(function() {

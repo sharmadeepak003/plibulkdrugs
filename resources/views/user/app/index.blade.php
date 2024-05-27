@@ -74,7 +74,7 @@ Applications Dashboard
                                             {{-- @if (in_array($aa->id, explode(',', $item->eligible_product))) --}}
 
                                             @foreach ($prods as $prod)
-                                            @if(!in_array($prod->target_id.'@_@'.$current_round,$createdProdApps))
+                                            @if(!in_array($prod->target_segment_id.'@_@'.$current_round,$createdProdApps))
                                             <tr>
                                                 <td class="text-center">{{ $index++ }}</td>
                                                 <td>{{ $prod->target_segment }}</td>
@@ -88,9 +88,11 @@ Applications Dashboard
                                                 
                                                 @if(Carbon\Carbon::now()->lt(Carbon\Carbon::parse('2024-02-29 23:59:00'))) 
                                                 <td>
-                                                    <a href="{{ route('applications.create',$prod->target_id) }}"
+                                                    <a href="{{ route('applications.create',$prod->target_segment_id) }}"
                                                         class="btn btn-success btn-sm btn-block">Create</a>
                                                 </td>
+                                                @else
+                                                    <td></td>
                                                 @endif  
                                             </tr>
                                             @endif

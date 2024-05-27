@@ -12,6 +12,9 @@ use App\RequestDocumentUploads;
 use App\User;
 use Carbon\Carbon;
 use DB;
+use App\SubmissionSms;
+use App\AdminSubmissionSms;
+use Str;
 
 class RequestController extends Controller
 {
@@ -126,11 +129,22 @@ class RequestController extends Controller
     public function create()
     {
 
-        $hasRole = Auth::user()->getRoleNames()->toArray();
-        //  dd($hasRole);
-        $hasRole = Auth::user()->getRoleNames()->toArray();
-        //    dd($hasRole);
-        if ($hasRole[0] == 'Admin-Meity') {
+        $hasRole = Auth::user()->hasRole('CorresReply');
+        
+        if($hasRole == 'CorresReply'){   
+            
+            $valid_roles = DB::table('req_user as cum')
+            ->join('roles', 'roles.id', '=', 'cum.role_id')
+            //->where('roles.id', 11)
+            ->whereNotIn('cum.id', [2, 3])
+            ->select('cum.name', 'cum.id')
+            ->orderBy('roles.id')
+            ->get();
+            //dd($valid_roles);
+            
+          
+        } 
+        elseif ($hasRole == 'Admin-Meity') {
             $valid_roles = DB::table('req_user as cum')
                 ->join('roles', 'roles.id', '=', 'cum.role_id')
                 ->whereNotIn('cum.id', [1, 2, 4])
@@ -138,7 +152,7 @@ class RequestController extends Controller
                 ->orderBy('roles.id')
                 ->get();
             // dd($valid_roles);
-        } elseif ($hasRole[0] == 'Admin') {
+        } elseif ($hasRole == 'Admin') {
 
             $valid_roles = DB::table('req_user as cum')
                 ->join('roles', 'roles.id', '=', 'cum.role_id')
@@ -146,7 +160,7 @@ class RequestController extends Controller
                 ->select('cum.name', 'cum.id')
                 ->orderBy('roles.id')
                 ->get();
-        } else {
+        }else {
             $valid_roles = DB::table('req_user as cum')
                 ->join('roles', 'roles.id', '=', 'cum.role_id')
                 ->where('roles.id', '2')
@@ -167,7 +181,9 @@ class RequestController extends Controller
 
     public function usersList($request_type)
     {
+      
         $role_id = DB::table('req_user')->where('id', $request_type)->first();
+        // dd($role_id);
 
         if($request_type==3)
         {
@@ -176,6 +192,7 @@ class RequestController extends Controller
             ->where('mhr.role_id', 11)
             ->select('u.name', 'u.id')
             ->get();
+            //dd($users,'dd');
         }
     else{
             $users = DB::table('users as u')
@@ -183,6 +200,8 @@ class RequestController extends Controller
             ->where('mhr.role_id', $role_id->role_id)
             ->select('u.name', 'u.id')
             ->get();
+            //dd($role_id->role_id);
+
         }
 
 
@@ -191,10 +210,22 @@ class RequestController extends Controller
 
     public function applicationNumberList($app_id)
     {
-
-        $hasRole = Auth::user()->getRoleNames()->toArray();
+        
+        // $hasRole = Auth::user()->getRoleNames()->toArray();
+        $hasRole = Auth::user()->hasRole('CorresReply');
+        //dd($hasRole);
         $getApplicatId = Auth::user()->id;
-        if ($hasRole[0] == 'Admin') {
+        if ($hasRole == 'CorresReply') {
+            $applicant_id = $app_id;
+            $applicantData = DB::table('users as u')
+                ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
+                ->where('aa.created_by', $applicant_id)
+                ->where('aa.status', 'S')
+                ->whereRaw('is_normal_user(u.id) = 1')
+                ->select('aa.id', 'aa.app_no')
+                ->get();
+        }
+        elseif ($hasRole == 'Admin') {
             $applicant_id = $app_id;
             $applicantData = DB::table('users as u')
                 ->join('approved_apps as aa', 'aa.created_by', '=', 'u.id')
@@ -214,6 +245,7 @@ class RequestController extends Controller
                 ->get();
         }
 
+        
         $applicant_data_vw = [
             'applicantData' => $applicantData
         ];
@@ -225,7 +257,7 @@ class RequestController extends Controller
     public function store(Request $request)
     {
 
-
+        
         $hasRole = Auth::user()->getRoleNames()->toArray();
 
         $role = DB::table('model_has_roles')->join('roles', 'roles.id', 'model_has_roles.role_id')
@@ -236,7 +268,7 @@ class RequestController extends Controller
             $claim_id = NULL;
         }
 
-        //  dd( $request->application_number);
+     
         DB::transaction(function () use ($request, $hasRole, $role, $claim_id) {
             $files = $request->file('reqdoc');
             $reqdoc = $request->reqdoc;
@@ -252,14 +284,7 @@ class RequestController extends Controller
             $reqHd->type_of_req = $request->reqtype;
             $reqHd->raise_by_role = $hasRole[0];
             $reqHd->pending_with = $role->name;
-            // if($hasRole[0] == 'Meity' || $hasRole[0] == 'ActiveUser' ){
-            //      $reqHd->pending_with='Admin';
-            //     $reqHd->raise_by_role='User';
-            // }else{
-            //     // dd('d');
-            //      $reqHd->pending_with='User';
-            //       $reqHd->raise_by_role=$hasRole[0];
-            // }
+            
             $reqHd->pending_since = Carbon::now();
             $reqHd->status = 'S';
             $dt = Carbon::parse($reqHd->first_applied_dt);
@@ -267,7 +292,7 @@ class RequestController extends Controller
             foreach ($prvYear as $values) {
                 $reqHd->req_id = $values->req_id_generate;
             }
-            //   dd($reqHd);
+           
             $reqHd->save();
 
             $DetailUploadId = array();
@@ -283,44 +308,62 @@ class RequestController extends Controller
                     $doc->created_at = Carbon::now();
                     $doc->file_name = $newDoc->getClientOriginalName();
                     $doc->uploaded_file = fopen($newDoc->getRealPath(), 'r');
-                    // dd($doc);
+                   
                     $doc->save();
                     array_push($DetailUploadId, $doc->id);
                 }
             }
-            // dd($DetailUploadId);
+           
             $reqdet = new RequestDet;
             $reqdet->req_id = $reqHd->id;
             $reqdet->msg = $request->msg;
             $reqdet->doc_id = $DetailUploadId;
             $reqdet->created_by = Auth::user()->id;
-            // dd($reqdet);
+           
 
             $reqdet->save();
         });
 
         $recipientRow = User::where('id', $request->request_to)->first();
 
-        //$request_type=DB::table('cm_requesttype_master')->where('id',$request->request_type)->first();
+        
         $request_type = DB::table('type_of_request')->where('id', $request->reqtype)->first();
-        // $request_type = DB::table('type_of_request')
-        //         ->where('cat_id', $request->related_to)
-        //         ->where('cat_subtype', $request->catsubtype)
-        //         ->where('status','Y')
-        //         ->where('req_type','R')
-        //         ->orderBy('id')
-        //        ->get();
-        //dd($request_type);
+        
 
         $moduleRow = DB::select("select * from req_category where id=" . $request->related_to);
 
         $module_name = $moduleRow[0]->category_desc;
-        //$userTypeRows=DB::select('select * from cm_user_master where id='.$request->user_type);
-        //$userTypeRows=DB::select('select * from cm_user_master where id='.$request->user_type);
+        
         $userTypeRows = DB::select('select * from req_user where id=' . $request->user_type);
         $user_type = $userTypeRows[0]->name;
-        //dd($request->msg);
+       
         $portal_name = env('APP_NAME');
+
+        // SMS code for correspondence module
+        $hasRole = Auth::user()->getRoleNames()->toArray();
+        if($hasRole[0] == 'CorresReply')
+        {
+            $admin_number = DB::table('users')->where('email', 'dgm.md@ifciltd.com')->first();
+            $SMS = new SubmissionSms();
+            $module = "Correspondance";
+            $app_no = Str::replaceFirst('IFCI/', '', $request->application_number);
+            $message = array($app_no);
+            //$smsResponse = $SMS->sendSMS(Auth::user()->mobile, $message, $module);
+            
+        }
+        else{
+
+            $admin_number = DB::table('users')->where('email', 'dgm.md@ifciltd.com')->first();
+            $SMS = new SubmissionSms();
+            $module = "Correspondance";
+            $app_no = Str::replaceFirst('IFCI/', '', $request->application_number);
+            $message = array($app_no);
+            //$smsResponse = $SMS->sendSMS(Auth::user()->mobile, $message, $module);
+            
+
+            
+        }
+        // end SMD for correspondence module
         $data = array('email' => $recipientRow->email, 'user_name' => $recipientRow->name, 'module_name' => $module_name, 'user_type' => $user_type, 'request_type' => $request_type->type_desc, 'user_name' => Auth::user()->name, 'body_message' => $request->msg, 'status' => 'open');
         Mail::send('emails.requestsubmit', $data, function ($message) use ($data, $portal_name) {
             $message->to($data['email'])->subject("PLI Scheme for Bulk Drugs || Query Submitted Succesfully");
@@ -339,7 +382,7 @@ class RequestController extends Controller
         $reg = '';
         if(in_array('Admin', Auth::user()->getRoleNames()->toArray()))
         {
-            $reg = 'DGM-PLIBD';
+            $reg = 'DGM-IFCI';
         }
 
 
@@ -578,6 +621,8 @@ class RequestController extends Controller
     public function claimcorrespondence($claim_id)
     {
         $user_id = Auth::user()->id;
+        
+
         $moduleRows = DB::table('req_category')->where('active_flg', '1')->get();
         $users = DB::table('approved_apps')->join('users', 'users.id', '=', 'approved_apps.created_by')->select('users.*')->orderby('users.name')->where(DB::RAW("is_normal_user(users.id)"), 1)->get();
         $hasRole = Auth::user()->getRoleNames()->toArray();
@@ -607,20 +652,34 @@ class RequestController extends Controller
 
     public function ClaimNumberList($app_id)
     {
-        $hasRole = Auth::user()->getRoleNames()->toArray();
-        $app_id = Auth::user()->id;
-        if (in_array('Admin', $hasRole)) {
-            $app_id = $app_id;
+        
+
+        $userId = $app_id;
+        $hasRole = Auth::user()->hasRole('CorresReply');
+        if ($hasRole == 'CorresReply') 
+        {
+            $app_id = $userId;
         }
-        $claim_no = DB::table('plimd.claims_masters as cm')
-            ->join('qtrs', 'qtrs.id', '=', 'cm.from_qtr_id')
-            ->join('qtrs as qtrs1', 'qtrs1.id', '=', 'cm.to_qtr_id')
-            ->select(DB::raw("CONCAT('Claim-', cm.fy, ' (',qtrs.month,'-',qtrs1.month,')') AS claim_number"), 'cm.id as claim_id', 'cm.app_id')
+        else
+        {
+            $app_id = Auth::user()->id;
+        }
+
+        $claim_no = DB::table('plibd.claims_masters as cm')
+            ->join('qtr_master', 'qtr_master.qtr', '=', 'cm.id')
+            // ->join('qtr_master as qtr_master1', 'qtr_master1.qtr_id', '=', 'cm.id')
+            ->select(DB::raw("CONCAT('Claim-', qtr_master.fy, ' (',qtr_master.start_month,'-',qtr_master.month,')') AS claim_number"), 'cm.id as claim_id', 'cm.app_id')
             ->where('created_by', $app_id)
             ->get();
+        //dd($claim_no);
+
+
         $applicant_data_vw = [
             'claim_no' => $claim_no
         ];
+
+        //dd($claim_no, $applicant_data_vw);
+
         return json_encode($applicant_data_vw);
     }
 }

@@ -49,7 +49,7 @@
                                 <thead>
                                     <tr class="table-primary">
                                         <th class="text-center">Sr No</th>
-                                        <th class="text-center">websitelink</th>
+                                        {{-- <th class="text-center">websitelink</th> --}}
                                       
                                         <th class="text-center">Brochure</th>
                                         <th class="w-5 text-center">Techno Commercial</th>
@@ -60,7 +60,7 @@
                                         @foreach ($arr_brochure_product[$val->app_id.'@_@'.$val->product_id] as $vkey => $b_val)
                                             <tr>
                                                 <td class="text-center">{{ $vkey + 1 }}</td>
-                                                <td class="text-center">{{$b_val->websitelink}}</td>  
+                                                {{-- <td class="text-center">{{$b_val->websitelink}}</td>   --}}
                                                 
                                                 <td class="text-center">
                                                     @if(isset($b_val->id))

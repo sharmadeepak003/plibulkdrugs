@@ -13,7 +13,7 @@ class CorrespondenceRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,10 @@ class CorrespondenceRequest extends FormRequest
     {
         return [
             'corres.*.raise_date' => 'required',
+            'twentyperamount' => 'required',
+            'twentyperdisbursementdate' => 'required',
+            'date_of_submission_by_bene' => 'required',
+            'percentage' => 'required',
             'corres.*.message' => 'required|max:255',
             'claim.*.remarks'=>'max:255',
             'claim.*.apprAmount' => 'numeric|max:99999',
@@ -42,6 +46,11 @@ class CorrespondenceRequest extends FormRequest
             'claim.*.apprAmount.numeric' => 'The field must be a Numeric Number.',
             'claim.*.apprAmount.max' => 'The field should not greater than 5 digit',
             'corres.*.image.max' => 'The field should not greater than 20 MB',
+            'twentyperamount' => 'The Field is required',
+            'twentyperdisbursementdate' => 'The Field is required',
+            'date_of_submission_by_bene' => 'The Field is required',
+            'percentage' => 'The Field is required',
+            
         ];
     }
 }

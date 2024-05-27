@@ -32,8 +32,8 @@ class ClaimUploadBRequest extends FormRequest
             'CerIntePro.*'=>'required|mimes:pdf|max:20480',
             'CerCost.*'=>'required|mimes:pdf|max:20480',
             'CerSADocExcel.*'=>'required|mimes:xlsx,xls|max:20480',
-            'CerSaRegDocExcel.*'=>'required|mimes:xlsx,xls|max:20480',
-            'CerCapexDocExcel.*'=>'required|mimes:xlsx,xls|max:20480',
+            'CerSaRegDocExcel.*'=>'required|mimes:csv|max:20480',
+            'CerCapexDocExcel.*'=>'required|mimes:csv|max:20480',
             'CerCEDocExcel.*'=>'required|mimes:xlsx,xls|max:20480',
             'CerIntDocExcel.*'=>'required|mimes:xlsx,xls|max:20480',
             'CerInteProExcel.*'=>'required|mimes:xlsx,xls|max:20480',
@@ -46,6 +46,8 @@ class ClaimUploadBRequest extends FormRequest
             'UnderCertificateDoc.*'=>'required|mimes:pdf|max:20480',
             'UnderBoardDoc.*'=>'required|mimes:pdf|max:20480',
             'problem' => 'required',
+            'SatAudCerti[1]'=>'required|mimes:pdf|max:20480',
+           
 
         ];
     }
@@ -82,8 +84,8 @@ class ClaimUploadBRequest extends FormRequest
                 'CerIntePro.*.mimes'=>'File must be pdf',
                 'CerCost.*.mimes'=>'File must be pdf',
                 'CerSADocExcel.*.mimes'=>'File must be excel',
-                'CerSaRegDocExcel.*.mimes'=>'File must be excel',
-                'CerCapexDocExcel.*.mimes'=>'File must be excel',
+                'CerSaRegDocExcel.*.mimes'=>'File must be csv',
+                'CerCapexDocExcel.*.mimes'=>'File must be csv',
                 'CerCEDocExcel.*.mimes'=>'File must be excel',
                 'CerIntDocExcel.*.mimes'=>'File must be excel',
                 'CerInteProExcel.*.mimes'=>'File must be excel',
@@ -95,6 +97,7 @@ class ClaimUploadBRequest extends FormRequest
                 'UnderGoodsDoc.*.mimes'=>'File must be pdf',
                 'UnderCertificateDoc.*.mimes'=>'File must be pdf',
                 'UnderBoardDoc.*.mimes'=>'File must be pdf',
+                'SatAudCerti[1].required'=>'This filed is required',
 
         ];
     }

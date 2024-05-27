@@ -16,6 +16,8 @@ use App\ClaimDocRemmittanceIncentive;
 use App\IncentiveDocMap;
 use App\ClaimCertificateDocDetail;
 use Mail;
+use App\Helpers\CurlHelper;
+use CURLFile;
 
 class ClaimDocumentUploadController extends Controller
 {
@@ -26,17 +28,17 @@ class ClaimDocumentUploadController extends Controller
      */
     public function index($claimId)
     {
-        
-        $claimMast = DB::table('claims_masters')->where('id',$claimId)->first();
+
+        $claimMast = DB::table('claims_masters')->where('id', $claimId)->first();
         // dd($claimMast);
         // $currentFinancialYear = (date('Y')-1) . '-' . (date('y'));
-        $forRetuenBack = DB::table('fy_master')->where('id',$claimMast->fy)->first();
+        $forRetuenBack = DB::table('fy_master')->where('id', $claimMast->fy)->first();
         $forRetuenBackId = $forRetuenBack->id;
         // dd($forRetuenBackId);
-        
+
 
         $doc_particular = DB::table('claim_20_percent_incentive_particular')->orderBy('serial_number')->get();
-        return view('user.claims.incentive_document_upload', compact('doc_particular', 'claimId','forRetuenBackId'));
+        return view('user.claims.incentive_document_upload', compact('doc_particular', 'claimId', 'forRetuenBackId'));
     }
 
     /**
@@ -46,14 +48,14 @@ class ClaimDocumentUploadController extends Controller
      */
     public function create($section, $id)
     {
-        
+
         $apps = DB::table('approved_apps_details as a')
             ->leftJoin('claims_masters as cm', 'cm.app_id', '=', 'a.id')
             ->where('cm.created_by', Auth::user()->id)
             ->where('cm.id', $id)
             ->whereNotNull('a.approval_dt')
             ->select('a.id as app_id', 'cm.id as claim_id')->first();
-        
+
         if ($section == 'A') {
             $stage = ClaimStage::where('claim_id', $id)->where('stages', 7)->first();
             if ($stage) {
@@ -61,9 +63,8 @@ class ClaimDocumentUploadController extends Controller
             }
             $doc_part = DB::table('claim_doc_upload_particular')->get();
             return view('user.claims.document_upload', compact('doc_part', 'apps'));
-
         } elseif ($section == 'B') {
-            
+
             $stage = ClaimStage::where('claim_id', $id)->where('stages', 8)->first();
             if ($stage) {
                 return redirect()->route('claimdocumentupload.edit', [$stage->claim_id, 'B']);
@@ -81,7 +82,6 @@ class ClaimDocumentUploadController extends Controller
             return view('user.claims.uploadsectionC', compact('doc_part', 'apps'));
             // dd('section c');
         }
-
     }
 
     /**
@@ -226,7 +226,7 @@ class ClaimDocumentUploadController extends Controller
 
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'A']);
         } elseif ($section == 'B') {
-           //dd('B', $request);
+            //dd('B', $request);
             $doc_types = DB::table('document_master')->where('doc_name', 'DocUp')->pluck('doc_type', 'doc_id')->toArray();
             DB::transaction(function () use ($doc_types, $request) {
                 foreach ($doc_types as $docid => $doctype) {
@@ -270,7 +270,7 @@ class ClaimDocumentUploadController extends Controller
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'B']);
         } elseif ($section == 'C') {
 
-           // dd('C', $request);
+            // dd('C', $request);
 
             // for($i=1; $i<=10; $i++){
             //     $data = 'Misc_'.$i;
@@ -405,12 +405,12 @@ class ClaimDocumentUploadController extends Controller
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'C']);
         } elseif ($section == 'R') {
 
-    
+
             // code by Deepak Sharma
             foreach ($request->data as $val) {
-                if(array_key_exists('mis',$val)){
+                if (array_key_exists('mis', $val)) {
                     if (array_key_exists('pdf', $val) || array_key_exists('excel', $val)) {
-                        if ($val['mis'] == null ) {
+                        if ($val['mis'] == null) {
                             alert()->warning('If you have miscellaneous document then upload document with valid document name', 'Warning!')->persistent('Close');
                             return redirect()->back();
                         }
@@ -432,11 +432,11 @@ class ClaimDocumentUploadController extends Controller
 
                     // if (array_key_exists('pdf', $val)) {
                     //     if ($val['pdf'] == 10) {
-                           
+
                     //         $docid = '5009';
                     //     } else {
                     //         $docid = '5008';
-                            
+
                     //     }
                     // }
                     $docid = '5008';
@@ -470,7 +470,7 @@ class ClaimDocumentUploadController extends Controller
                         $upload_excel = $doc1->id;
                     }
 
-                    
+
                     IncentiveDocMap::create([
                         'claim_id' => $request->claim_id,
                         'created_by' => Auth::user()->id,
@@ -486,7 +486,6 @@ class ClaimDocumentUploadController extends Controller
                 alert()->success('Claim Incentive Document has been save successfully', 'Success!')->persistent('Close');
             });
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'R']);
-
         }
     }
 
@@ -498,10 +497,10 @@ class ClaimDocumentUploadController extends Controller
      */
     public function show($claim_id)
     {
-        
+
         $doc_particular = DB::table('claim_20_percent_incentive_particular')->orderBy('serial_number')->get();
 
-        
+
         $doc_map = IncentiveDocMap::where('claim_id', $claim_id)->get();
         return view('user.claims.incentive_document_upload_show', compact('doc_particular', 'claim_id', 'doc_map'));
     }
@@ -514,6 +513,8 @@ class ClaimDocumentUploadController extends Controller
      */
     public function edit($id, $section)
     {
+
+
         $apps = DB::table('approved_apps_details as a')
             ->leftJoin('claims_masters as cm', 'cm.app_id', '=', 'a.id')
             ->where('cm.created_by', Auth::user()->id)
@@ -529,14 +530,14 @@ class ClaimDocumentUploadController extends Controller
             $bank_info = DB::table('claim_doc_remmittance_incentive')->where('app_id', $apps->app_id)->where('claim_id', $apps->claim_id)->first();
             // dd($genral_doc);
             return view('user.claims.documentupload_edit', compact('apps', 'doc_data', 'genral_doc', 'bank_info', 'response'));
-
         } elseif ($section == 'B') {
-            
+
             $doc_data = DB::table('claim_doc_info_map')->where('claim_id', $apps->claim_id)->where('app_id', $apps->app_id)->where('section', 'B')->get();
-            
+           // dd($doc_data);
+
             return view('user.claims.uploadsectionB_edit', compact('apps', 'doc_data'));
         } elseif ($section == 'C') {
-            
+
             // $doc_data=DB::table('claim_doc_info_map')->where('claim_id',$apps->claim_id)->where('section','C')->where('app_id',$apps->app_id)->get();
 
             // $doc_id =DB::table('document_master')->where('doc_name','Misc')->pluck('doc_type','doc_id')->toArray();
@@ -552,17 +553,16 @@ class ClaimDocumentUploadController extends Controller
             $doc_id = DB::table('document_master')->where('doc_name', 'Misc')->pluck('doc_type', 'doc_id')->toArray();
             $tot_misc = 12 - sizeof($doc_data);
             return view('user.claims.uploadsectioneditC', compact('apps', 'doc_data', 'tot_misc'));
-
         } elseif ($section == 'R') {
             //dd('hello');
-            $claim_id = $id;  
+            $claim_id = $id;
             //dd($claim_id);  
-            $cp = DB::table('claims_masters')->where('id',$claim_id)->first();
-            $period = DB::table('claim_applicant_details')->where('claim_id',$claim_id)->first()->claim_fill_period;
+            $cp = DB::table('claims_masters')->where('id', $claim_id)->first();
+            $period = DB::table('claim_applicant_details')->where('claim_id', $claim_id)->first()->claim_fill_period;
             // dd($cp);
             $doc_particular = DB::table('claim_20_percent_incentive_particular')->orderBy('serial_number')->get();
             $doc_map = IncentiveDocMap::where('claim_id', $claim_id)->get();
-            return view('user.claims.incentive_document_upload_edit', compact('period','cp','doc_particular', 'claim_id', 'doc_map'));
+            return view('user.claims.incentive_document_upload_edit', compact('period', 'cp', 'doc_particular', 'claim_id', 'doc_map'));
         }
     }
 
@@ -637,7 +637,6 @@ class ClaimDocumentUploadController extends Controller
                                 'updated_at' => Carbon::now(),
                             ]);
                         }
-
                     }
                 } elseif ($request->problem == 'N') { // && $request->response == 'Y'
                     // dd('hello');
@@ -647,7 +646,6 @@ class ClaimDocumentUploadController extends Controller
                         ->where('app_id', $request->app_id)
                         ->where('doc_id', 1003)
                         ->delete();
-
                 }
                 // dd('dkjfkjds');
                 foreach ($request->GenChqDocN as $data) {
@@ -662,7 +660,6 @@ class ClaimDocumentUploadController extends Controller
                         $doc->file_name = $data['doc']->getClientOriginalName();
                         $doc->uploaded_file = fopen($data['doc']->getRealPath(), 'r');
                         $doc->save();
-
                     }
 
                     $incentive_data = ClaimDocRemmittanceIncentive::find($data['id']);
@@ -692,17 +689,18 @@ class ClaimDocumentUploadController extends Controller
             });
 
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'A']);
-
-        } elseif ($section == 'B') {
+        } 
+        elseif ($section == 'B') 
+        {
             $doc_types = DB::table('document_master')->where('doc_name', 'DocUp')->pluck('doc_type', 'doc_id')->toArray();
-            // dd($doc_types);
-            //  dd($request->upload_doc[0]);
+            
+            
             DB::transaction(function () use ($doc_types, $request) {
                 foreach ($request->upload_doc as $key => $value) {
-                    // dd($request->upload_doc,$key ,$value);
-                   
-                    if (array_key_exists('doc', $value)) {
-                      
+                  
+                    if (array_key_exists('doc', $value) && array_key_exists('id', $value))
+                    {
+                        
                         $doc = DocumentUploads::where('app_id', $request->app_id)->where('id', $value['id'])->first();
                         $doc->app_id = $request->app_id;
                         $doc->mime = $value['doc']->getMimeType();
@@ -711,8 +709,42 @@ class ClaimDocumentUploadController extends Controller
                         $doc->file_name = $value['doc']->getClientOriginalName();
                         $doc->uploaded_file = fopen($value['doc']->getRealPath(), 'r');
                         $doc->save();
-                    }
+                    } 
+                    elseif(array_key_exists('doc', $value) && !array_key_exists('id', $value))
+                    {
+                      
+                        $doc = new DocumentUploads;
+                        $doc->app_id = $request->app_id;
+                        $doc->doc_id = 5010;
+                        $doc->user_id = Auth::user()->id;
+                        $doc->mime = $value['doc']->getMimeType();
+                        $doc->file_size = $value['doc']->getSize();
+                        $doc->updated_at = Carbon::now();
+                        $doc->created_at = Carbon::now();
+                        $doc->file_name = $value['doc']->getClientOriginalName();
+                        $doc->uploaded_file = fopen($value['doc']->getRealPath(), 'r');
+                        $doc->save();
 
+                        
+                        $docExist = ClaimDocInfo::where('app_id', $request->app_id)->where('created_by',Auth::user()->id)->where('upload_id', $doc->id)->first();
+                        
+                        if (!$docExist) 
+                        {
+                            ClaimDocInfo::create([
+                            'app_id' => $request->app_id,
+                            'claim_id' => $request->claim_id,
+                            'created_by' => Auth::user()->id,
+                            'prt_id' => 12,
+                            'doc_id' => $doc->doc_id,
+                            'upload_id' => $doc->id,
+                            'section' => 'B',
+                            'file_name' => 'section B'
+                        ]);
+                        }
+                        
+                        
+                    }
+                    
                 }
 
                 alert()->success('Claim Uploads Details Saved', 'Success!')->persistent('Close');
@@ -732,7 +764,6 @@ class ClaimDocumentUploadController extends Controller
                     }
                     return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'C']);
                 }
-
             }
 
             $doc_types = DB::table('document_master')->where('doc_name', 'Misc')->pluck('doc_type', 'doc_id')->toArray();
@@ -801,7 +832,6 @@ class ClaimDocumentUploadController extends Controller
                             $claim_doc_info->file_name = $request->$miscell['name'];
                             $claim_doc_info->save();
                         }
-
                     } elseif (!array_key_exists('id', $request->$miscell) && $request->$miscell['name'] != null) {
 
                         if ($request->file($miscell)) {
@@ -861,15 +891,15 @@ class ClaimDocumentUploadController extends Controller
             //dd('R' ,$request->claim_id);
             // code by Deepak Sharma
             foreach ($request->data as $val) {
-                if(array_key_exists('mis',$val)){
+                if (array_key_exists('mis', $val)) {
                     if (array_key_exists('pdf', $val) || array_key_exists('excel', $val)) {
                         if ($val['mis'] == null) {
                             alert()->warning('If you have miscellaneous document then upload document with valid document name', 'Warning!')->persistent('Close');
                             return redirect()->back();
                         }
                     } elseif ($val['mis'] != null) {
-                         if (array_key_exists('name', $val) || array_key_exists('excel', $val)) {
-                        //if (!array_key_exists('pdf', $val)) {
+                        if (array_key_exists('name', $val) || array_key_exists('excel', $val)) {
+                            //if (!array_key_exists('pdf', $val)) {
                             alert()->warning('If you have miscellaneous document then upload document with valid document name', 'Warning!')->persistent('Close');
                             return redirect()->back();
                         }
@@ -886,8 +916,7 @@ class ClaimDocumentUploadController extends Controller
                     $map_data = IncentiveDocMap::where('id', $val['id'])->where('claim_id', $request->claim_id)->first();
                     $docid = '5008';
                     if (array_key_exists('pdf', $val)) {
-                        if($val['pdf_upload_id'])
-                        {
+                        if ($val['pdf_upload_id']) {
                             $doc = DocumentUploads::find($val['pdf_upload_id']);
                             $doc->mime = $val['pdf']->getMimeType();
                             $doc->file_size = $val['pdf']->getSize();
@@ -895,8 +924,8 @@ class ClaimDocumentUploadController extends Controller
                             $doc->file_name = $val['pdf']->getClientOriginalName();
                             $doc->uploaded_file = fopen($val['pdf']->getRealPath(), 'r');
                             $doc->save();
-                        }else{
-                            $doc =New  DocumentUploads;
+                        } else {
+                            $doc = new  DocumentUploads;
                             $doc->app_id = $request->claim_id;
                             $doc->doc_id = $docid;
                             $doc->mime = $val['pdf']->getMimeType();
@@ -911,8 +940,7 @@ class ClaimDocumentUploadController extends Controller
                     }
 
                     if (array_key_exists('excel', $val)) {
-                        if($val['excel_upload_id'])
-                        {
+                        if ($val['excel_upload_id']) {
                             $doc1 = DocumentUploads::find($val['excel_upload_id']);
                             $doc1->mime = $val['excel']->getMimeType();
                             $doc1->file_size = $val['excel']->getSize();
@@ -920,8 +948,8 @@ class ClaimDocumentUploadController extends Controller
                             $doc1->file_name = $val['excel']->getClientOriginalName();
                             $doc1->uploaded_file = fopen($val['excel']->getRealPath(), 'r');
                             $doc1->save();
-                        }else{
-                            $doc1 =New DocumentUploads;
+                        } else {
+                            $doc1 = new DocumentUploads;
                             $doc1->app_id = $request->claim_id;
                             $doc1->doc_id = $docid;
                             $doc1->mime = $val['excel']->getMimeType();
@@ -939,10 +967,10 @@ class ClaimDocumentUploadController extends Controller
                     $map_data->claim_id = $request->claim_id;
                     if (array_key_exists('mis', $val)) {
                         $map_data->file_name = $val['mis'];
-                    }else{
+                    } else {
                         $map_data->file_name = null;
                     }
-                   
+
                     $map_data->updated_by = Auth::user()->id;
                     //dd($map_data);
                     $map_data->save();
@@ -951,7 +979,6 @@ class ClaimDocumentUploadController extends Controller
             });
             return redirect()->route('claimdocumentupload.edit', [$request->claim_id, 'R']);
         }
-
     }
 
     /**
@@ -966,30 +993,160 @@ class ClaimDocumentUploadController extends Controller
     }
     public function incentiveDoc($claim_id)
     {
+       
         DB::transaction(function () use ($claim_id) {
-                IncentiveDocMap::where('claim_id', $claim_id)
+            IncentiveDocMap::where('claim_id', $claim_id)
                 ->where('status', 'D')
                 ->update(['status' => 'S']);
-                //mail section
-                    $d_data = DB::table('claim_applicant_details')->where('claim_id',$claim_id)->select('incentive_from_date','incentive_to_date')->first();
+            //mail section
+            $d_data = DB::table('claim_applicant_details')->where('claim_id', $claim_id)->select('incentive_from_date', 'incentive_to_date')->first();
 
-                    $from_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_from_date)->select('start_month','year')->first();
-                    $to_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_to_date)->select('month','year')->first();
+            $from_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_from_date)->select('start_month', 'year')->first();
+            $to_dt = DB::table('qtr_master')->where('qtr_id', $d_data->incentive_to_date)->select('month', 'year')->first();
 
-                    $user = array('name' => Auth::user()->name, 'email' => Auth::user()->email,
-                    'from_dt' => $from_dt->start_month, 'to_dt' =>$to_dt->month, 'status' => 'Incentive 20% Claim Form Submitted Successfully',
-                    'fr_year'=>$from_dt->year,'to_year'=>$to_dt->year);
+            $user = array(
+                'name' => Auth::user()->name, 'email' => Auth::user()->email,
+                'from_dt' => $from_dt->start_month, 'to_dt' => $to_dt->month, 'status' => 'Incentive 20% Claim Form Submitted Successfully',
+                'fr_year' => $from_dt->year, 'to_year' => $to_dt->year
+            );
 
-                    Mail::send('emails.claimTwentyPercentageFinalSubmit', $user, function ($message) use ($user) {
-                        $message->to($user['email'])->subject($user['status']);
-                        $message->cc('bdpli@ifciltd.com');
-                    });
-
-                alert()->success('Claim Incentive Document has been submitted successfully', 'Success!')->persistent('Close');
+            Mail::send('emails.claimTwentyPercentageFinalSubmit', $user, function ($message) use ($user) {
+                $message->to($user['email'])->subject($user['status']);
+                $message->cc('bdpli@ifciltd.com');
             });
-            return redirect()->route('claimdocumentupload.show',$claim_id);
+
+            alert()->success('Claim Incentive Document has been submitted successfully', 'Success!')->persistent('Close');
+        });
+        return redirect()->route('claimdocumentupload.show', $claim_id);
     }
 
 
-    
+
+
+    public function uploadFormat(Request $request)
+    {
+
+        $filename = $request->filename;
+
+        $filenameWithExtension = $filename . '.csv';
+
+        // $filePath1 = storage_path('app/format_files/' . $filenameWithExtension);
+
+        $filePath1 = public_path('docs/doc_claim/' . $filenameWithExtension);
+
+        $filePath2 = $request->file('file');
+
+        $extension1 = pathinfo($filePath1, PATHINFO_EXTENSION);
+
+        $extension2 = $request->file('file')->getClientOriginalExtension();
+
+        if (file_exists($filePath1)) {
+
+            if ($extension1 !== $extension2) {
+
+                $data = [
+
+                    'message' => 'The uploaded file must be in CSV format.',
+
+                    'code' => 'false',
+
+                ];
+
+                return $data;
+            } else {
+
+                $postData = [
+
+                    'file1' => new CURLFile($filePath1),
+
+                    'file2' => new CURLFile($filePath2),
+
+                ];
+
+                $response = CurlHelper::sendPostRequest('https://pliauto.in/compare-csv1', $postData);
+
+
+
+                $response = json_decode($response, true);
+
+                $response = $response['message'];
+
+                // dd($response);
+
+                if ($response == 'Valid Format') {
+
+                    $data = [
+
+                        'message' => $response,
+
+                        'code' => 'true',
+
+                    ];
+
+                    return $data;
+                } else {
+
+                    $data = [
+
+                        'message' => $response,
+
+                        'code' => 'false',
+
+                    ];
+
+                    return $data;
+                }
+            }
+        } else {
+
+            $data = [
+
+                'message' => 'Format File does not exist!',
+
+                'code' => 'false',
+
+            ];
+
+            return $data;
+        }
+    }
+
+
+    public function uploadPdfFormat(Request $request)
+    {
+
+        $filename = $request->filename;
+        $filenameWithExtension = $filename . '.pdf';
+        $filePath1 = public_path('docs/doc_claim/') . $filenameWithExtension;
+        $file = $request->file('file');
+        // Define the target directory where the file will be uploaded
+        $targetDir = "uploads/";
+        // Create the target directory if it doesn't exist
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+        // Define the target file path
+        $targetFilePath = $targetDir . $file->getClientOriginalName();
+        // Move the uploaded file to the target directory
+        $file->move($targetDir, $file->getClientOriginalName());
+        sleep(5);
+        // Check if the file already exists in the target directory
+        if (file_exists($targetFilePath)) {
+            $filename = "uploads/" . $file->getClientOriginalName();
+            $postData = [
+                'arg1' => new CURLFile($filePath1),
+                'arg2' => new CURLFile($filename),
+            ];
+            $response = CurlHelper::sendPostRequest('https://exemp.ifciltd.com/api/call-python', $postData);
+            // dd($response);
+            unlink($targetFilePath); // Delete the file
+            return $response;
+        }
+        $data = [
+            'status' => 600,
+            'result' => 'Please Try Again.',
+        ];
+        unlink($targetFilePath); // Delete the file
+        return $data;
+    }
 }

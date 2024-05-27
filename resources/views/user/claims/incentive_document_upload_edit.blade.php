@@ -111,7 +111,7 @@
                             }
                             else{
                                 // for quaterly, half yearly and 9 month claim filling users
-                                $date = Carbon\Carbon::now()->lt(Carbon\Carbon::parse('2024-01-31 23:59:00'));
+                                $date = Carbon\Carbon::now()->lt(Carbon\Carbon::parse('2024-12-31 23:59:00'));
 
                             }    
                             @endphp  

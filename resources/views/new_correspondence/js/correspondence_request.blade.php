@@ -119,6 +119,7 @@
 <script>
     $(document).ready(function() {
         const btn_modal = document.getElementById("submitshareper");
+        alert('dd')
 
         $('.prevent_multiple_submit').on('submit', function() {
             $(".prevent_multiple_submit").parent().append(
@@ -203,16 +204,20 @@
         $('#category').on('change', function() {
          
             var userlist_id = $('#userlist').val();
+            
             if (userlist_id) {
+               
                 $.ajax({
                     url: '/correspondence/ClaimNumberList/' + userlist_id,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
                         var categoryvalue = $('#category').val();
+                        console.log(categoryvalue);
                         $('#claim_no').empty();
                         $('#claim_show_dv').hide();
-                       if(categoryvalue==4){
+                       if(categoryvalue==3){
+                       
                         $('#claim_show_dv').show();
                        
                         $('#claim_no').append(

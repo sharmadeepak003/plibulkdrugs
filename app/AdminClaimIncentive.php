@@ -28,6 +28,8 @@ class AdminClaimIncentive extends Model
         'appr_amount',
         'remarks',
         'system_remarks',
-	'created_by'
+	    'created_by',
+        'claim_fill_period',
+        'claim_incentive_type'
     ];
 }

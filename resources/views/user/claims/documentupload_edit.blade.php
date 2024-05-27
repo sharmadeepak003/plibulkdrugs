@@ -1,7 +1,7 @@
 @extends('layouts.user.dashboard-master')
 
 @section('title')
-    Claim: Document Upload
+    Claim: Document Upload cbfg
 @endsection
 
 @push('styles')
